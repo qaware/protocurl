@@ -1,0 +1,15 @@
+{
+  "name": "servers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "./node_modules/typescript/bin/tsc && node dist/server.js",
+    "tsbuild": "./node_modules/typescript/bin/tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  }
+}

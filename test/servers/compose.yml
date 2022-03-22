@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+
+  server:
+    image: nodeserver:v1
+    container_name: protocurl-node-server
+    command: npm start
