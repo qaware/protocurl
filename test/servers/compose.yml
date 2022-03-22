@@ -5,4 +5,11 @@ services:
   server:
     image: nodeserver:v1
     container_name: protocurl-node-server
+
+    # todo. use proper network for testing!
+    ports:
+      - 8080:8080
+
+    volumes:
+      - ../proto:/proto
     command: npm start

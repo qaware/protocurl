@@ -8,8 +8,11 @@
     "tsbuild": "./node_modules/typescript/bin/tsc"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "protobufjs": "~6.11.2"
   }
 }

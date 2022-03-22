@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package happyday;
+
+import "google/protobuf/timestamp.proto";
+
+
+message HappyDayRequest {
+  google.protobuf.Timestamp date = 1;
+  bool includeReason = 2;
+}
+
+message HappyDayResponse {
+  bool isHappyDay = 1;
+  string reason = 2;
+}
+
+// todo. use example of multiple data types such as array, enum, alternation, etc.

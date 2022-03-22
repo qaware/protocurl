@@ -1,5 +1,6 @@
 FROM library/node:17.7.2
 WORKDIR /servers
-COPY package*.json .
+COPY test/servers/package*.json .
 RUN npm ci
-COPY * .
+COPY test/servers/. .
+COPY test/proto ./proto
