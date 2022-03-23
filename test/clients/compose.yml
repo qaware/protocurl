@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
-  cli:
+  client:
     image: protocurl:v1
+    container_name: client
     environment:
       # todo. also add documentation on raw text format for request.
       # todo. for json support, we need to extend the base image to use the SDK of any programming language to achieve it.
@@ -18,7 +19,7 @@ services:
       REQUEST_TXT: 'includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }'
 
       # relevant test cases
-      # REQUEST_TXT: ''
+      #      REQUEST_TXT: ''
       # REQUEST_TXT: 'includeReason: true, date: { seconds: 1234567890102030405, nanos: 50 }'
 
       PROTO_FILE_PATH: happyday.proto
@@ -30,3 +31,5 @@ services:
     volumes:
       - ../proto:/proto
     network_mode: host
+
+# TODO. we need to move from compose.env to also support command line args.

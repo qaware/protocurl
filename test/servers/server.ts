@@ -136,7 +136,7 @@ function runHttpServer(handlers: PathHandler[]) {
 
     const server = http.createServer(requestListener);
     server.listen(PORT);
-    console.log('Listening to port: ' + PORT);
+    console.log('Listening to port: ' + PORT); // This line is used in the test runner to detect readiness
 }
 
 protobuf.load(protoFilePath)
