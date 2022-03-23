@@ -13,6 +13,8 @@ message HappyDayRequest {
 message HappyDayResponse {
   bool isHappyDay = 1;
   string reason = 2;
+  string formattedDate = 3;
+  string err = 4;
 }
 
 // todo. use example of multiple data types such as array, enum, alternation, etc.
