@@ -3,8 +3,9 @@
 todo
 
 # Usage
-
-...
+`
+docker build -f src/Dockerfile -t protocurl:v1 src
+`
 
 # Installation
 
