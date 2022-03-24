@@ -2,9 +2,11 @@ set -e
 
 # Test suite: Starts the server and sends multiple requests against it to check the log output
 
-BUILD_SERVER="docker build -t nodeserver:v1 -f test/servers/Dockerfile ."
-START_SERVER="docker-compose -f test/servers/compose.yml up -d"
-STOP_SERVER="docker-compose -f test/servers/compose.yml down"
+BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:v1 -f src/Dockerfile . && echo 'Done.'"
+
+BUILD_SERVER="echo 'Building server...' && docker build -q -t nodeserver:v1 -f test/servers/Dockerfile . && echo 'Done.'"
+START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up -d && echo 'Done.'"
+STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
 
 function isServerReady() {
   rm -rf tmpfile.log || true
@@ -21,6 +23,7 @@ function isServerReady() {
 }
 
 function ensureServerIsReady() {
+  echo "Waiting for server to become ready..."
   SECONDS=0
 
   set +e
@@ -39,42 +42,59 @@ function ensureServerIsReady() {
   echo "=== Test server is ready ==="
 }
 
-RUN_CLIENT="docker-compose -f test/clients/compose.yml up"
-STOP_CLIENT="docker-compose -f test/clients/compose.yml down"
+# todo. fix this, such that the path works for linux via $PWD and for Windows WSL via some hack or so...
+export RUN_CLIENT="docker run \
+  -v c:/Users/s.sahoo/Documents/QA-Labs-protoCURL/protocurl/test/proto:/proto \
+  --network host \
+  protocurl:v1 "
 
 function setup() {
   tearDown
-  $BUILD_SERVER
-  $START_SERVER
+
+  eval $BUILD_PROTOCURL
+  eval $BUILD_SERVER
+  eval $START_SERVER
 
   ensureServerIsReady
 }
 
 function tearDown() {
   rm -rf tmpfile.log || true
-  $STOP_SERVER
+  eval $STOP_SERVER
 }
 
-function runTests() {
-  $RUN_CLIENT >tmpfile.log
-  set +e
-  grep -q "Tough luck on Wednesday" tmpfile.log
+function testSingleRequest() {
+  FILENAME="$1"
+  ARGS="$2"
+  EXPECTED="test/results/$FILENAME-expected.txt"
+  OUT="test/results/$FILENAME-out.txt"
+  touch "$EXPECTED"
 
-  if [[ "$?" == 1 ]]; then
-    echo "❌❌❌ FAILURE ❌❌❌"
-    cat tmpfile.log
-#    grep -q "Tough luck on Wednesday" tmpfile.log
-#    echo "exitcode of grep: $?"
+  eval "$RUN_CLIENT $ARGS" > "$OUT"
+
+  set +e
+  diff --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
+
+  if [[ "$?" != 0 ]]; then
+    echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
+    echo "  --- Found difference between expected and actual output ---"
+    diff --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
   else
-    echo "✨✨✨ SUCCESS ✨✨✨"
-#    grep -q "Tough luck on Wednesday" tmpfile.log
-#    echo "exitcode of grep: $?"
+    echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
   fi
 
-  $STOP_CLIENT || true
   set -e
 }
 
+function runAllTests() {
+  rm -rf test/suite/run-testcases.sh || true
+  # convert each element in the JSON to the corresponding call of the testSingleRequest function
+  cat test/suite/testcases.json | test/suite/jq -r ".[] | \"testSingleRequest \(.filename|@sh) \(.args|@sh)\"" > test/suite/run-testcases.sh
+
+  export -f testSingleRequest
+  ./test/suite/run-testcases.sh
+}
+
 setup
-runTests
+runAllTests
 tearDown

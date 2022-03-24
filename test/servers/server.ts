@@ -87,6 +87,7 @@ function defineHandlers(): PathHandler[] {
 function runHttpServer(handlers: PathHandler[]) {
     const requestListener: http.RequestListener = (req, res) => {
         console.log('=========== ' + req.method + ' ' + req.url);
+        console.log(req.rawHeaders.map(s => '  ' + s));
 
         const currentHandler = handlers.find(handler => handler.path == req.url);
 
