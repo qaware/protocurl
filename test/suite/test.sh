@@ -7,6 +7,12 @@ BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:la
 START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d && echo 'Done.'"
 STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
 
+export RUN_CLIENT="docker run \
+  -v c:/Users/s.sahoo/Documents/QA-Labs-protoCURL/protocurl/test/proto:/proto \
+  --network host"
+
+export SHOW_LOGS="docker logs"
+
 isServerReady() {
   rm -rf tmpfile.log || true
 
@@ -41,13 +47,6 @@ ensureServerIsReady() {
   echo "=== Test server is ready ==="
 }
 
-# todo. fix this, such that the path works for linux via $PWD and for Windows WSL via some hack or so...
-export RUN_CLIENT="docker run \
-  -v c:/Users/s.sahoo/Documents/QA-Labs-protoCURL/protocurl/test/proto:/proto \
-  --network host"
-
-export SHOW_LOGS="docker logs"
-
 setup() {
   tearDown
 
@@ -71,6 +70,7 @@ testSingleRequest() {
   rm -f "$OUT" || true
 
   set +e
+
   eval "docker rm -f $FILENAME > /dev/null"
   eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" >"$OUT"
 
@@ -82,6 +82,7 @@ testSingleRequest() {
     eval "$SHOW_LOGS $FILENAME" | sed 's/^/  /'
     echo "  --- Found difference between expected and actual output ---"
     diff --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
+    echo "The actual output was saved into $OUT for inspection."
   else
     echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
   fi
@@ -93,9 +94,10 @@ runAllTests() {
   echo "=== Running ALL Tests ==="
   rm -rf ./test/suite/run-testcases.sh || true
 
-  # convert each element in the JSON to the corresponding call of the testSingleRequest function
-  JQ_TRANSFORMER=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh)\""
-  cat test/suite/testcases.json | test/suite/jq -r "$JQ_TRANSFORMER" >./test/suite/run-testcases.sh
+  # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
+  # Simply look at the produced run-testcases.sh file to see what it looks like.
+  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh)\""
+  cat test/suite/testcases.json | test/suite/jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest
   ./test/suite/run-testcases.sh
@@ -106,14 +108,3 @@ runAllTests() {
 setup
 runAllTests
 tearDown
-
-#    environment:
-# todo. also add documentation on raw text format for request.
-# todo. for json support, we need to extend the base image to use the SDK of any programming language to achieve it.
-# or perhaps use https://github.com/revinate/protobuf2json directly then? No. We don't know, if it works reliably and has little bugs...
-# Let's use protobufjs or the C++ protobuf implementation instead
-
-#      URL: "http://localhost:8080/echo"
-#      RESPONSE_TYPE: happyday.HappyDayRequest
-#      REQUEST_TXT: 'includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }'
-# REQUEST_TXT: 'includeReason: true, date: { seconds: 1234567890102030405, nanos: 50 }'

@@ -7,6 +7,27 @@
     ]
   },
   {
+    "filename": "other-days-are-happy-days",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "\"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "no-reason",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "\"date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "far-future",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "\"includeReason: true, date: { seconds: 123231648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "empty-day-epoch-time-thursday",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
@@ -28,9 +49,9 @@
     ]
   },
   {
-    "filename": "echo-empty-curl-args",
+    "filename": "echo-empty-with-curl-args",
     "args": [
-      "-f happyday.proto -C \"-V\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
+      "-f happyday.proto -C \"-D\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
       "\"includeReason: true\""
     ]
   },

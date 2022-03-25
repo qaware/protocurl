@@ -9,6 +9,10 @@ todo
 
 todo: easier usage of the tool todo: ask people from Team
 
+## How to use
+
+- Insert from protoCURL printUsage....
+
 # Installation
 
 1. Clone this repository
@@ -124,13 +128,11 @@ Run all tests (unix bash only):
 
 ...
 
-## Adding tests
+# Tests
 
-To add a test, simply add a new entry into `test/suite/testcases.json` and run the tests. The tests will generate an
-empty expected output file and copy the actual output sideby side. You can inspect the actual output and copy it into
-the expected-output file when you are happy. ...
+See [TESTS.md](TESTS.md)
 
-## Potential Improvements
+# Potential Improvements
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
   useful and viable for everyday usage.
@@ -144,4 +146,4 @@ the expected-output file when you are happy. ...
 * Remove static path for mount in `test.sh`
 * Perhaps use a different and more up to date base image
 * LICENSE
-* 
+* Add documentation and examples for raw text format

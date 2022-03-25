@@ -31,6 +31,11 @@ interface HappyDayResponse {
     err: string;
 }
 
+/** A path handler specifies the path (e.g. /happy-day/verify) on which it acts.
+ * If the corresponding path is requested, then runHttpServer(...) parses the body into the
+ * reqType protobuf message type and runs the handler method to generate the response.
+ * The handler returns the protobuf message output type - which the http server uses to serialise the response.
+ */
 interface PathHandler {
     path: string;
     reqType: protobuf.Type;
@@ -38,6 +43,17 @@ interface PathHandler {
     handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]>;
 }
 
+/**
+ * Defines two paths.
+ *
+ * <p>The path `/happy-day/verify` takes an HappyDayRequest and tells us, whether the
+ * given date is a happy one. (Every day except Wednesday is defined to be happy, doh).
+ * If the specified date is too far in the future for the epochMillis in javascript
+ * to handle, then an error is returned to the `err` field. Additionally, the date used
+ * is formatted to a string and additionally a "reason" is given, if requested.
+ *
+ * <p> The path `/echo` simply returns the input body back.
+ */
 function defineHandlers(): PathHandler[] {
     return [{
         path: '/happy-day/verify',
@@ -66,9 +82,11 @@ function defineHandlers(): PathHandler[] {
 
             const isHappyDay = dateWeekday !== wednesdayDateWeekday;
 
+            const reason = isHappyDay ? (formattedWeekday + ' is a Happy Day! ⭐') : ('Tough luck on ' + formattedWeekday + '... 😕');
+
             return [HappyDayResponseType, {
                 isHappyDay,
-                reason: isHappyDay ? (formattedWeekday + ' is a Happy Day! ⭐') : ('Tough luck on ' + formattedWeekday + '... 😕'),
+                reason: req.includeReason ? reason : undefined,
                 formattedDate: jsDate.toUTCString(),
                 err,
             } as HappyDayResponse];
@@ -85,6 +103,13 @@ function defineHandlers(): PathHandler[] {
 }
 
 function runHttpServer(handlers: PathHandler[]) {
+
+    /** The request listener accepts the incoming requests. If a path not found in the handlers is requested,
+     * then it returns 404. Otherwise, it invokes the corresponding handler, by converting the
+     * binary protobuf request body into the protobuf message and using the handlers' invocation method.
+     * If the handler returns a successful promise, the request listener converts it back to binary and sends it
+     * as the response body. Otherwise, the error is logged and a 500 is returned.
+     * */
     const requestListener: http.RequestListener = (req, res) => {
         console.log('=========== ' + req.method + ' ' + req.url);
         console.log(req.rawHeaders.map(s => '  ' + s));
