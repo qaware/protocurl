@@ -1,6 +1,6 @@
-# protocurl
+# protoCURL
 
-todo
+todo.
 
 # Usage
 
@@ -9,9 +9,9 @@ todo
 
 todo: easier usage of the tool todo: ask people from Team
 
-## How to use
+## CLI Arguments
 
-- Insert from protoCURL printUsage....
+See [usage notes](test/results/help-expected.txt).
 
 # Installation
 
@@ -140,6 +140,9 @@ See [TESTS.md](TESTS.md)
   incraete the test coverage here and adapt protoCURL if necessary
 * **Response failure hanlding**: protoCURL always attempts to interpret the response from the server as a protobuf
   payload - even if the request has failed.
+* **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
+  be to allow the user to import a directory of protobuf file and have protCURL search for the definitions given the
+  request and response types.
 
 ## Open TODOs
 

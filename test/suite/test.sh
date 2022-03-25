@@ -67,14 +67,15 @@ testSingleRequest() {
   EXPECTED="test/results/$FILENAME-expected.txt"
   OUT="test/results/$FILENAME-out.txt"
   touch "$EXPECTED"
+  sed -i 's/^M$//' "$EXPECTED" # normalise line endings
   rm -f "$OUT" || true
 
   set +e
 
   eval "docker rm -f $FILENAME > /dev/null"
-  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" >"$OUT"
+  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" | sed 's/^M$//' >"$OUT"
 
-  diff --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
+  diff -I 'Date: .*'  --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"

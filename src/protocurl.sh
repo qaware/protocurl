@@ -21,75 +21,77 @@ ADDITIONAL_CURL_ARGS=""
 VERBOSE="false"
 SHOW_OUTPUT_ONLY="false"
 
+# =================================================================== USAGE
+
 printUsage() {
-  echo "Usage: protocurl.sh [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE -u URL REQUEST_TXT"
+  echo "  Usage: protocurl.sh [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE -u URL REQUEST_TXT"
+  echo ""
+  echo "  Send and receive HTTP/1.1 requests on a protobuf REST endpoint and interact with it using human-readable text formats."
+  echo ""
+  echo "  EXAMPLE:"
+  echo "      protocurl.sh -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api \"myField: true, otherField: 1337\""
+  echo ""
+  echo "  POSITIONAL ARGUMENTS:"
+  echo "      1. REQUEST_TXT      The protobuf request in the text format. For an description of the format, see https://github.com/qaware/protocurl."
+  echo ""
+  echo "  OPTIONS:"
+  echo "      -I PROTO_DIRECTORY  Uses the specified directory to find the proto-file. This is always '/proto' in docker."
+  echo "      -f PROTO_FILE       Uses the specified file path to find the protobuf definitions within PROTO_DIRECTORY (relative file path)."
+  echo "      -i REQUEST_TYPE     Package path of the protobuf request type. E.g. mypackage.MyRequest"
+  echo "      -o RESPONSE_TYPE    Package path of the protobuf response type. E.g. mypackage.MyResponse"
+  echo "      -u URL              The url to send the request to"
+  echo "      -H HEADER           Adds the header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'"
+  echo "      -C CURL_ARGS        Additional cURL args which will be passed on to cURL during request invocation."
+  echo "      -v                  Enables verbose output. Also activates -d."
+  echo "      -d                  Displays the binary request and response as well as the non-binary response headers."
+  echo "      -q                  This feature is UNTESTED: Suppresses the display of the request and only displays the text output. Deactivates -v and -d."
+  echo "      -h                  Prints this help."
+  echo ""
 }
 
+
+
+# =================================================================== PARSE ARGS
+
 parseArgs() {
-  while getopts 'H:I:f:C:i:o:u:dvqh' opt; do
+  while getopts 'I:f:i:o:u:H:C:vdqh' opt; do
     case "$opt" in
-
-    H)
-      HEADER_ARGS="$HEADER_ARGS -H '$OPTARG'"
-      ;;
-
     I)
-      PROTO_FILES_DIR="$DIR"
-      ;;
-
-    C)
-      ADDITIONAL_CURL_ARGS="$OPTARG"
-      ;;
-
+      PROTO_FILES_DIR="$DIR" ;;
     f)
-      PROTO_FILE_PATH="$OPTARG"
-      ;;
-
+      PROTO_FILE_PATH="$OPTARG" ;;
     i)
-      REQUEST_TYPE="$OPTARG"
-      ;;
-
+      REQUEST_TYPE="$OPTARG" ;;
     o)
-      RESPONSE_TYPE="$OPTARG"
-      ;;
-
+      RESPONSE_TYPE="$OPTARG" ;;
     u)
-      URL="$OPTARG"
-      ;;
-
+      URL="$OPTARG" ;;
+    H)
+      HEADER_ARGS="$HEADER_ARGS -H '$OPTARG'" ;;
+    C)
+      ADDITIONAL_CURL_ARGS="$OPTARG" ;;
     v)
       echo "Being verbose due to -v"
       VERBOSE="true"
       DISPLAY_BINARY="true"
-      DISPLAY_RESPONSE_HEADERS="true"
-      ;;
-
+      DISPLAY_RESPONSE_HEADERS="true" ;;
+    d)
+      DISPLAY_BINARY="true"
+      DISPLAY_RESPONSE_HEADERS="true" ;;
     q)
       SHOW_OUTPUT_ONLY="true"
       VERBOSE="false"
       DISPLAY_BINARY="false"
-      DISPLAY_RESPONSE_HEADERS="false"
-      ;;
-
-    d)
-      DISPLAY_BINARY="true"
-      DISPLAY_RESPONSE_HEADERS="true"
-      ;;
-
+      DISPLAY_RESPONSE_HEADERS="false" ;;
     h)
       printUsage
-      exit 0
-      ;;
-
+      exit 0 ;;
     :)
       printUsage
-      exit 1
-      ;;
-
+      exit 1 ;;
     ?)
       printUsage
-      exit 1
-      ;;
+      exit 1 ;;
     esac
   done
   shift "$(($OPTIND - 1))"
@@ -114,6 +116,10 @@ parseArgs() {
   $VERBOSE && echo "Using cURL Headers: $HEADER_ARGS"
   set -e
 }
+
+
+
+# =================================================================== PROTOCURL MAIN DEFINITIONS
 
 encodeRequestBody() {
   rm -f request.bin || true
@@ -148,6 +154,9 @@ decodeResponse() {
   $SHOW_OUTPUT_ONLY || echo "$VISUAL_SEPARATOR Response Text   $VISUAL_SEPARATOR $RECV"
   cat response.bin | protoc --decode "$RESPONSE_TYPE" $PROTO
 }
+
+
+# =================================================================== PROTOCURL EXECUTION
 
 parseArgs "$@"
 encodeRequestBody

@@ -32,14 +32,17 @@ testSingleRequest '<filename>' '<args concatenated with spaces>'
 During the execution of each line in this script, the output will be written into `test/results/$FILENAME-out.txt` -
 which will be compared via `diff` to `test/results/$FILENAME-expected.txt`. If both match, then the result is accepted.
 
+Lines containing `Date: ` and will be ignored during the diffing, as they are runtime dependent and their difference is
+not relevant to the correctness of the code.
+
 **Examples for the inputs, outputs and arguments can hence be found in the test/results directory as well as
 test/suite/testcases.json.**
 
 ### Adding new tests
 
 To add a test, simply add a new entry into `test/suite/testcases.json` and run the tests. The tests will generate an
-empty expected output file and copy the actual output sideby side. You can inspect the actual output and copy it into
-the expected-output file when you are happy. ...
+empty expected output file and copy the actual output side by side. You can inspect the actual output and copy it into
+the expected-output file when you are happy.
 
 ### Example tests run
 

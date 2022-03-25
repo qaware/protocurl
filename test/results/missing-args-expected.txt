@@ -1,1 +1,23 @@
-Usage: protocurl.sh [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE -u URL REQUEST_TXT
+  Usage: protocurl.sh [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE -u URL REQUEST_TXT
+
+  Send and receive HTTP/1.1 requests on a protobuf REST endpoint and interact with it using human-readable text formats.
+
+  EXAMPLE:
+      protocurl.sh -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api "myField: true, otherField: 1337"
+
+  POSITIONAL ARGUMENTS:
+      1. REQUEST_TXT      The protobuf request in the text format. For an description of the format, see https://github.com/qaware/protocurl.
+
+  OPTIONS:
+      -I PROTO_DIRECTORY  Uses the specified directory to find the proto-file. This is always '/proto' in docker.
+      -f PROTO_FILE       Uses the specified file path to find the protobuf definitions within PROTO_DIRECTORY (relative file path).
+      -i REQUEST_TYPE     Package path of the protobuf request type. E.g. mypackage.MyRequest
+      -o RESPONSE_TYPE    Package path of the protobuf response type. E.g. mypackage.MyResponse
+      -u URL              The url to send the request to
+      -H HEADER           Adds the header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'
+      -C CURL_ARGS        Additional cURL args which will be passed on to cURL during request invocation.
+      -v                  Enables verbose output. Also activates -d.
+      -d                  Displays the binary request and response as well as the non-binary response headers.
+      -q                  This feature is UNTESTED: Suppresses the display of the request and only displays the text output. Deactivates -v and -d.
+      -h                  Prints this help.
+
