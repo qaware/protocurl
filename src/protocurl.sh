@@ -32,7 +32,7 @@ printUsage() {
   echo "      protocurl.sh -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api \"myField: true, otherField: 1337\""
   echo ""
   echo "  POSITIONAL ARGUMENTS:"
-  echo "      1. REQUEST_TXT      The Protobuf request in the text format. For an description of the format, see https://github.com/qaware/protocurl."
+  echo "      1. REQUEST_TXT      The Protobuf request in the text format. For a description of the format, see https://github.com/qaware/protocurl."
   echo ""
   echo "  OPTIONS:"
   echo "      -I PROTO_DIRECTORY  Uses the specified directory to find the proto-file. This is always '/proto' in docker."

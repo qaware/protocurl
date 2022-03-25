@@ -198,6 +198,7 @@ See [TESTS.md](TESTS.md)
 
 * LICENSE
 * Release the latest version on docker
+* Check, if all mandatory arguments are given, and report errors otherwise.
 * Since the base image seems to not be updated since a while, it would be better to directly include the most important
   commands via from its [Dockerfile](https://github.com/znly/docker-protobuf/blob/master/Dockerfile) into protoCURL
   directly
