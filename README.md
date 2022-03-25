@@ -84,7 +84,7 @@ date {
 00000008
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
-Content-Type: application/x-protobuf
+Content-Type: application/x-Protobuf
 Date: Fri, 25 Mar 2022 15:02:57 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
@@ -105,14 +105,14 @@ formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 
 # Protobuf Text Format
 
-Aside from JSON, protobuf also natively supports a text format. This is the only format, which `protoc` natively
+Aside from JSON, Protobuf also natively supports a text format. This is the only format, which `protoc` natively
 implements and exposes.
-(This is despite the fact, that every protobuf SDK for the standard langauges also contains the JSON conversion
+(This is despite the fact, that every Protobuf SDK for the standard langauges also contains the JSON conversion
 capabilities.)
 
 This text format syntax
 is [barely documented](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format),
-so this section will shortly describe how to write protobuf messages in the text format.
+so this section will shortly describe how to write Protobuf messages in the text format.
 
 Given the following .proto file
 
@@ -184,10 +184,10 @@ See [TESTS.md](TESTS.md)
   useful and viable for everyday usage.
 * **Protobuf format coverage**: The tests currently do not use strings, enums and other complex types. We want to
   incraete the test coverage here and adapt protoCURL if necessary
-* **Response failure hanlding**: protoCURL always attempts to interpret the response from the server as a protobuf
+* **Response failure hanlding**: protoCURL always attempts to interpret the response from the server as a Protobuf
   payload - even if the request has failed.
 * **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
-  be to allow the user to import a directory of protobuf file and have protCURL search for the definitions given the
+  be to allow the user to import a directory of Protobuf file and have protCURL search for the definitions given the
   request and response types.
 * **Pre-built releases of the image for various prorobuf versions on docker**
 * **Raw Format**: If not .proto files for the response are available, then it's stil possible to receive and decode

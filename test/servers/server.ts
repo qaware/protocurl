@@ -33,8 +33,8 @@ interface HappyDayResponse {
 
 /** A path handler specifies the path (e.g. /happy-day/verify) on which it acts.
  * If the corresponding path is requested, then runHttpServer(...) parses the body into the
- * reqType protobuf message type and runs the handler method to generate the response.
- * The handler returns the protobuf message output type - which the http server uses to serialise the response.
+ * reqType Protobuf message type and runs the handler method to generate the response.
+ * The handler returns the Protobuf message output type - which the http server uses to serialise the response.
  */
 interface PathHandler {
     path: string;
@@ -106,7 +106,7 @@ function runHttpServer(handlers: PathHandler[]) {
 
     /** The request listener accepts the incoming requests. If a path not found in the handlers is requested,
      * then it returns 404. Otherwise, it invokes the corresponding handler, by converting the
-     * binary protobuf request body into the protobuf message and using the handlers' invocation method.
+     * binary Protobuf request body into the Protobuf message and using the handlers' invocation method.
      * If the handler returns a successful promise, the request listener converts it back to binary and sends it
      * as the response body. Otherwise, the error is logged and a 500 is returned.
      * */
