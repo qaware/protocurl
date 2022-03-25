@@ -103,30 +103,9 @@ formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 Each request needs to mount the directory of proto files into the containers `/proto` path to ensure, that they are
 visible inside the docker container.
 
-# Dev Setup
-
-...
-
-run node server cli when installing new packages etc:
-
-```
-docker run -v "$PWD/test/servers:/servers" -it nodeserver:v1 /bin/bash
-```
-
-Run node server:
-
-```
-docker-compose -f test/servers/compose.yml up --build server
-```
-
-Run all tests (unix bash only):
-
-1. Install `https://stedolan.github.io/jq/` into `test/suite/jq`
-2. Run tests `./test/suite/test.sh`
-
 # How to contribute
 
-...
+todo. And also link to [Developer](DEVELOPER.md).
 
 # Tests
 
@@ -143,10 +122,13 @@ See [TESTS.md](TESTS.md)
 * **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
   be to allow the user to import a directory of protobuf file and have protCURL search for the definitions given the
   request and response types.
+* **Pre-built releases of the image for various prorobuf versions on docker**
 
 ## Open TODOs
 
 * Remove static path for mount in `test.sh`
-* Perhaps use a different and more up to date base image
 * LICENSE
 * Add documentation and examples for raw text format
+* Release the latest version on docker
+* Perhaps use a different, better and more up to date base image
+* `docker scan`
