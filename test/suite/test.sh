@@ -98,3 +98,14 @@ function runAllTests() {
 setup
 runAllTests
 tearDown
+
+#    environment:
+# todo. also add documentation on raw text format for request.
+# todo. for json support, we need to extend the base image to use the SDK of any programming language to achieve it.
+# or perhaps use https://github.com/revinate/protobuf2json directly then? No. We don't know, if it works reliably and has little bugs...
+# Let's use protobufjs or the C++ protobuf implementation instead
+
+#      URL: "http://localhost:8080/echo"
+#      RESPONSE_TYPE: happyday.HappyDayRequest
+#      REQUEST_TXT: 'includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }'
+# REQUEST_TXT: 'includeReason: true, date: { seconds: 1234567890102030405, nanos: 50 }'

@@ -1,0 +1,6 @@
+=========================== Request Text   =========================== >>>
+includeReason: true
+=========================== Response Text   =========================== <<<
+isHappyDay: true
+reason: "Thursday is a Happy Day! \342\255\220"
+formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"

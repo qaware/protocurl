@@ -14,5 +14,9 @@
   {
     "filename": "echo-empty",
     "args": "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo \"\""
+  },
+  {
+    "filename": "echo-empty-curl-args",
+    "args": "-f happyday.proto -C \"-V\" happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo \"includeReason: true\""
   }
 ]
