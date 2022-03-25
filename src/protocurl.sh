@@ -10,6 +10,8 @@ RECV="<<<"
 CURL="${CURL:-curl}"
 PROTO_FILES_DIR=""
 PROTO_FILE_PATH=""
+REQUEST_TYPE=""
+RESPONSE_TYPE=""
 DISPLAY_BINARY="${DISPLAY_BINARY:-false}"
 DISPLAY_RESPONSE_HEADERS="${DISPLAY_RESPONSE_HEADERS:-false}"
 BINARY_DISPLAY_FORMATTING_ARGS="${BINARY_DISPLAY_FORMATTING_ARGS:--C}"
@@ -18,15 +20,12 @@ ADDITIONAL_CURL_ARGS=""
 VERBOSE="false"
 SHOW_OUTPUT_ONLY="false"
 
-# todo. explain these env-args as well
-# todo. extend -d to also show all headers etc.
-
 printUsage() {
-  echo "Usage: $(basename $0) [OPTIONS] REQUEST_TYPE RESPONSE_TYPE URL REQUEST_TXT"
+  echo "Usage: $(basename $0) [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE URL REQUEST_TXT"
 }
 
 parseArgs() {
-  while getopts 'H:I:f:C:dvqh' opt; do
+  while getopts 'H:I:f:C:i:o:dvqh' opt; do
     case "$opt" in
 
     H)
@@ -43,6 +42,14 @@ parseArgs() {
 
     f)
       PROTO_FILE_PATH="$OPTARG"
+      ;;
+
+    i)
+      REQUEST_TYPE="$OPTARG"
+      ;;
+
+    o)
+      RESPONSE_TYPE="$OPTARG"
       ;;
 
     v)
@@ -82,15 +89,10 @@ parseArgs() {
   done
   shift "$(($OPTIND - 1))"
 
-  REQUEST_TYPE="$1"
-  RESPONSE_TYPE="$2"
-  URL="$3"
+  # todo. perhaps make these args non-positional
+  URL="$1"
 
-  REQUEST_TXT="$4"
-  # Remove leading and trailing ". todo. remove this and try again
-  REQUEST_TXT="${REQUEST_TXT#\"}"
-  REQUEST_TXT="${REQUEST_TXT%\"}"
-  # TODO. detect json or text format based on first non-whitespace character. it should be { for JSON.
+  REQUEST_TXT="$2"
 
   PROTO_FILES_DIR="/proto"
   PROTO="$PROTO_FILES_DIR/$PROTO_FILE_PATH -I $PROTO_FILES_DIR"
@@ -120,9 +122,6 @@ executeRequest() {
   rm -f response.bin || true
   rm -f response-headers.txt || true
 
-  # todo. add additional curl args which the user can provide
-  # todo. how to deal with
-
   eval "$CURL -s \
     -X POST \
     $HEADER_ARGS \
@@ -132,9 +131,6 @@ executeRequest() {
     --dump-header response-headers.txt \
     $URL"
   # The use of eval is needed here, so that HEADER_ARGS='-H "Name: MyValue"' is properly expanded into curl -H "Name: MyValue"
-
-  # TODO. handle response failure!
-  # Enable one to use a different thing based on the HTTP status code?
 }
 
 decodeResponse() {

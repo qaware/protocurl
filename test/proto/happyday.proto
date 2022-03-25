@@ -4,10 +4,19 @@ package happyday;
 
 import "google/protobuf/timestamp.proto";
 
-
 message HappyDayRequest {
   google.protobuf.Timestamp date = 1;
   bool includeReason = 2;
+
+  /* use all data-types for testing here */
+  double double = 3;
+  int32 int32 = 4;
+  int64 int64 = 5;
+  string string = 6;
+  bytes bytes = 7;
+  Foo fooEnum = 8;
+  repeated MiscInfo misc = 9;
+  float float = 10;
 }
 
 message HappyDayResponse {
@@ -17,4 +26,16 @@ message HappyDayResponse {
   string err = 4;
 }
 
-// todo. use example of multiple data types such as array, enum, alternation, etc.
+enum Foo {
+  BAR = 0;
+  BAZ = 1;
+  FAZ = 2;
+}
+
+message MiscInfo {
+  repeated string weatherOfPastFewDays = 1;
+  oneof alternative {
+    string fooString = 2;
+    Foo fooEnum = 3;
+  }
+}

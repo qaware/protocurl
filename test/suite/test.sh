@@ -8,7 +8,7 @@ BUILD_SERVER="echo 'Building server...' && docker build -q -t nodeserver:v1 -f t
 START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up -d && echo 'Done.'"
 STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
 
-function isServerReady() {
+isServerReady() {
   rm -rf tmpfile.log || true
 
   docker-compose -f test/servers/compose.yml logs >tmpfile.log
@@ -22,7 +22,7 @@ function isServerReady() {
   grep -q 'Listening to port' tmpfile.log
 }
 
-function ensureServerIsReady() {
+ensureServerIsReady() {
   echo "Waiting for server to become ready..."
   SECONDS=0
 
@@ -45,10 +45,11 @@ function ensureServerIsReady() {
 # todo. fix this, such that the path works for linux via $PWD and for Windows WSL via some hack or so...
 export RUN_CLIENT="docker run \
   -v c:/Users/s.sahoo/Documents/QA-Labs-protoCURL/protocurl/test/proto:/proto \
-  --network host \
-  protocurl:v1 "
+  --network host"
 
-function setup() {
+export SHOW_LOGS="docker logs"
+
+setup() {
   tearDown
 
   eval $BUILD_PROTOCURL
@@ -58,12 +59,12 @@ function setup() {
   ensureServerIsReady
 }
 
-function tearDown() {
+tearDown() {
   rm -rf tmpfile.log || true
   eval $STOP_SERVER
 }
 
-function testSingleRequest() {
+testSingleRequest() {
   FILENAME="$1"
   ARGS="$2"
   EXPECTED="test/results/$FILENAME-expected.txt"
@@ -71,13 +72,16 @@ function testSingleRequest() {
   touch "$EXPECTED"
   rm -f "$OUT" || true
 
-  eval "$RUN_CLIENT $ARGS" >"$OUT"
+  eval "docker rm -f $FILENAME > /dev/null"
+  eval "$RUN_CLIENT --name $FILENAME protocurl:v1 $ARGS" >"$OUT"
 
   set +e
   diff --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
+    echo "Docker logs:"
+    eval "$SHOW_LOGS $FILENAME" | sed 's/^/  /'
     echo "  --- Found difference between expected and actual output ---"
     diff --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
   else
@@ -87,13 +91,13 @@ function testSingleRequest() {
   set -e
 }
 
-function runAllTests() {
+runAllTests() {
   echo "=== Running ALL Tests ==="
-  rm -rf test/suite/run-testcases.sh || true
+  rm -rf ./test/suite/run-testcases.sh || true
 
   # convert each element in the JSON to the corresponding call of the testSingleRequest function
   JQ_TRANSFORMER=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh)\""
-  cat test/suite/testcases.json | test/suite/jq -r "$JQ_TRANSFORMER" >test/suite/run-testcases.sh
+  cat test/suite/testcases.json | test/suite/jq -r "$JQ_TRANSFORMER" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest
   ./test/suite/run-testcases.sh
