@@ -183,20 +183,22 @@ See [TESTS.md](TESTS.md)
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
   useful and viable for everyday usage.
 * **Protobuf format coverage**: The tests currently do not use strings, enums and other complex types. We want to
-  incraete the test coverage here and adapt protoCURL if necessary
-* **Response failure hanlding**: protoCURL always attempts to interpret the response from the server as a Protobuf
+  increase the test coverage here and adapt protoCURL if necessary
+* **Response failure handling**: protoCURL always attempts to interpret the response from the server as a Protobuf
   payload - even if the request has failed.
 * **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
-  be to allow the user to import a directory of Protobuf file and have protCURL search for the definitions given the
+  be to allow the user to import a directory of Protobuf file and have protoCURL search for the definitions given the
   request and response types.
 * **Pre-built releases of the image for various prorobuf versions on docker**
-* **Raw Format**: If not .proto files for the response are available, then it's stil possible to receive and decode
+* **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
   messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
-  field names. This might be useful for users of protoCURL.
+  field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
 
 ## Open TODOs
 
 * LICENSE
 * Release the latest version on docker
-* Perhaps use a different, better and more up to date base image
+* Since the base image seems to not be updated since a while, it would be better to directly include the most important
+  commands via from its [Dockerfile](https://github.com/znly/docker-protobuf/blob/master/Dockerfile) into protoCURL
+  directly
 * `docker scan`
