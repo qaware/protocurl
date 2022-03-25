@@ -12,6 +12,7 @@ PROTO_FILES_DIR=""
 PROTO_FILE_PATH=""
 REQUEST_TYPE=""
 RESPONSE_TYPE=""
+URL=""
 DISPLAY_BINARY="${DISPLAY_BINARY:-false}"
 DISPLAY_RESPONSE_HEADERS="${DISPLAY_RESPONSE_HEADERS:-false}"
 BINARY_DISPLAY_FORMATTING_ARGS="${BINARY_DISPLAY_FORMATTING_ARGS:--C}"
@@ -21,11 +22,11 @@ VERBOSE="false"
 SHOW_OUTPUT_ONLY="false"
 
 printUsage() {
-  echo "Usage: $(basename $0) [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE URL REQUEST_TXT"
+  echo "Usage: protocurl.sh [OPTIONS] -f PROTO_FILE -i REQUEST_TYPE -o RESPONSE_TYPE -u URL REQUEST_TXT"
 }
 
 parseArgs() {
-  while getopts 'H:I:f:C:i:o:dvqh' opt; do
+  while getopts 'H:I:f:C:i:o:u:dvqh' opt; do
     case "$opt" in
 
     H)
@@ -50,6 +51,10 @@ parseArgs() {
 
     o)
       RESPONSE_TYPE="$OPTARG"
+      ;;
+
+    u)
+      URL="$OPTARG"
       ;;
 
     v)
@@ -89,10 +94,12 @@ parseArgs() {
   done
   shift "$(($OPTIND - 1))"
 
-  # todo. perhaps make these args non-positional
-  URL="$1"
+  if [ $# -eq 0 ]; then
+    printUsage
+    exit 1
+  fi
 
-  REQUEST_TXT="$2"
+  REQUEST_TXT="$1"
 
   PROTO_FILES_DIR="/proto"
   PROTO="$PROTO_FILES_DIR/$PROTO_FILE_PATH -I $PROTO_FILES_DIR"

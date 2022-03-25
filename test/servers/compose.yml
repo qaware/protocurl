@@ -3,11 +3,11 @@ version: "3.9"
 services:
 
   server:
+    build:
+      dockerfile: ./test/servers/Dockerfile
+      context: ../..
     image: nodeserver:v1
     container_name: protocurl-node-server
-
-    # todo. use proper network for testing!
     ports:
       - 8080:8080
-
     command: npm start

@@ -2,10 +2,9 @@ set -e
 
 # Test suite: Starts the server and sends multiple requests against it to check the log output
 
-BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:v1 -f src/Dockerfile . && echo 'Done.'"
+BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/Dockerfile . && echo 'Done.'"
 
-BUILD_SERVER="echo 'Building server...' && docker build -q -t nodeserver:v1 -f test/servers/Dockerfile . && echo 'Done.'"
-START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up -d && echo 'Done.'"
+START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d && echo 'Done.'"
 STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
 
 isServerReady() {
@@ -53,7 +52,6 @@ setup() {
   tearDown
 
   eval $BUILD_PROTOCURL
-  eval $BUILD_SERVER
   eval $START_SERVER
 
   ensureServerIsReady
@@ -72,10 +70,10 @@ testSingleRequest() {
   touch "$EXPECTED"
   rm -f "$OUT" || true
 
-  eval "docker rm -f $FILENAME > /dev/null"
-  eval "$RUN_CLIENT --name $FILENAME protocurl:v1 $ARGS" >"$OUT"
-
   set +e
+  eval "docker rm -f $FILENAME > /dev/null"
+  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" >"$OUT"
+
   diff --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
