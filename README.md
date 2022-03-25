@@ -21,7 +21,10 @@ See [usage notes](test/results/help-expected.txt).
 # Examples
 
 After starting the local test server via `docker-compose -f test/servers/compose.yml up --build server`, you can send
-the following requests via protoCURL:
+the following list of requests via protoCURL.
+
+Each request needs to mount the directory of proto files into the containers `/proto` path to ensure, that they are
+visible inside the docker container.
 
 ```
 $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
@@ -100,8 +103,72 @@ formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 
 ```
 
-Each request needs to mount the directory of proto files into the containers `/proto` path to ensure, that they are
-visible inside the docker container.
+# Protobuf Text Format
+
+Aside from JSON, protobuf also natively supports a text format. This is the only format, which `protoc` natively
+implements and exposes.
+(This is despite the fact, that every protobuf SDK for the standard langauges also contains the JSON conversion
+capabilities.)
+
+This text format syntax
+is [barely documented](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format),
+so this section will shortly describe how to write protobuf messages in the text format.
+
+Given the following .proto file
+
+```
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message HappyDayRequest {
+  google.protobuf.Timestamp date = 1;
+  bool includeReason = 2;
+  
+  double myDouble = 3;
+  int64 myInt64 = 5;
+  string myString = 6;
+  repeated NestedMessage messages = 9;
+}
+
+message NestedMessage {
+  Foo fooEnum = 1;
+  repeated int32 i = 4;
+}
+
+enum Foo {
+  BAR = 0;
+  BAZ = 1;
+}
+```
+
+A `HappyDayRequest` message in text format might look like this:
+
+```
+includeReason: true,
+myInt64: 123123123123,
+myString: "hello world",
+myDouble: 123.456,
+messages: { fooEnum: BAR, i: 0, i: 1, i: 1337 },
+messages: { i: 15, fooEnum: BAZ, i: -1337 },
+messages: { },
+date: { seconds: 123, nanos: 321 }
+```
+
+In summary:
+
+* No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
+* fields are comma separated and described via `<fieldname>: <value>`
+* repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
+  consecutively.
+* nested messages are described with `{ ... }` opening a new context and describing their fields recursively
+* scalar values are describes similar to JSON
+* enum values are referenced by their name
+* built-in messages (such
+  as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
+  are described just like user-defined custom messages via `{ ... }` and their message fields
+
+[This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
 
 # How to contribute
 
@@ -123,11 +190,13 @@ See [TESTS.md](TESTS.md)
   be to allow the user to import a directory of protobuf file and have protCURL search for the definitions given the
   request and response types.
 * **Pre-built releases of the image for various prorobuf versions on docker**
+* **Raw Format**: If not .proto files for the response are available, then it's stil possible to receive and decode
+  messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
+  field names. This might be useful for users of protoCURL.
 
 ## Open TODOs
 
 * LICENSE
-* Add documentation and examples for raw text format
 * Release the latest version on docker
 * Perhaps use a different, better and more up to date base image
 * `docker scan`
