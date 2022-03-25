@@ -3,7 +3,10 @@
 To run the tests:
 
 1. Install `https://stedolan.github.io/jq/` into `test/suite/jq` (executable)
-2. Run tests via `./test/suite/test.sh` (bash) from the repository root directory.
+2. Run tests via `./test/suite/test.sh "$PWD"` (bash) from the repository root directory.
+    * It needs the full path to the current working directory, as otherwise the docker volume mount fails in WSL on
+      Windows. Concretely, on WSL Windows, we need to
+      use `./test/suite/test.sh "c:/Users/<my-name>/path/to/protocurl/repository"`
 
 ### How the tests work
 
@@ -49,7 +52,7 @@ the expected-output file when you are happy.
 Running the tests might look like this:
 
 ```
-$ ./test/suite/test.sh
+$ ./test/suite/test.sh "$PWD"
 Stopping server...
 Removing network servers_default
 Network servers_default not found.

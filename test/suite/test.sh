@@ -2,14 +2,14 @@ set -e
 
 # Test suite: Starts the server and sends multiple requests against it to check the log output
 
+WORKING_DIR="$1"
+
 BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/Dockerfile . && echo 'Done.'"
 
 START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d && echo 'Done.'"
 STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
 
-export RUN_CLIENT="docker run \
-  -v c:/Users/s.sahoo/Documents/QA-Labs-protoCURL/protocurl/test/proto:/proto \
-  --network host"
+export RUN_CLIENT="docker run -v $WORKING_DIR/test/proto:/proto --network host"
 
 export SHOW_LOGS="docker logs"
 

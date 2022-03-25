@@ -126,7 +126,6 @@ See [TESTS.md](TESTS.md)
 
 ## Open TODOs
 
-* Remove static path for mount in `test.sh`
 * LICENSE
 * Add documentation and examples for raw text format
 * Release the latest version on docker
