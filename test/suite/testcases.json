@@ -1,22 +1,37 @@
 [
   {
     "filename": "wednesday-is-not-a-happy-day",
-    "args": "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/verify \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    "args": [
+      "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/verify",
+      "\"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
   },
   {
     "filename": "empty-day-epoch-time-thursday",
-    "args": "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/verify \"includeReason: true\""
+    "args": [
+      "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/verify ",
+      "\"includeReason: true\""
+    ]
   },
   {
     "filename": "echo-filled",
-    "args": "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    "args": [
+      "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo ",
+      "\"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
   },
   {
     "filename": "echo-empty",
-    "args": "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo \"\""
+    "args": [
+      "-f happyday.proto happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo ",
+      "\"\""
+    ]
   },
   {
     "filename": "echo-empty-curl-args",
-    "args": "-f happyday.proto -C \"-V\" happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo \"includeReason: true\""
+    "args": [
+      "-f happyday.proto -C \"-V\" happyday.HappyDayRequest happyday.HappyDayResponse http://localhost:8080/happy-day/echo ",
+      "\"includeReason: true\""
+    ]
   }
 ]

@@ -69,8 +69,9 @@ function testSingleRequest() {
   EXPECTED="test/results/$FILENAME-expected.txt"
   OUT="test/results/$FILENAME-out.txt"
   touch "$EXPECTED"
+  rm -f "$OUT" || true
 
-  eval "$RUN_CLIENT $ARGS" > "$OUT"
+  eval "$RUN_CLIENT $ARGS" >"$OUT"
 
   set +e
   diff --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
@@ -87,12 +88,17 @@ function testSingleRequest() {
 }
 
 function runAllTests() {
+  echo "=== Running ALL Tests ==="
   rm -rf test/suite/run-testcases.sh || true
+
   # convert each element in the JSON to the corresponding call of the testSingleRequest function
-  cat test/suite/testcases.json | test/suite/jq -r ".[] | \"testSingleRequest \(.filename|@sh) \(.args|@sh)\"" > test/suite/run-testcases.sh
+  JQ_TRANSFORMER=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh)\""
+  cat test/suite/testcases.json | test/suite/jq -r "$JQ_TRANSFORMER" >test/suite/run-testcases.sh
 
   export -f testSingleRequest
   ./test/suite/run-testcases.sh
+
+  echo "=== Finished Running ALL Tests ==="
 }
 
 setup
