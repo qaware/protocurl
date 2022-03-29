@@ -204,8 +204,6 @@ See [TESTS.md](TESTS.md)
 
 * Rewrite the Tool in Go. Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as
   a docker container.
-* Add automated testing via GitHub action
-  * make test action fail, if at least one testcase failed
 * Release the latest version on docker, via GitHub action under `qaware/protocurl`
 * Check, if all mandatory arguments are given, and report errors otherwise.
 * Since the base image seems to not be updated since a while, it would be better to directly include the most important
