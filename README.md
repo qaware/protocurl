@@ -27,9 +27,9 @@ Each request needs to mount the directory of proto files into the containers `/p
 visible inside the docker container.
 
 ```
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-  http://localhost:8080/happy-day/verify \
+  -u http://localhost:8080/happy-day/verify \
   "includeReason: true"
 
 =========================== Request Text   =========================== >>>
@@ -41,9 +41,9 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 ```
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-  http://localhost:8080/happy-day/verify ""
+  -u http://localhost:8080/happy-day/verify ""
 
 =========================== Request Text   =========================== >>>
 =========================== Response Text   =========================== <<<
@@ -53,9 +53,9 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 ```
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-  http://localhost:8080/happy-day/verify \
+  -u http://localhost:8080/happy-day/verify \
   "date: { seconds: 1648044939}"
 
 =========================== Request Text   =========================== >>>
@@ -70,9 +70,9 @@ formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 Use `-v` for verbose output:
 
 ```
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" protocurl \
   -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-  http://localhost:8080/happy-day/verify \
+  -u http://localhost:8080/happy-day/verify \
   "date: { seconds: 1648044939}"
 
 =========================== Request Text   =========================== >>>
