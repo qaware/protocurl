@@ -3,6 +3,7 @@ package main
 import (
 	json2 "encoding/json"
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/prototext"
 	"log"
@@ -60,6 +61,28 @@ var rootCmd = &cobra.Command{
 		}
 
 		fmt.Println("<TODO: implement protocurl>")
+		// Next, we need to use these packages here now: https://github.com/protocolbuffers/protobuf-go
+
+		log.Println(proto.Buffer{})
+		log.Println(prototext.Unmarshal([]byte(CurrentConfig.DataText), nil))
+		// todo. how might we use protobuf correctly here?
+
+		/**	We want to use https://pkg.go.dev/google.golang.org/protobuf/reflect/protodesc
+				and convert a given set of .proto files to it's protobuf descriptor messages.
+			These messages can then be converted with the protodesc package such that we can use
+		it to work with the proper payload values.
+		For that, we need to add descriptor.proto into this repository and work with it's generated
+		go code.
+
+		But for this, we would need the protoc anways, as we would need to convert
+		the .proto files to the file descriptor messages:
+		https://stackoverflow.com/a/70653310
+
+		But if we need protoc in the first place... Then we may not need to use the protobuf package that much...
+
+		If using c++, we need this here:
+		https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.compiler.importer#Importer
+		*/
 	},
 	Version: versionCommitString,
 }
