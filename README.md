@@ -193,13 +193,24 @@ See [TESTS.md](TESTS.md)
 * **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
   messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
   field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
+* **Use a general purpose programming language**: To support JSON conversion and many other nice-to-have features, it
+  would be better, easier and more reliable to use a proper programming language such as Go, C++, Rust, etc. to create
+  the CLI and to build static binaries for the different operating systems and architectures.
+* **Quality of Life Improvments**: Avoid explicitly specifying the file via `-f` and instead search the message types
+  from `-i` and `-o`. Additionally, it should be sufficient to only use the name of the message type instead of the full
+  path, whenever the message type is unique.
 
 ## Open TODOs
 
 * LICENSE
-* Release the latest version on docker
+* Rewrite the Tool in Go. Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as
+  a docker container.
+* Add automated testing via GitHub action
+* Release the latest version on docker, via GitHub action under `qaware/protocurl`
 * Check, if all mandatory arguments are given, and report errors otherwise.
 * Since the base image seems to not be updated since a while, it would be better to directly include the most important
   commands via from its [Dockerfile](https://github.com/znly/docker-protobuf/blob/master/Dockerfile) into protoCURL
   directly
 * `docker scan`
+* Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
+  One will need " " (with a space) instead.

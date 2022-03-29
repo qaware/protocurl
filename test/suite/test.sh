@@ -72,7 +72,7 @@ testSingleRequest() {
 
   set +e
 
-  eval "docker rm -f $FILENAME > /dev/null"
+  eval "docker rm -f $FILENAME > /dev/null 2>&1"
   eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" | sed 's/^M$//' >"$OUT"
 
   diff -I 'Date: .*'  --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
