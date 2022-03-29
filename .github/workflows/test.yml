@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - '**'
+  schedule:
+  - cron: "0 6 * * 4"
+    # Every thursday at 6:00. Runs weekly, to not consume too much energy/compute.
+  
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run tests
+      run: "pwd; ls; ./test/suite/test.sh \"$PWD\""
