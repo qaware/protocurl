@@ -13,6 +13,8 @@ export RUN_CLIENT="docker run -v $WORKING_DIR/test/proto:/proto --network host"
 
 export SHOW_LOGS="docker logs"
 
+export TESTS_SUCCESS="true"
+
 isServerReady() {
   rm -rf tmpfile.log || true
 
@@ -75,14 +77,15 @@ testSingleRequest() {
   eval "docker rm -f $FILENAME > /dev/null 2>&1"
   eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" | sed 's/^M$//' >"$OUT"
 
-  diff -I 'Date: .*'  --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
+  diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
+    export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
     echo "Docker logs:"
     eval "$SHOW_LOGS $FILENAME" | sed 's/^/  /'
-    echo "  --- Found difference between expected and actual output ---"
-    diff --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
+    echo "=== Found difference between expected and actual output (ignoring date) ==="
+    diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
     echo "The actual output was saved into $OUT for inspection."
   else
     echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
@@ -93,7 +96,7 @@ testSingleRequest() {
 
 runAllTests() {
   echo "=== Running ALL Tests ==="
-  rm -rf ./test/suite/run-testcases.sh || true
+  rm -f ./test/suite/run-testcases.sh || true
 
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
@@ -102,7 +105,7 @@ runAllTests() {
 
   export -f testSingleRequest
   chmod +x ./test/suite/run-testcases.sh
-  ./test/suite/run-testcases.sh
+  source ./test/suite/run-testcases.sh
 
   echo "=== Finished Running ALL Tests ==="
 }
@@ -110,3 +113,5 @@ runAllTests() {
 setup
 runAllTests
 tearDown
+
+eval "$TESTS_SUCCESS"
