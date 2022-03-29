@@ -219,3 +219,5 @@ See [RELEASE.md](RELEASE.md)
 * `docker scan`
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
+* Apply 12 factor CLI app principles
+* re-generate example commands when go implementation is finished

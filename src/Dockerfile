@@ -1,7 +1,6 @@
-FROM znly/protoc:latest
-RUN apk update && apk add -y curl
-RUN mkdir -p /proto || true
+FROM library/golang:1.18.0-alpine3.15
 WORKDIR /protocurl
-COPY src/protocurl.sh /protocurl/script.sh
-RUN chmod +x /protocurl/script.sh
-ENTRYPOINT ["/protocurl/script.sh"]
+COPY src/*go* /protocurl
+RUN go build -o protocurl
+ENTRYPOINT ["/protocurl/protocurl"]
+# todo. use proper docker image via goreleaser instead of this here
