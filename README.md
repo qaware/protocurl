@@ -7,7 +7,7 @@ todo.
 1. docker
 2. bash
 
-todo: easier usage of the tool todo: ask people from Team
+todo: easier usage of the tool
 
 ## CLI Arguments
 
@@ -17,6 +17,8 @@ See [usage notes](test/results/help-expected.txt).
 
 1. Clone this repository
 2. Build the `protocurl:latest` image via: `docker build -f src/Dockerfile -t protocurl .`
+
+todo: update once everything is in go
 
 # Examples
 
@@ -178,6 +180,10 @@ todo. And also link to [Developer](DEVELOPER.md).
 
 See [TESTS.md](TESTS.md)
 
+# Release
+
+See [RELEASE.md](RELEASE.md)
+
 # Potential Improvements
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
@@ -204,6 +210,7 @@ See [TESTS.md](TESTS.md)
 
 * Rewrite the Tool in Go. Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as
   a docker container.
+  * Explain, that goReleaser is used.
 * Release the latest version on docker, via GitHub action under `qaware/protocurl`
 * Check, if all mandatory arguments are given, and report errors otherwise.
 * Since the base image seems to not be updated since a while, it would be better to directly include the most important

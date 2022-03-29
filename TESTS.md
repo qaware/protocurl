@@ -1,6 +1,6 @@
 # Tests
 
-Automated tests are setup via GitHub Actions [here](.github/workflows/test.yml).
+The tests are run automatically via GitHub Actions [here](.github/workflows/test.yml).
 
 To run the tests locally:
 
