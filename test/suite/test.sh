@@ -101,6 +101,7 @@ runAllTests() {
   cat test/suite/testcases.json | test/suite/jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest
+  chmod +x ./test/suite/run-testcases.sh
   ./test/suite/run-testcases.sh
 
   echo "=== Finished Running ALL Tests ==="

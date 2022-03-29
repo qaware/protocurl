@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run tests
+      run: |
+        sudo apt-get install jq
+        cp "$(which jq)" test/suite/jq
+        chmod +x test/suite/*
+        bash ./test/suite/test.sh "$PWD"
