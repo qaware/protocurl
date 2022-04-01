@@ -95,5 +95,11 @@
     "args": [
       "-h"
     ]
+  },
+  {
+    "filename": "version",
+    "args": [
+      "--version"
+    ]
   }
 ]

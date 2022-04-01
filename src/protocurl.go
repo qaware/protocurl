@@ -31,8 +31,6 @@ type Config struct {
 var commit = "todo"
 var version = "todo"
 
-var versionCommitString string
-
 const DefaultPrependedHeaderArg = "'Content-Type: application/x-protobuf'"
 
 var CurrentConfig = Config{}
@@ -42,8 +40,8 @@ var DisplayResponseHeaders = false
 
 var rootCmd = &cobra.Command{
 	Short:                 "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
-	Use:                   "protocurl [flags] -f proto-file -i request-type -o response-type -u url request-text",
-	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api \"myField: true, otherField: 1337\"",
+	Use:                   "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text",
+	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -78,10 +76,7 @@ var rootCmd = &cobra.Command{
 		the .proto files to the file descriptor messages:
 		https://stackoverflow.com/a/70653310
 
-		But if we need protoc in the first place... Then we may not need to use the protobuf package that much...
 
-		If using c++, we need this here:
-		https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.compiler.importer#Importer
 		*/
 	},
 }
@@ -136,7 +131,7 @@ func init() {
 	flags.BoolVarP(&CurrentConfig.Verbose, "verbose", "v", false,
 		"Prints version and enables verbose output. Also activates D.")
 
-	flags.BoolVarP(&CurrentConfig.DisplayBinaryAndHttp, "display-request-info", "D", false,
+	flags.BoolVarP(&CurrentConfig.DisplayBinaryAndHttp, "display-binary-and-http", "D", false,
 		"Displays the binary request and response as well as the non-binary response headers.")
 
 	flags.StringVarP(&CurrentConfig.BinaryDisplayHexDumpArgs, "binary-hexdump-args", "b", "-C",
