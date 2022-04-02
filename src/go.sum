@@ -1,3 +1,5 @@
+github.com/augustoroman/hexdump v0.0.0-20190827031536-6506f4163e93 h1:z6k1vb5L2wqLK4SIk3fpUiXnhNWSZ6Oyy8AaLqr0B+A=
+github.com/augustoroman/hexdump v0.0.0-20190827031536-6506f4163e93/go.mod h1:ps2Vk8wMZarkeIPtUqW/FUvwVVdeRDbewMYz+EmuEgk=
 github.com/cpuguy83/go-md2man/v2 v2.0.1/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/golang/protobuf v1.5.0 h1:LUVKkCeviFUMKqHa4tXIIij/lbhnMbP7Fn5wKdKkRh4=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=

@@ -1,11 +1,17 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	json2 "encoding/json"
 	"fmt"
+	"github.com/augustoroman/hexdump"
 	"github.com/spf13/cobra"
+	"io"
 	"log"
-	"os"
+	"os/exec"
+	"path"
+	"strings"
 )
 
 const GITHUB_REPOSITORY_LINK = "https://github.com/qaware/protocurl"
@@ -32,11 +38,13 @@ var commit = "todo"
 var version = "todo"
 
 const DefaultPrependedHeaderArg = "'Content-Type: application/x-protobuf'"
+const VISUAL_SEPARATOR = "==========================="
+const SEND = ">>>"
+const RECV = "<<<"
 
 var CurrentConfig = Config{}
 
-var DisplayBinary = false
-var DisplayResponseHeaders = false
+var PROTOC string
 
 var rootCmd = &cobra.Command{
 	Short:                 "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
@@ -46,6 +54,7 @@ var rootCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		if CurrentConfig.Verbose {
+			CurrentConfig.DisplayBinaryAndHttp = true
 			printVersionInfo(cmd)
 		}
 
@@ -58,7 +67,15 @@ var rootCmd = &cobra.Command{
 			printArgs()
 		}
 
-		fmt.Println("<TODO: implement protocurl>")
+		requestBinary := protocTextToBinary(CurrentConfig.RequestType, CurrentConfig.DataText)
+
+		reconstructedText := protocBinaryToText(CurrentConfig.RequestType, requestBinary)
+
+		fmt.Printf("%s Request Text   %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedText)
+
+		if CurrentConfig.DisplayBinaryAndHttp {
+			fmt.Printf("%s Request Binary %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hexdump.Dump(requestBinary))
+		}
 		// Next, we need to use these packages here now: https://github.com/protocolbuffers/protobuf-go
 
 		//log.Println(proto.Float64(0.23213))
@@ -72,13 +89,61 @@ var rootCmd = &cobra.Command{
 		For that, we need to add descriptor.proto into this repository and work with it's generated
 		go code.
 
-		But for this, we would need the protoc anways, as we would need to convert
+		But for this, we would need the protoc anyway, as we would need to convert
 		the .proto files to the file descriptor messages:
 		https://stackoverflow.com/a/70653310
-
-
 		*/
 	},
+}
+
+func protocExec(direction string, messageType string, input io.Reader, actionDescription string) []byte {
+
+	PROTOC = findProtocExec()
+
+	protoDir := CurrentConfig.ProtoFilesDir
+
+	protoIncludeArgs := []string{
+		path.Join(protoDir, CurrentConfig.ProtoFilePath),
+		"-I",
+		protoDir,
+	}
+
+	resultBuf := bytes.NewBuffer([]byte{})
+	protocErr := bytes.NewBuffer([]byte{})
+
+	protocCmd := exec.Cmd{
+		Path:   PROTOC,
+		Args:   append([]string{PROTOC, "--" + direction, messageType}, protoIncludeArgs...),
+		Stdin:  input,
+		Stdout: bufio.NewWriter(resultBuf),
+		Stderr: bufio.NewWriter(protocErr),
+	}
+	err := protocCmd.Run()
+
+	PanicWithMessageOnError(err, "Failed to "+actionDescription+". Error:\n"+protocErr.String())
+
+	if protocErr.Len() != 0 {
+		fmt.Println("Encountered errors while attempting to " + actionDescription + " via protoc:\n" + protocErr.String())
+	}
+
+	return resultBuf.Bytes()
+}
+
+func protocTextToBinary(messageType string, text string) []byte {
+	return protocExec("encode", messageType, strings.NewReader(text), "encode text")
+}
+
+func protocBinaryToText(messageType string, binary []byte) string {
+	return string(protocExec("decode", messageType, bytes.NewBuffer(binary), "decode binary"))
+}
+
+func findProtocExec() (protocExec string) {
+	protocExec, err := exec.LookPath("protoc")
+	PanicWithMessageOnError(err, "I could not find a 'protoc' executable. Please check your PATH.")
+	if CurrentConfig.Verbose {
+		fmt.Println("Found protoc: " + protocExec)
+	}
+	return
 }
 
 func printArgs() {
@@ -154,13 +219,13 @@ func AssertSuccess(err error) {
 	}
 }
 
-func AbortIfFailed(err error) {
+func PanicWithMessageOnError(err error, message string) {
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-		os.Exit(1)
+		fmt.Printf(message)
+		panic(err)
 	}
 }
 
 func main() {
-	AbortIfFailed(rootCmd.Execute())
+	AssertSuccess(rootCmd.Execute())
 }

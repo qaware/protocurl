@@ -91,6 +91,12 @@
     ]
   },
   {
+    "filename": "missing-args-partial",
+    "args": [
+      "-f abc -i i"
+    ]
+  },
+  {
     "filename": "help",
     "args": [
       "-h"

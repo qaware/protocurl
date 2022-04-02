@@ -75,15 +75,15 @@ testSingleRequest() {
   set +e
 
   eval "docker rm -f $FILENAME > /dev/null 2>&1"
-  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" | sed 's/^M$//' >"$OUT"
+  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2>&1 | sed 's/^M$//' >"$OUT"
+  # 2>&1 redirects stderr to stdout, since we want to see the full output
+  # sed normalises all line endings
 
   diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
     export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-    echo "Docker logs:"
-    eval "$SHOW_LOGS $FILENAME" | sed 's/^/  /'
     echo "=== Found difference between expected and actual output (ignoring date) ==="
     diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
     echo "The actual output was saved into $OUT for inspection."
@@ -110,11 +110,8 @@ runAllTests() {
   echo "=== Finished Running ALL Tests ==="
 }
 
-#setup
-eval "$BUILD_PROTOCURL"
-testSingleRequest 'help' '-h'
-testSingleRequest 'wednesday-is-not-a-happy-day' '-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify -d "includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }"'
-#runAllTests
-#tearDown
+setup
+runAllTests
+tearDown
 
 eval "$TESTS_SUCCESS"
