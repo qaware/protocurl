@@ -12,9 +12,15 @@ func AssertSuccess(err error) {
 	}
 }
 
+func PrintError(err error) {
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+	}
+}
+
 func PanicOnError(err error) {
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Println(err.Error())
 		panic(interface{}(err))
 	}
 }

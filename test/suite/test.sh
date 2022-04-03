@@ -6,8 +6,8 @@ WORKING_DIR="$1"
 
 BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/Dockerfile . && echo 'Done.'"
 
-START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d && echo 'Done.'"
-STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down && echo 'Done.'"
+START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d > /dev/null 2>&1 && echo 'Done.'"
+STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down > /dev/null 2>&1 && echo 'Done.'"
 
 export RUN_CLIENT="docker run -v $WORKING_DIR/test/proto:/proto --network host"
 
@@ -63,6 +63,12 @@ tearDown() {
   eval $STOP_SERVER
 }
 
+removeTrailingGoCrash() {
+  # deletes all lines starting at a go traceback
+  sed -i '/goroutine 1.*/,$d' "$1"
+}
+export -f removeTrailingGoCrash
+
 testSingleRequest() {
   FILENAME="$1"
   ARGS="$2"
@@ -70,6 +76,7 @@ testSingleRequest() {
   OUT="test/results/$FILENAME-out.txt"
   touch "$EXPECTED"
   sed -i 's/^M$//' "$EXPECTED" # normalise line endings
+  removeTrailingGoCrash "$EXPECTED"
   rm -f "$OUT" || true
 
   set +e
@@ -78,13 +85,14 @@ testSingleRequest() {
   eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2>&1 | sed 's/^M$//' >"$OUT"
   # 2>&1 redirects stderr to stdout, since we want to see the full output
   # sed normalises all line endings
+  removeTrailingGoCrash "$OUT"
 
   diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
     export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-    echo "=== Found difference between expected and actual output (ignoring date) ==="
+    echo "=== Found difference between expected and actual output (ignoring date and go traceback) ==="
     diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
     echo "The actual output was saved into $OUT for inspection."
   else
@@ -110,11 +118,8 @@ runAllTests() {
   echo "=== Finished Running ALL Tests ==="
 }
 
-#setup
-# todo. revert this
-eval "$BUILD_PROTOCURL"
-testSingleRequest 'verbose' '-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify -d "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }"'
-#runAllTests
-#tearDown
+setup
+runAllTests
+tearDown
 
 eval "$TESTS_SUCCESS"

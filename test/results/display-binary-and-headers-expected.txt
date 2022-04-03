@@ -1,28 +1,25 @@
-=========================== Request Text   =========================== >>>
-date {
+=========================== Request Text     =========================== >>>
+date: {
   seconds: 1642044939
   nanos: 152000000
 }
 includeReason: true
-=========================== Request Binary =========================== >>>
+=========================== Request Binary   =========================== >>>
 00000000  0a 0b 08 8b bc fe 8e 06  10 80 ac bd 48 10 01     |............H..|
-0000000f
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 25 Mar 2022 16:58:23 GMT
+Date: Sun, 03 Apr 2022 22:54:47 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65
-
-=========================== Response Binary =========================== <<<
+=========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |
 00000010  61 20 48 61 70 70 79 20  44 61 79 21 20 e2 ad 90  |a Happy Day! ...|
 00000020  1a 1d 54 68 75 2c 20 31  33 20 4a 61 6e 20 32 30  |..Thu, 13 Jan 20|
 00000030  32 32 20 30 33 3a 33 35  3a 33 39 20 47 4d 54 22  |22 03:35:39 GMT"|
 00000040  00                                                |.|
-00000041
-=========================== Response Text   =========================== <<<
+=========================== Response Text    =========================== <<<
 isHappyDay: true
-reason: "Thursday is a Happy Day! \342\255\220"
+reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 13 Jan 2022 03:35:39 GMT"

@@ -37,7 +37,8 @@ During the execution of each line in this script, the output will be written int
 which will be compared via `diff` to `test/results/$FILENAME-expected.txt`. If both match, then the result is accepted.
 
 Lines containing `Date: ` and will be ignored during the diffing, as they are runtime dependent and their difference is
-not relevant to the correctness of the code.
+not relevant to the correctness of the code. Additionally, parts of the Go trace on crashes is also ignored, since the
+memory addresses in them are unstable.
 
 **Examples for the inputs, outputs and arguments can hence be found in the test/results directory as well as
 test/suite/testcases.json.**

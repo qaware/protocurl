@@ -43,12 +43,11 @@ var DefaultPrependedHeaderArgs = []string{"-H", "'Content-Type: application/x-pr
 var CurrentConfig = Config{}
 
 func main() {
-	PanicOnError(rootCmd.Execute())
+	PrintError(rootCmd.Execute())
 }
 
 func init() {
 	setAndShowVersion()
-
 	intialiseFlags()
 }
 
@@ -96,7 +95,7 @@ func runProtocurlWorkflow() {
 func encodeToBinary(requestType string, text string, registry *protoregistry.Files) []byte {
 	requestBinary, _ := protoTextToMsgAndBinary(requestType, text, registry)
 
-	reconstructedRequestText, _ := protoBinaryToMsgAndText(requestType, requestBinary, true, registry)
+	reconstructedRequestText, _ := protoBinaryToMsgAndText(requestType, requestBinary, registry)
 
 	fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
 
@@ -170,7 +169,7 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
 	}
 
-	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, true, registry)
+	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, registry)
 
 	fmt.Printf("%s Response Text    %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseText)
 }

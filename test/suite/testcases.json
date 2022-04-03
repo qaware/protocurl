@@ -80,7 +80,7 @@
   {
     "filename": "failure-simple",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exists ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
     ]
   },
