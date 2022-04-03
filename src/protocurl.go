@@ -62,6 +62,22 @@ const RECV = "<<<"
 
 var CurrentConfig = Config{}
 
+func main() {
+	PanicOnError(rootCmd.Execute())
+}
+
+/*
+NOTE REGARDING DISTRIBUTION
+
+It's not an issue to ensure that the user has the exact same protobuf version as the Go Protobuf SDK.
+We can simply use the protoc in the users context. Since protobuf relies on backwards compatability
+we only need ot check in CI, that the protoCURL CLI (with its implicit Protobuf Go SDK version)
+is compatible with all existing protoc binaries when processing .proto files.
+
+Recommendation: Use your own integrated protoc compiler (bundled) and provide option --protoc-path
+for the users to override it.
+*/
+
 var rootCmd = &cobra.Command{
 	Short:                 "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
 	Use:                   "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text",
@@ -347,10 +363,10 @@ func init() {
 
 	flags.StringVarP(&CurrentConfig.BinaryDisplayHexDumpArgs, "binary-hexdump-args", "b", "-C",
 		"Arguments passed to Linux hexdump for formatting the display of binary protobuf payload. See 'man hexdump'")
+	// todo. remove this arg
 
 	flags.BoolVarP(&CurrentConfig.ShowOutputOnly, "show-output-only", "q", false,
 		"This feature is UNTESTED: Suppresses the display of the request and only displays the text output. Deactivates -v and -D.")
-
 }
 
 func setAndShowVersion() {
@@ -358,7 +374,7 @@ func setAndShowVersion() {
 	rootCmd.SetHelpTemplate("protocurl {{.Version}}\n\n" + rootCmd.HelpTemplate())
 }
 
-// AssertSuccess Use, when error indicates bug in code. Otherwise, use AbortIfFailed
+// AssertSuccess Use, when error indicates bug in code. Otherwise, use the other functions
 func AssertSuccess(err error) {
 	if err != nil {
 		log.Panic(err)
@@ -377,8 +393,4 @@ func PanicWithMessageOnError(err error, lazyMessage func() string) {
 		fmt.Println(lazyMessage())
 		panic(err)
 	}
-}
-
-func main() {
-	AssertSuccess(rootCmd.Execute())
 }

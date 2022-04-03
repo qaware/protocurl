@@ -234,3 +234,4 @@ See [RELEASE.md](RELEASE.md)
   * Or shall we say, that protocurl only runs in the WSL on Windows?
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
+* cleanup and refactor Go rewrite
