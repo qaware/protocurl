@@ -160,7 +160,8 @@ date: { seconds: 123, nanos: 321 }
 In summary:
 
 * No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
-* fields are comma separated and described via `<fieldname>: <value>`
+* fields are comma separated and described via `<fieldname>: <value>`´.
+  * Strictly speaking, the commas are optional and whitespace is sufficient
 * repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
   consecutively.
 * nested messages are described with `{ ... }` opening a new context and describing their fields recursively
@@ -221,3 +222,10 @@ See [RELEASE.md](RELEASE.md)
   One will need " " (with a space) instead.
 * Apply 12 factor CLI app principles
 * re-generate example commands when go implementation is finished
+* Add documentation explaining how the protobuf processing works with links to go protobuf SDK
+  * https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect
+  * https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb#Message.ProtoReflect
+  * https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect#Descriptor
+  * https://pkg.go.dev/google.golang.org/protobuf/encoding/prototext
+  * https://pkg.go.dev/google.golang.org/protobuf/proto#Unmarshal
+  * https://pkg.go.dev/google.golang.org/protobuf/proto#pkg-types

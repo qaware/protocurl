@@ -3,14 +3,18 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/hex"
 	json2 "encoding/json"
+	"errors"
 	"fmt"
-	"github.com/augustoroman/hexdump"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
-	"io"
+	"google.golang.org/protobuf/types/dynamicpb"
 	"io/ioutil"
 	"log"
 	"os"
@@ -82,22 +86,40 @@ var rootCmd = &cobra.Command{
 			fmt.Println("Using .proto descriptor:" + prototext.Format(protoInputFileDescriptorSetMessage))
 		}
 
-		requestBinary := protocTextToBinary(CurrentConfig.RequestType, CurrentConfig.DataText)
+		protoRegistryFiles, err := protodesc.NewFiles(protoInputFileDescriptorSetMessage)
+		PanicOnError(err)
 
-		reconstructedText := protocBinaryToText(CurrentConfig.RequestType, requestBinary)
+		requestBinary, _ := protoTextToMsgAndBinary(CurrentConfig.RequestType, CurrentConfig.DataText, protoRegistryFiles)
 
-		fmt.Printf("%s Request Text   %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedText)
+		reconstructedRequestText, _ := protoBinaryToMsgAndText(CurrentConfig.RequestType, requestBinary, true, protoRegistryFiles)
+
+		fmt.Printf("%s Request Text   %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
 
 		if CurrentConfig.DisplayBinaryAndHttp {
-			fmt.Printf("%s Request Binary %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hexdump.Dump(requestBinary))
+			fmt.Printf("%s Request Binary %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(requestBinary))
 		}
-		// Next, we need to use these packages here now: https://github.com/protocolbuffers/protobuf-go
 
 		log.Println("<todo: implement>")
-		//log.Println(proto.Float64(0.23213))
-		//log.Println(prototext.Unmarshal([]byte(CurrentConfig.DataText), nil))
-		// todo. how might we use protobuf correctly here?
 	},
+}
+
+func resolveMessageByName(messageType string, registry *protoregistry.Files) *protoreflect.MessageDescriptor {
+	descriptor, err := registry.FindDescriptorByName(protoreflect.FullName(messageType))
+	requestDescriptor := descriptor.(protoreflect.MessageDescriptor)
+	EnsureMessageDescriptorIsResolved(requestDescriptor, messageType, err)
+	return &requestDescriptor
+}
+
+func EnsureMessageDescriptorIsResolved(descriptor protoreflect.Descriptor, requestType string, err error) {
+	if descriptor == nil {
+		PanicOnError(errors.New(
+			"I couldn't find any Protobuf message for the message package-path " + requestType + ".\n" +
+				"Did you correctly -I (include) your proto files directory?\n" +
+				"Did you correctly specify the full message package-path to your Protobuf message type?\n" +
+				"Try again with -v (verbose).\n" +
+				"Error: " + err.Error(),
+		))
+	}
 }
 
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
@@ -151,44 +173,37 @@ func convertProtoInputFileToDescriptorSet() *descriptorpb.FileDescriptorSet {
 	return &mutableFileDescriptorSet
 }
 
-func protocExec(direction string, messageType string, input io.Reader, actionDescription string) []byte {
+func protoTextToMsgAndBinary(messageType string, text string, registry *protoregistry.Files) ([]byte, *dynamicpb.Message) {
+	messageDescriptor := resolveMessageByName(messageType, registry)
+	msg := dynamicpb.NewMessage(*messageDescriptor)
 
-	PROTOC = findProtocExec()
+	err := prototext.Unmarshal([]byte(text), msg) // todo. which encoding is used here?
+	PanicOnError(err)
 
-	protoDir := CurrentConfig.ProtoFilesDir
-	protoIncludeArgs := []string{
-		path.Join(protoDir, CurrentConfig.ProtoInputFilePath),
-		"-I",
-		protoDir,
-	}
+	binary, err := proto.Marshal(msg)
+	PanicOnError(err)
 
-	resultBuf := bytes.NewBuffer([]byte{})
-	protocErr := bytes.NewBuffer([]byte{})
-
-	protocCmd := exec.Cmd{
-		Path:   PROTOC,
-		Args:   append([]string{PROTOC, "--" + direction, messageType}, protoIncludeArgs...),
-		Stdin:  input,
-		Stdout: bufio.NewWriter(resultBuf),
-		Stderr: bufio.NewWriter(protocErr),
-	}
-	err := protocCmd.Run()
-
-	PanicWithMessageOnError(err, "Failed to "+actionDescription+". Error:\n"+protocErr.String())
-
-	if protocErr.Len() != 0 {
-		fmt.Println("Encountered errors while attempting to " + actionDescription + " via protoc:\n" + protocErr.String())
-	}
-
-	return resultBuf.Bytes()
+	return binary, msg
 }
 
-func protocTextToBinary(messageType string, text string) []byte {
-	return protocExec("encode", messageType, strings.NewReader(text), "encode text")
-}
+func protoBinaryToMsgAndText(messageType string, binary []byte, prettyFormat bool, registry *protoregistry.Files) (string, *dynamicpb.Message) {
+	messageDescriptor := resolveMessageByName(messageType, registry)
+	msg := dynamicpb.NewMessage(*messageDescriptor)
 
-func protocBinaryToText(messageType string, binary []byte) string {
-	return string(protocExec("decode", messageType, bytes.NewBuffer(binary), "decode binary"))
+	err := proto.Unmarshal(binary, msg)
+	PanicOnError(err)
+
+	var text string
+	if prettyFormat {
+		text = prototext.Format(msg)
+		text = strings.TrimSuffix(text, "\n")
+	} else {
+		textBytes, err := prototext.Marshal(msg)
+		PanicOnError(err)
+		text = string(textBytes)
+	}
+
+	return text, msg // todo. which encoding is used here?
 }
 
 var alreadyReportedProtoc = false
