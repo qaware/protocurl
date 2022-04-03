@@ -24,6 +24,8 @@ import (
 )
 
 const GITHUB_REPOSITORY_LINK = "https://github.com/qaware/protocurl"
+const PROTOC_EXECUTABLE_NAME = "protoc"
+const CURL_EXECUTABLE_NAME = "curl"
 
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 
@@ -50,14 +52,15 @@ type Config struct {
 var commit = "todo"
 var version = "todo"
 
-const DefaultPrependedHeaderArg = "'Content-Type: application/x-protobuf'"
+var DefaultPrependedHeaderArgs = []string{"-H", "'Content-Type: application/x-protobuf'"}
+
+// todo. ^ document this in Usage.
+
 const VISUAL_SEPARATOR = "==========================="
 const SEND = ">>>"
 const RECV = "<<<"
 
 var CurrentConfig = Config{}
-
-var PROTOC string
 
 var rootCmd = &cobra.Command{
 	Short:                 "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
@@ -72,9 +75,9 @@ var rootCmd = &cobra.Command{
 		}
 
 		if CurrentConfig.Verbose {
-			fmt.Printf("Adding default header argument to request headers : %s\n", DefaultPrependedHeaderArg)
+			fmt.Printf("Adding default header argument to request headers : %s\n", DefaultPrependedHeaderArgs)
 		}
-		CurrentConfig.RequestHeaders = append(CurrentConfig.RequestHeaders)
+		CurrentConfig.RequestHeaders = append(DefaultPrependedHeaderArgs, CurrentConfig.RequestHeaders...)
 
 		if CurrentConfig.Verbose {
 			printArgs()
@@ -93,14 +96,80 @@ var rootCmd = &cobra.Command{
 
 		reconstructedRequestText, _ := protoBinaryToMsgAndText(CurrentConfig.RequestType, requestBinary, true, protoRegistryFiles)
 
-		fmt.Printf("%s Request Text   %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
+		fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
 
 		if CurrentConfig.DisplayBinaryAndHttp {
-			fmt.Printf("%s Request Binary %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(requestBinary))
+			fmt.Printf("%s Request Binary   %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, hex.Dump(requestBinary))
 		}
 
-		log.Println("<todo: implement>")
+		responseBinary, responseHeaders := invokeCurlRequest(requestBinary)
+
+		if CurrentConfig.DisplayBinaryAndHttp {
+			fmt.Printf("%s Response Headers %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseHeaders)
+
+			fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
+		}
+
+		responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, true, protoRegistryFiles)
+
+		fmt.Printf("%s Response Text    %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseText)
 	},
+}
+
+func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
+	curlPath := findExecutable(CURL_EXECUTABLE_NAME)
+
+	tmpDir, err := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
+	PanicOnError(err)
+	defer func(path string) {
+		_ = os.RemoveAll(path)
+	}(tmpDir)
+
+	requestBinaryFile := path.Join(tmpDir, "request.bin")
+	err = ioutil.WriteFile(requestBinaryFile, requestBinary, 0)
+	PanicOnError(err)
+
+	responseBinaryFile := path.Join(tmpDir, "response.bin")
+	responseHeadersTextFile := path.Join(tmpDir, "response-headers.txt")
+
+	curlArgs := []string{
+		curlPath,
+		"-s",
+		"-X", "POST",
+		"--data-binary", "@" + requestBinaryFile,
+		"--output", responseBinaryFile,
+		"--dump-header", responseHeadersTextFile,
+	}
+	curlArgs = append(curlArgs, CurrentConfig.RequestHeaders...)
+	// curlArgs = append(curlArgs, CurrentConfig.AdditionalCurlArgs)
+	//todo. need to apply bash-like splitting of arguments.
+	// This might be what we need here: https://github.com/kballard/go-shellquote/blob/master/unquote_test.go#L36
+	curlArgs = append(curlArgs, CurrentConfig.Url)
+
+	curlStdOut := bytes.NewBuffer([]byte{})
+	curlStdErr := bytes.NewBuffer([]byte{})
+	curlCmd := exec.Cmd{
+		Path:   curlPath,
+		Args:   curlArgs,
+		Stdout: bufio.NewWriter(curlStdOut),
+		Stderr: bufio.NewWriter(curlStdErr),
+	}
+
+	err = curlCmd.Run()
+	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
+
+	if curlStdOut.Len() != 0 {
+		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdOut.Bytes()))
+	}
+
+	if curlStdErr.Len() != 0 {
+		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdErr.Bytes()))
+	}
+
+	responseBinary, err := ioutil.ReadFile(responseBinaryFile)
+	responseHeaders, err := ioutil.ReadFile(responseHeadersTextFile)
+
+	return responseBinary, strings.TrimSpace(string(responseHeaders))
 }
 
 func resolveMessageByName(messageType string, registry *protoregistry.Files) *protoreflect.MessageDescriptor {
@@ -125,7 +194,7 @@ func EnsureMessageDescriptorIsResolved(descriptor protoreflect.Descriptor, reque
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 func convertProtoInputFileToDescriptorSet() *descriptorpb.FileDescriptorSet {
-	PROTOC = findProtocExec()
+	protocPath := findExecutable(PROTOC_EXECUTABLE_NAME)
 
 	protoDir := CurrentConfig.ProtoFilesDir
 	protoIncludeArgs := []string{
@@ -134,10 +203,7 @@ func convertProtoInputFileToDescriptorSet() *descriptorpb.FileDescriptorSet {
 		protoDir,
 	}
 
-	currentDir, errWd := os.Getwd()
-	PanicOnError(errWd)
-
-	tmpDir, errTmp := ioutil.TempDir(currentDir, "protocurl-temp-*")
+	tmpDir, errTmp := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
 	PanicOnError(errTmp)
 	defer func(path string) {
 		_ = os.RemoveAll(path)
@@ -150,13 +216,15 @@ func convertProtoInputFileToDescriptorSet() *descriptorpb.FileDescriptorSet {
 	moreArgs := []string{"--include_imports", "-o", inputFileBinPath}
 
 	protocCmd := exec.Cmd{
-		Path:   PROTOC,
-		Args:   append([]string{PROTOC}, append(moreArgs, protoIncludeArgs...)...),
+		Path:   protocPath,
+		Args:   append([]string{protocPath}, append(moreArgs, protoIncludeArgs...)...),
 		Stderr: bufio.NewWriter(protocErr),
 	}
 	err := protocCmd.Run()
 
-	PanicWithMessageOnError(err, "Failed to "+actionDescription+". Error:\n"+protocErr.String())
+	PanicWithMessageOnError(err, func() string {
+		return "Failed to " + actionDescription + ". Error \n" + err.Error() + "\nStdErr:\n" + protocErr.String()
+	})
 
 	if protocErr.Len() != 0 {
 		fmt.Println("Encountered errors while attempting to " + actionDescription + " via protoc:\n" + protocErr.String())
@@ -206,16 +274,19 @@ func protoBinaryToMsgAndText(messageType string, binary []byte, prettyFormat boo
 	return text, msg // todo. which encoding is used here?
 }
 
-var alreadyReportedProtoc = false
+var foundExecutables = make(map[string]string)
 
-func findProtocExec() (protocExec string) {
-	protocExec, err := exec.LookPath("protoc")
-	PanicWithMessageOnError(err, "I could not find a 'protoc' executable. Please check your PATH.")
-	if CurrentConfig.Verbose && !alreadyReportedProtoc {
-		fmt.Println("Found protoc: " + protocExec)
-		alreadyReportedProtoc = true
+func findExecutable(name string) string {
+	if foundExecutables[name] != "" {
+		return foundExecutables[name]
 	}
-	return
+	executable, err := exec.LookPath(name)
+	PanicWithMessageOnError(err, func() string { return "I could not find a '" + name + "' executable. Please check your PATH." })
+	foundExecutables[name] = executable
+	if CurrentConfig.Verbose {
+		fmt.Printf("Found %s: %s\n", name, executable)
+	}
+	return executable
 }
 
 func printArgs() {
@@ -226,7 +297,7 @@ func printArgs() {
 func printAsJson(obj interface{}) {
 	json, err := json2.MarshalIndent(obj, "", "  ")
 	PanicOnError(err)
-	fmt.Println(json)
+	fmt.Println(string(json))
 }
 
 func printVersionInfo(cmd *cobra.Command) {
@@ -301,9 +372,9 @@ func PanicOnError(err error) {
 	}
 }
 
-func PanicWithMessageOnError(err error, message string) {
+func PanicWithMessageOnError(err error, lazyMessage func() string) {
 	if err != nil {
-		fmt.Printf(message)
+		fmt.Println(lazyMessage())
 		panic(err)
 	}
 }

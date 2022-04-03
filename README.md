@@ -229,3 +229,8 @@ See [RELEASE.md](RELEASE.md)
   * https://pkg.go.dev/google.golang.org/protobuf/encoding/prototext
   * https://pkg.go.dev/google.golang.org/protobuf/proto#Unmarshal
   * https://pkg.go.dev/google.golang.org/protobuf/proto#pkg-types
+* How should the invocation of curl work for Windows?
+  * Shall we simply make the request ourselves on Windows? And use the original CURL on Linux?
+  * Or shall we say, that protocurl only runs in the WSL on Windows?
+* Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
+  test server
