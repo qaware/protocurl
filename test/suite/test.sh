@@ -110,8 +110,11 @@ runAllTests() {
   echo "=== Finished Running ALL Tests ==="
 }
 
-setup
-runAllTests
-tearDown
+#setup
+# todo. revert this
+eval "$BUILD_PROTOCURL"
+testSingleRequest 'verbose' '-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify -d "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }"'
+#runAllTests
+#tearDown
 
 eval "$TESTS_SUCCESS"

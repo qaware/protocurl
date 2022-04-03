@@ -7,8 +7,13 @@ import (
 	"fmt"
 	"github.com/augustoroman/hexdump"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
 	"io"
+	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -16,12 +21,16 @@ import (
 
 const GITHUB_REPOSITORY_LINK = "https://github.com/qaware/protocurl"
 
+// protoc --include_imports -o/out.bin -I /proto new-file.proto
+
+// protoc -I /proto --go_out=out --go_opt=Mpath/to/new-file.proto=package.local/proto/path/to/new-file new-file.proto
+
 // Use Cobra for CLI: https://github.com/spf13/cobra
 // Examples: https://github.com/qaware/go-for-operations/blob/master/workshop/challenge-1/challenge-1.md
 
 type Config struct {
 	ProtoFilesDir            string
-	ProtoFilePath            string
+	ProtoInputFilePath       string
 	RequestType              string
 	ResponseType             string
 	Url                      string
@@ -67,6 +76,12 @@ var rootCmd = &cobra.Command{
 			printArgs()
 		}
 
+		protoInputFileDescriptorSetMessage := convertProtoInputFileToDescriptorSet()
+
+		if CurrentConfig.Verbose {
+			fmt.Println("Using .proto descriptor:" + prototext.Format(protoInputFileDescriptorSetMessage))
+		}
+
 		requestBinary := protocTextToBinary(CurrentConfig.RequestType, CurrentConfig.DataText)
 
 		reconstructedText := protocBinaryToText(CurrentConfig.RequestType, requestBinary)
@@ -78,22 +93,62 @@ var rootCmd = &cobra.Command{
 		}
 		// Next, we need to use these packages here now: https://github.com/protocolbuffers/protobuf-go
 
+		log.Println("<todo: implement>")
 		//log.Println(proto.Float64(0.23213))
 		//log.Println(prototext.Unmarshal([]byte(CurrentConfig.DataText), nil))
 		// todo. how might we use protobuf correctly here?
-
-		/**	We want to use https://pkg.go.dev/google.golang.org/protobuf/reflect/protodesc
-				and convert a given set of .proto files to it's protobuf descriptor messages.
-			These messages can then be converted with the protodesc package such that we can use
-		it to work with the proper payload values.
-		For that, we need to add descriptor.proto into this repository and work with it's generated
-		go code.
-
-		But for this, we would need the protoc anyway, as we would need to convert
-		the .proto files to the file descriptor messages:
-		https://stackoverflow.com/a/70653310
-		*/
 	},
+}
+
+// Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
+// protoc --include_imports -o/out.bin -I /proto new-file.proto
+func convertProtoInputFileToDescriptorSet() *descriptorpb.FileDescriptorSet {
+	PROTOC = findProtocExec()
+
+	protoDir := CurrentConfig.ProtoFilesDir
+	protoIncludeArgs := []string{
+		path.Join(protoDir, CurrentConfig.ProtoInputFilePath),
+		"-I",
+		protoDir,
+	}
+
+	currentDir, errWd := os.Getwd()
+	PanicOnError(errWd)
+
+	tmpDir, errTmp := ioutil.TempDir(currentDir, "protocurl-temp-*")
+	PanicOnError(errTmp)
+	defer func(path string) {
+		_ = os.RemoveAll(path)
+	}(tmpDir)
+
+	inputFileBinPath := path.Join(tmpDir, "inputfile.bin")
+	actionDescription := "convert input .proto to FileDescriptorSet"
+
+	protocErr := bytes.NewBuffer([]byte{})
+	moreArgs := []string{"--include_imports", "-o", inputFileBinPath}
+
+	protocCmd := exec.Cmd{
+		Path:   PROTOC,
+		Args:   append([]string{PROTOC}, append(moreArgs, protoIncludeArgs...)...),
+		Stderr: bufio.NewWriter(protocErr),
+	}
+	err := protocCmd.Run()
+
+	PanicWithMessageOnError(err, "Failed to "+actionDescription+". Error:\n"+protocErr.String())
+
+	if protocErr.Len() != 0 {
+		fmt.Println("Encountered errors while attempting to " + actionDescription + " via protoc:\n" + protocErr.String())
+	}
+
+	inputFileBin, err := ioutil.ReadFile(inputFileBinPath)
+	PanicOnError(err)
+
+	mutableFileDescriptorSet := descriptorpb.FileDescriptorSet{}
+
+	err = proto.Unmarshal(inputFileBin, &mutableFileDescriptorSet)
+	PanicOnError(err)
+
+	return &mutableFileDescriptorSet
 }
 
 func protocExec(direction string, messageType string, input io.Reader, actionDescription string) []byte {
@@ -101,9 +156,8 @@ func protocExec(direction string, messageType string, input io.Reader, actionDes
 	PROTOC = findProtocExec()
 
 	protoDir := CurrentConfig.ProtoFilesDir
-
 	protoIncludeArgs := []string{
-		path.Join(protoDir, CurrentConfig.ProtoFilePath),
+		path.Join(protoDir, CurrentConfig.ProtoInputFilePath),
 		"-I",
 		protoDir,
 	}
@@ -137,21 +191,27 @@ func protocBinaryToText(messageType string, binary []byte) string {
 	return string(protocExec("decode", messageType, bytes.NewBuffer(binary), "decode binary"))
 }
 
+var alreadyReportedProtoc = false
+
 func findProtocExec() (protocExec string) {
 	protocExec, err := exec.LookPath("protoc")
 	PanicWithMessageOnError(err, "I could not find a 'protoc' executable. Please check your PATH.")
-	if CurrentConfig.Verbose {
+	if CurrentConfig.Verbose && !alreadyReportedProtoc {
 		fmt.Println("Found protoc: " + protocExec)
+		alreadyReportedProtoc = true
 	}
 	return
 }
 
 func printArgs() {
-	json, err := json2.MarshalIndent(CurrentConfig, "", "  ")
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-	fmt.Printf("Invoked with following default & parsed arguments: %s\n", string(json))
+	fmt.Println("Invoked with following default & parsed arguments:")
+	printAsJson(CurrentConfig)
+}
+
+func printAsJson(obj interface{}) {
+	json, err := json2.MarshalIndent(obj, "", "  ")
+	PanicOnError(err)
+	fmt.Println(json)
 }
 
 func printVersionInfo(cmd *cobra.Command) {
@@ -167,7 +227,7 @@ func init() {
 	flags.StringVarP(&CurrentConfig.ProtoFilesDir, "proto-dir", "I", "/proto",
 		"Uses the specified directory to find the proto-file.")
 
-	flags.StringVarP(&CurrentConfig.ProtoFilePath, "proto-file", "f", "",
+	flags.StringVarP(&CurrentConfig.ProtoInputFilePath, "proto-file", "f", "",
 		"Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).")
 	AssertSuccess(rootCmd.MarkFlagRequired("proto-file"))
 
@@ -216,6 +276,13 @@ func setAndShowVersion() {
 func AssertSuccess(err error) {
 	if err != nil {
 		log.Panic(err)
+	}
+}
+
+func PanicOnError(err error) {
+	if err != nil {
+		fmt.Printf(err.Error())
+		panic(err)
 	}
 }
 
