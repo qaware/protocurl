@@ -1,5 +1,7 @@
 # protoCURL
 
+![test status](https://github.com/qaware/protocurl/actions/workflows/test.yml/badge.svg)
+
 todo.
 
 # Usage
