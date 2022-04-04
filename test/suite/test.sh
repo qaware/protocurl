@@ -9,7 +9,7 @@ BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:la
 START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d > /dev/null 2>&1 && echo 'Done.'"
 STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down > /dev/null 2>&1 && echo 'Done.'"
 
-export RUN_CLIENT="docker run -v $WORKING_DIR/test/proto:/proto --network host"
+export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
 
 export SHOW_LOGS="docker logs"
 
@@ -74,17 +74,18 @@ testSingleRequest() {
   ARGS="$2"
   EXPECTED="test/results/$FILENAME-expected.txt"
   OUT="test/results/$FILENAME-out.txt"
+  OUT_ERR="test/results/$FILENAME-out-err-tmp.txt"
   touch "$EXPECTED"
   sed -i 's/^M$//' "$EXPECTED" # normalise line endings
   removeTrailingGoCrash "$EXPECTED"
   rm -f "$OUT" || true
+  rm -f "$OUT_ERR" || true
 
   set +e
 
-  eval "docker rm -f $FILENAME > /dev/null 2>&1"
-  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2>&1 | sed 's/^M$//' >"$OUT"
-  # 2>&1 redirects stderr to stdout, since we want to see the full output
-  # sed normalises all line endings
+  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" > "$OUT"
+  cat "$OUT_ERR" >> "$OUT"
+  sed -i 's/^M$//' "$OUT"
   removeTrailingGoCrash "$OUT"
 
   diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
@@ -100,6 +101,8 @@ testSingleRequest() {
   fi
 
   set -e
+
+  rm -f "$OUT_ERR" || true
 }
 
 runAllTests() {
