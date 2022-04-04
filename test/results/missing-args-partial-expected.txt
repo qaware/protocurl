@@ -1,4 +1,5 @@
 Error: required flag(s) "URL", "data-text", "response-type" not set
+Error: required flag(s) "URL", "data-text", "response-type" not set
 Usage:
   protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
 
@@ -21,4 +22,3 @@ Flags:
   -v, --verbose                      Prints version and enables verbose output. Also activates D.
       --version                      version for protocurl
 
-Error: required flag(s) "URL", "data-text", "response-type" not set

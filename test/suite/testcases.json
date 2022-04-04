@@ -51,28 +51,28 @@
   {
     "filename": "echo-filled",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "echo-empty",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"\""
     ]
   },
   {
     "filename": "echo-empty-with-curl-args",
     "args": [
-      "-f happyday.proto -C \"-D\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
+      "-f happyday.proto -C \"-D\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true\""
     ]
   },
   {
     "filename": "echo-full",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
       "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
     ]

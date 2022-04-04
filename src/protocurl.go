@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoregistry"
@@ -11,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"strings"
 )
 
@@ -158,8 +160,22 @@ func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
 
 	responseBinary, err := ioutil.ReadFile(responseBinaryFile)
 	responseHeaders, err := ioutil.ReadFile(responseHeadersTextFile)
+	responseHeadersText := strings.TrimSpace(string(responseHeaders))
 
-	return responseBinary, strings.TrimSpace(string(responseHeaders))
+	ensureStatusCodeIs2XX(responseHeadersText)
+
+	return responseBinary, responseHeadersText
+}
+
+func ensureStatusCodeIs2XX(headers string) {
+	httpStatusLine := strings.Split(headers, "\n")[0]
+	matches, err := regexp.MatchString("HTTP/.* 2[0-9][0-9] .*", httpStatusLine)
+	AssertSuccess(err)
+
+	if !matches {
+		err := errors.New("Request was unsuccessful. Received response status code outside of 2XX. Got: " + httpStatusLine)
+		PanicOnError(err)
+	}
 }
 
 func decodeResponse(responseBinary []byte, responseHeaders string, registry *protoregistry.Files) {
