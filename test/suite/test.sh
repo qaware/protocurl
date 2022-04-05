@@ -12,11 +12,18 @@ export TESTS_SUCCESS="true"
 
 source test/suite/setup.sh
 
-removeTrailingGoCrash() {
+normaliseOutput() {
+  # normalise line endings
+  sed -i 's/^M$//' "$1"
+
   # deletes all lines starting at a go traceback
   sed -i '/goroutine 1.*/,$d' "$1"
+
+  # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
+  # But this difference does not actually matter, hence we normalise this away.
+  sed -i "s/:  /: /" "$1"
 }
-export -f removeTrailingGoCrash
+export -f normaliseOutput
 
 testSingleRequest() {
   FILENAME="$1"
@@ -25,8 +32,7 @@ testSingleRequest() {
   OUT="test/results/$FILENAME-out.txt"
   OUT_ERR="test/results/$FILENAME-out-err-tmp.txt"
   touch "$EXPECTED"
-  sed -i 's/^M$//' "$EXPECTED" # normalise line endings
-  removeTrailingGoCrash "$EXPECTED"
+  normaliseOutput "$EXPECTED"
   rm -f "$OUT" || true
   rm -f "$OUT_ERR" || true
   echo "######### STDOUT #########" > "$OUT"
@@ -36,15 +42,14 @@ testSingleRequest() {
   eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" >> "$OUT"
   echo "######### STDERR #########" >> "$OUT"
   cat "$OUT_ERR" >> "$OUT"
-  sed -i 's/^M$//' "$OUT"
-  removeTrailingGoCrash "$OUT"
+  normaliseOutput "$OUT"
 
   diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
     export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-    echo "=== Found difference between expected and actual output (ignoring date and go traceback) ==="
+    echo "=== Found difference between expected and actual output (ignoring date, go traceback, text format indentation) ==="
     diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
     echo "The actual output was saved into $OUT for inspection."
   else
