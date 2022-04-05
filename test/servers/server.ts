@@ -117,7 +117,7 @@ function runHttpServer(handlers: PathHandler[]) {
         const currentHandler = handlers.find(handler => handler.path == req.url);
 
         if (currentHandler === undefined) {
-            req.statusCode = 404;
+            res.statusCode = 404;
             res.end();
             return;
         }

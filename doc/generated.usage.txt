@@ -1,4 +1,3 @@
-######### STDOUT #########
 protocurl todo, build todo
 
 Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.
@@ -23,4 +22,3 @@ Flags:
   -q, --show-output-only          Suppresses all output except response Protobuf as text.Overrides and deactivates -v and -D. Errors are still printed to stderr.
   -v, --verbose                   Prints version and enables verbose output. Also activates D.
       --version                   version for protocurl
-######### STDERR #########

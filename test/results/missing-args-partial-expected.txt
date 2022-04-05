@@ -1,8 +1,6 @@
 ######### STDOUT #########
-protocurl todo, build todo
-
-Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.
-
+######### STDERR #########
+Error: required flag(s) "URL", "data-text", "response-type" not set
 Usage:
   protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
 
@@ -23,4 +21,5 @@ Flags:
   -q, --show-output-only          Suppresses all output except response Protobuf as text.Overrides and deactivates -v and -D. Errors are still printed to stderr.
   -v, --verbose                   Prints version and enables verbose output. Also activates D.
       --version                   version for protocurl
-######### STDERR #########
+
+Error: required flag(s) "URL", "data-text", "response-type" not set

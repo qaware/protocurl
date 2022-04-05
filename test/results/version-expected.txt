@@ -1,0 +1,3 @@
+######### STDOUT #########
+protocurl version todo, build todo
+######### STDERR #########

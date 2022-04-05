@@ -1,7 +1,8 @@
-FROM znly/protoc:latest
-RUN apk update && apk add -y curl
-RUN mkdir -p /proto || true
+FROM jaegertracing/protobuf:0.3.1
+RUN apk --update-cache add go git curl
 WORKDIR /protocurl
-COPY src/protocurl.sh /protocurl/script.sh
-RUN chmod +x /protocurl/script.sh
-ENTRYPOINT ["/protocurl/script.sh"]
+COPY src/*go* /protocurl/
+RUN go get -d ./...
+RUN go build -o protocurl
+ENTRYPOINT ["/protocurl/protocurl"]
+# todo. use proper docker image via goreleaser instead of this here
