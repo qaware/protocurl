@@ -4,64 +4,13 @@ set -e
 
 WORKING_DIR="$1"
 
-BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/Dockerfile . && echo 'Done.'"
-
-START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d > /dev/null 2>&1 && echo 'Done.'"
-STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down > /dev/null 2>&1 && echo 'Done.'"
-
 export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
 
 export SHOW_LOGS="docker logs"
 
 export TESTS_SUCCESS="true"
 
-isServerReady() {
-  rm -rf tmpfile.log || true
-
-  docker-compose -f test/servers/compose.yml logs >tmpfile.log
-
-  if [[ "$?" == 1 ]]; then
-    echo "Aborting as server status could not be fetched"
-    rm -rf tmpfile.log || true
-    exit 1
-  fi
-
-  grep -q 'Listening to port' tmpfile.log
-}
-
-ensureServerIsReady() {
-  echo "Waiting for server to become ready..."
-  SECONDS=0
-
-  set +e
-  until isServerReady; do
-    sleep 1s
-    echo "Waited $SECONDS seconds already..."
-    if ((SECONDS > 20)); then
-      echo "Server was not ready within timeout. Aborting"
-      exit 1
-    fi
-  done
-  set -e
-
-  rm -rf tmpfile.log || true
-
-  echo "=== Test server is ready ==="
-}
-
-setup() {
-  tearDown
-
-  eval $BUILD_PROTOCURL
-  eval $START_SERVER
-
-  ensureServerIsReady
-}
-
-tearDown() {
-  rm -rf tmpfile.log || true
-  eval $STOP_SERVER
-}
+source test/suite/setup.sh
 
 removeTrailingGoCrash() {
   # deletes all lines starting at a go traceback

@@ -149,7 +149,6 @@ func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
 	}
 
 	err = curlCmd.Run()
-	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
 
 	if !CurrentConfig.ShowOutputOnly && curlStdOut.Len() != 0 {
 		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdOut.Bytes()))
@@ -158,6 +157,8 @@ func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
 	if !CurrentConfig.ShowOutputOnly && curlStdErr.Len() != 0 {
 		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdErr.Bytes()))
 	}
+
+	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
 
 	responseBinary, err := ioutil.ReadFile(responseBinaryFile)
 	responseHeaders, err := ioutil.ReadFile(responseHeadersTextFile)
