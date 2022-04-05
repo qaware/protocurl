@@ -25,14 +25,14 @@ func EnsureMessageDescriptorIsResolved(descriptor protoreflect.Descriptor, reque
 }
 
 func printArgsVerbose() {
-	if CurrentConfig.Verbose {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
 		fmt.Println("Invoked with following default & parsed arguments:")
 		printAsJson(CurrentConfig)
 	}
 }
 
 func printVersionInfoVerbose(cmd *cobra.Command) {
-	if CurrentConfig.Verbose {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
 		fmt.Printf("protocurl %s\n", cmd.Version)
 	}
 }

@@ -21,6 +21,13 @@
     ]
   },
   {
+    "filename": "quiet-with-content",
+    "args": [
+      "-q -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "display-binary-and-headers",
     "args": [
       "-D -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
@@ -78,9 +85,24 @@
     ]
   },
   {
+    "filename": "echo-quiet",
+    "args": [
+      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
+      "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
+    ]
+  },
+  {
     "filename": "failure-simple",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
+      "-d \"\""
+    ]
+  },
+  {
+    "filename": "failure-simple-quiet",
+    "args": [
+      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
     ]
   },

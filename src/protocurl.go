@@ -21,18 +21,17 @@ const ProtocExecutableName = "protoc"
 const CurlExecutableName = "curl"
 
 type Config struct {
-	ProtoFilesDir            string
-	ProtoInputFilePath       string
-	RequestType              string
-	ResponseType             string
-	Url                      string
-	DataText                 string
-	DisplayBinaryAndHttp     bool
-	BinaryDisplayHexDumpArgs string
-	RequestHeaders           []string
-	AdditionalCurlArgs       string
-	Verbose                  bool
-	ShowOutputOnly           bool
+	ProtoFilesDir        string
+	ProtoInputFilePath   string
+	RequestType          string
+	ResponseType         string
+	Url                  string
+	DataText             string
+	DisplayBinaryAndHttp bool
+	RequestHeaders       []string
+	AdditionalCurlArgs   string
+	Verbose              bool
+	ShowOutputOnly       bool
 }
 
 var commit = "todo"
@@ -99,9 +98,11 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 
 	reconstructedRequestText, _ := protoBinaryToMsgAndText(requestType, requestBinary, registry)
 
-	fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
+	if !CurrentConfig.ShowOutputOnly {
+		fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
+	}
 
-	if CurrentConfig.DisplayBinaryAndHttp {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
 		fmt.Printf("%s Request Binary   %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, hex.Dump(requestBinary))
 	}
 
@@ -150,11 +151,11 @@ func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
 	err = curlCmd.Run()
 	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
 
-	if curlStdOut.Len() != 0 {
+	if !CurrentConfig.ShowOutputOnly && curlStdOut.Len() != 0 {
 		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdOut.Bytes()))
 	}
 
-	if curlStdErr.Len() != 0 {
+	if !CurrentConfig.ShowOutputOnly && curlStdErr.Len() != 0 {
 		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdErr.Bytes()))
 	}
 
@@ -179,7 +180,7 @@ func ensureStatusCodeIs2XX(headers string) {
 }
 
 func decodeResponse(responseBinary []byte, responseHeaders string, registry *protoregistry.Files) {
-	if CurrentConfig.DisplayBinaryAndHttp {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
 		fmt.Printf("%s Response Headers %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseHeaders)
 
 		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
@@ -187,7 +188,10 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 
 	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, registry)
 
-	fmt.Printf("%s Response Text    %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseText)
+	if !CurrentConfig.ShowOutputOnly {
+		fmt.Printf("%s Response Text    %s %s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV)
+	}
+	fmt.Printf("%s\n", responseText)
 }
 
 var foundExecutables = make(map[string]string)
@@ -202,14 +206,14 @@ func findExecutable(name string) string {
 
 	foundExecutables[name] = executable
 
-	if CurrentConfig.Verbose {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
 		fmt.Printf("Found %s: %s\n", name, executable)
 	}
 	return executable
 }
 
 func addDefaultHeaderArgument() {
-	if CurrentConfig.Verbose {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
 		fmt.Printf("Adding default header argument to request headers : %s\n", DefaultPrependedHeaderArgs)
 	}
 	CurrentConfig.RequestHeaders = append(DefaultPrependedHeaderArgs, CurrentConfig.RequestHeaders...)

@@ -55,7 +55,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	})
 
 	if protocErr.Len() != 0 {
-		fmt.Println("Encountered errors while attempting to " + actionDescription + " via protoc:\n" + protocErr.String())
+		_, _ = fmt.Fprintln(os.Stderr, "Encountered errors while attempting to "+actionDescription+" via protoc:\n"+protocErr.String())
 	}
 
 	inputFileBin, err := ioutil.ReadFile(inputFileBinPath)
@@ -65,7 +65,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	err = proto.Unmarshal(inputFileBin, &protoFileDescriptorSet)
 	PanicOnError(err)
 
-	if CurrentConfig.Verbose {
+	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
 		fmt.Printf("%s .proto descriptor %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, strings.TrimSpace(prototext.Format(&protoFileDescriptorSet)))
 	}
 

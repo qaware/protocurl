@@ -38,16 +38,18 @@ func intialiseFlags() {
 	flags.BoolVarP(&CurrentConfig.DisplayBinaryAndHttp, "display-binary-and-http", "D", false,
 		"Displays the binary request and response as well as the non-binary response headers.")
 
-	flags.StringVarP(&CurrentConfig.BinaryDisplayHexDumpArgs, "binary-hexdump-args", "b", "-C",
-		"Arguments passed to Linux hexdump for formatting the display of binary protobuf payload. See 'man hexdump'")
-	// todo. remove this arg
-
 	flags.BoolVarP(&CurrentConfig.ShowOutputOnly, "show-output-only", "q", false,
-		"This feature is UNTESTED: Suppresses the display of the request and only displays the text output. Deactivates -v and -D.")
+		"Suppresses all output except response Protobuf as text."+
+			"Overrides and deactivates -v and -D. Errors are still printed to stderr.")
 }
 
 func propagateFlags() {
 	if CurrentConfig.Verbose {
 		CurrentConfig.DisplayBinaryAndHttp = true
+	}
+
+	if CurrentConfig.ShowOutputOnly {
+		CurrentConfig.Verbose = false
+		CurrentConfig.DisplayBinaryAndHttp = false
 	}
 }

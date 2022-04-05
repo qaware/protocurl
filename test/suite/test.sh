@@ -80,10 +80,12 @@ testSingleRequest() {
   removeTrailingGoCrash "$EXPECTED"
   rm -f "$OUT" || true
   rm -f "$OUT_ERR" || true
+  echo "######### STDOUT #########" > "$OUT"
 
   set +e
 
-  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" > "$OUT"
+  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" >> "$OUT"
+  echo "######### STDERR #########" >> "$OUT"
   cat "$OUT_ERR" >> "$OUT"
   sed -i 's/^M$//' "$OUT"
   removeTrailingGoCrash "$OUT"

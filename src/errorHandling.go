@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 )
 
 // AssertSuccess Use, when error indicates bug in code. Otherwise, use the other functions
@@ -14,20 +15,20 @@ func AssertSuccess(err error) {
 
 func PrintError(err error) {
 	if err != nil {
-		fmt.Println("Error: " + err.Error())
+		_, _ = fmt.Fprintln(os.Stderr, "Error: "+err.Error())
 	}
 }
 
 func PanicOnError(err error) {
 	if err != nil {
-		fmt.Println(err.Error())
+		_, _ = fmt.Fprintln(os.Stderr, err.Error())
 		panic(interface{}(err))
 	}
 }
 
 func PanicWithMessageOnError(err error, lazyMessage func() string) {
 	if err != nil {
-		fmt.Println(lazyMessage())
+		_, _ = fmt.Fprintln(os.Stderr, lazyMessage())
 		panic(interface{}(err))
 	}
 }

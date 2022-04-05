@@ -1,4 +1,5 @@
-Error: required flag(s) "URL", "data-text", "proto-file", "request-type", "response-type" not set
+######### STDOUT #########
+######### STDERR #########
 Error: required flag(s) "URL", "data-text", "proto-file", "request-type", "response-type" not set
 Usage:
   protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
@@ -7,18 +8,18 @@ Examples:
   protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d "myField: true, otherField: 1337"
 
 Flags:
-  -u, --URL string                   Mandatory: The url to send the request to
-  -b, --binary-hexdump-args string   Arguments passed to Linux hexdump for formatting the display of binary protobuf payload. See 'man hexdump' (default "-C")
-  -C, --curl-args string             Additional cURL args which will be passed on to cURL during request invocation.
-  -d, --data-text string             Mandatory: The payload data in Protobuf text format. See https://github.com/qaware/protocurl
-  -D, --display-binary-and-http      Displays the binary request and response as well as the non-binary response headers.
-  -h, --help                         help for protocurl
-  -I, --proto-dir string             Uses the specified directory to find the proto-file. (default "/proto")
-  -f, --proto-file string            Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
-  -H, --request-header string        Adds the string header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'
-  -i, --request-type string          Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
-  -o, --response-type string         Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse
-  -q, --show-output-only             This feature is UNTESTED: Suppresses the display of the request and only displays the text output. Deactivates -v and -D.
-  -v, --verbose                      Prints version and enables verbose output. Also activates D.
-      --version                      version for protocurl
+  -u, --URL string                Mandatory: The url to send the request to
+  -C, --curl-args string          Additional cURL args which will be passed on to cURL during request invocation.
+  -d, --data-text string          Mandatory: The payload data in Protobuf text format. See https://github.com/qaware/protocurl
+  -D, --display-binary-and-http   Displays the binary request and response as well as the non-binary response headers.
+  -h, --help                      help for protocurl
+  -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
+  -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
+  -H, --request-header string     Adds the string header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'
+  -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
+  -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse
+  -q, --show-output-only          Suppresses all output except response Protobuf as text.Overrides and deactivates -v and -D. Errors are still printed to stderr.
+  -v, --verbose                   Prints version and enables verbose output. Also activates D.
+      --version                   version for protocurl
 
+Error: required flag(s) "URL", "data-text", "proto-file", "request-type", "response-type" not set
