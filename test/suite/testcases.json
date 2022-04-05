@@ -80,8 +80,11 @@
     "filename": "echo-full",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
-      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
-      "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
+      "-d \"includeReason: true date: { seconds: 1648044939 nanos: 152000000 },",
+      "double: 0.12346789 float: 0.123, int32: 123123123 int64: 123123123123123 \\\n",
+      "fooEnum: BAZ string: \\\"some string here\\\" bytes: \\\"\\\\000\\\\001\\\\002\\\\377\\\\376\\\\375\\\" misc: {},",
+      "misc: { weatherOfPastFewDays: \\\"1\\\", weatherOfPastFewDays: \\\"2\\\", fooEnum: FAZ }\\\n",
+      "misc: { fooString: \\\"abc\\\" }\""
     ]
   },
   {

@@ -193,8 +193,6 @@ See [RELEASE.md](RELEASE.md)
   useful and viable for everyday usage.
 * **Protobuf format coverage**: The tests currently do not use strings, enums and other complex types. We want to
   increase the test coverage here and adapt protoCURL if necessary
-* **Response failure handling**: protoCURL always attempts to interpret the response from the server as a Protobuf
-  payload - even if the request has failed.
 * **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
   be to allow the user to import a directory of Protobuf file and have protoCURL search for the definitions given the
   request and response types.
@@ -202,9 +200,6 @@ See [RELEASE.md](RELEASE.md)
 * **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
   messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
   field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
-* **Use a general purpose programming language**: To support JSON conversion and many other nice-to-have features, it
-  would be better, easier and more reliable to use a proper programming language such as Go, C++, Rust, etc. to create
-  the CLI and to build static binaries for the different operating systems and architectures.
 * **Quality of Life Improvments**: Avoid explicitly specifying the file via `-f` and instead search the message types
   from `-i` and `-o`. Additionally, it should be sufficient to only use the name of the message type instead of the full
   path, whenever the message type is unique.
@@ -215,10 +210,6 @@ See [RELEASE.md](RELEASE.md)
   a docker container.
   * Explain, that goReleaser is used.
 * Release the latest version on docker, via GitHub action under `qaware/protocurl`
-* Check, if all mandatory arguments are given, and report errors otherwise.
-* Since the base image seems to not be updated since a while, it would be better to directly include the most important
-  commands via from its [Dockerfile](https://github.com/znly/docker-protobuf/blob/master/Dockerfile) into protoCURL
-  directly
 * `docker scan`
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
@@ -236,4 +227,9 @@ See [RELEASE.md](RELEASE.md)
   * Or shall we say, that protocurl only runs in the WSL on Windows?
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
-* cleanup and refactor Go rewrite
+* Bundle a curl and protoc together inside the release ZIP.
+  * Mention authors and licenses for curl and protoc when bundling
+* Add argument "--curl" which uses the curl executable in PATH and "--curl=/path/to/curl" to explicitly specify which
+  curl to use
+* Add argument "--protoc" which uses the protoc executable in PATH and "--protoc=/path/to/protoc" to explicitly specify
+  which protoc to use
