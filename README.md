@@ -122,6 +122,11 @@ See [RELEASE.md](RELEASE.md)
 * **Quality of Life Improvments**: Avoid explicitly specifying the file via `-f` and instead search the message types
   from `-i` and `-o`. Additionally, it should be sufficient to only use the name of the message type instead of the full
   path, whenever the message type is unique.
+* **Interative input for the user**: For first time users, it might be better for them to simply start with a command
+  like `protocurl -u URL`
+  and then be prompted for the input arguments. This way, it's easier for the user to run it and to get help on each
+  command. In the final step, the CLI could produce an output, where the final command can be as the full version.(
+  see [example](https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46#2d6e))
 
 ## Open TODOs
 
