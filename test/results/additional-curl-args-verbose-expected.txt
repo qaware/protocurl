@@ -14,11 +14,11 @@ Invoked with following default & parsed arguments:
     "-H",
     "'Content-Type: application/x-protobuf'"
   ],
-  "AdditionalCurlArgs": "",
+  "AdditionalCurlArgs": "-v -A my-user-agent",
   "Verbose": true,
   "ShowOutputOnly": false,
   "ForceNoCurl": false,
-  "ForceCurl": false
+  "ForceCurl": true
 }
 Found protoc: /usr/bin/protoc
 =========================== .proto descriptor ===========================
@@ -219,13 +219,37 @@ date: {
 includeReason: true
 =========================== Request Binary   =========================== >>>
 00000000  0a 0b 08 8b bc fe 8e 06  10 80 ac bd 48 10 01     |............H..|
+Expecting to find curl executable due to forced use of curl.
 Found curl: /usr/bin/curl
 Invoking curl http request.
-Understood additional curl args: []
+Understood additional curl args: ["-v" "-A" "my-user-agent"]
+=========================== CURL ERROR       ===========================
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> POST /happy-day/verify HTTP/1.1
+> Host: localhost:8080
+> User-Agent: my-user-agent
+> Accept: */*
+> 'Content-Type: application/x-protobuf'
+> Content-Length: 15
+> Content-Type: application/x-www-form-urlencoded
+> 
+} [15 bytes data]
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Content-Type: application/x-protobuf
+< Date: Fri, 08 Apr 2022 01:36:09 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Content-Length: 65
+< 
+{ [65 bytes data]
+* Connection #0 to host localhost left intact
+
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 01:29:05 GMT
+Date: Fri, 08 Apr 2022 01:36:09 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

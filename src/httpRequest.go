@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/kballard/go-shellquote"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
@@ -60,9 +61,14 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 		"--dump-header", responseHeadersTextFile,
 	}
 	curlArgs = append(curlArgs, CurrentConfig.RequestHeaders...)
-	// curlArgs = append(curlArgs, CurrentConfig.AdditionalCurlArgs)
-	//todo. need to apply bash-like splitting of arguments.
-	// This might be what we need here: https://github.com/kballard/go-shellquote/blob/master/unquote_test.go#L36
+
+	individualAdditionalCurlArgs, err := shellquote.Split(CurrentConfig.AdditionalCurlArgs)
+	PanicOnError(err)
+	if CurrentConfig.Verbose {
+		fmt.Printf("Understood additional curl args: %+q\n", individualAdditionalCurlArgs)
+	}
+	curlArgs = append(curlArgs, individualAdditionalCurlArgs...)
+
 	curlArgs = append(curlArgs, CurrentConfig.Url)
 
 	curlStdOut := bytes.NewBuffer([]byte{})

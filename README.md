@@ -151,4 +151,3 @@ See [RELEASE.md](RELEASE.md)
   curl to use
 * Add argument "--protoc" which uses the protoc executable in PATH and "--protoc=/path/to/protoc" to explicitly specify
   which protoc to use
-* Test all arguments at least once

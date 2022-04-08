@@ -79,6 +79,21 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "additional-curl-args",
+    "args": [
+      "-D -C \"-A my-user-agent\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "additional-curl-args-verbose",
+    "args": [
+      "-D -v -C \"-v -A my-user-agent\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "no-reason",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
@@ -130,7 +145,7 @@
   {
     "filename": "echo-empty-with-curl-args",
     "args": [
-      "-f happyday.proto -C \"-D\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -C \"-v\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
