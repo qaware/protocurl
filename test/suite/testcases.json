@@ -24,6 +24,29 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "other-days-are-happy-days-moved-protofiles",
+    "beforeTestBash": "mkdir -p /dir && mkdir -p /dir/dir2 && cp /proto/happyday.proto /dir/dir2/my.proto",
+    "args": [
+      "-I /dir/dir2 -f my.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "invalid-protofile-path",
+    "args": [
+      "-f does-not-exist.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "invalid-protofile-dir",
+    "args": [
+      "--proto-dir /does-not-exist -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "verbose",
     "args": [
       "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",

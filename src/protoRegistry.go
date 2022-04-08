@@ -49,7 +49,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	actionDescription := "convert input .proto to FileDescriptorSet"
 
 	PanicWithMessageOnError(err, func() string {
-		return "Failed to " + actionDescription + ". Error \n" + err.Error() + "\nStdErr:\n" + protocErr.String()
+		return "Failed to " + actionDescription + ". Error: " + err.Error() + "\nprotoc stderr:\n" + protocErr.String()
 	})
 
 	if protocErr.Len() != 0 {
