@@ -13,11 +13,11 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
    -d "includeReason: true"
 
 =========================== Request Text     =========================== >>>
-includeReason: true
+includeReason:  true
 =========================== Response Text    =========================== <<<
-isHappyDay: true
-reason: "Thursday is a Happy Day! ⭐"
-formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+isHappyDay:  true
+reason:  "Thursday is a Happy Day! ⭐"
+formattedDate:  "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 ```
@@ -28,8 +28,8 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
 =========================== Request Text     =========================== >>>
 
 =========================== Response Text    =========================== <<<
-isHappyDay: true
-formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+isHappyDay:  true
+formattedDate:  "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 ```
@@ -39,11 +39,11 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
   -d "date: { seconds: 1648044939}"
 
 =========================== Request Text     =========================== >>>
-date: {
-  seconds: 1648044939
+date:  {
+  seconds:  1648044939
 }
 =========================== Response Text    =========================== <<<
-formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+formattedDate:  "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
 Use `-v` for verbose output:
@@ -62,6 +62,7 @@ Invoked with following default & parsed arguments:
   "ProtoInputFilePath": "happyday.proto",
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
+  "CustomProtocPath": "",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "date: { seconds: 1648044939}",
   "DisplayBinaryAndHttp": true,
@@ -78,198 +79,198 @@ Invoked with following default & parsed arguments:
 }
 Found protoc: /usr/bin/protoc
 =========================== .proto descriptor ===========================
-file: {
-  name: "google/protobuf/timestamp.proto"
-  package: "google.protobuf"
-  message_type: {
-    name: "Timestamp"
-    field: {
-      name: "seconds"
-      number: 1
-      label: LABEL_OPTIONAL
-      type: TYPE_INT64
-      json_name: "seconds"
+file:  {
+  name:  "google/protobuf/timestamp.proto"
+  package:  "google.protobuf"
+  message_type:  {
+    name:  "Timestamp"
+    field:  {
+      name:  "seconds"
+      number:  1
+      label:  LABEL_OPTIONAL
+      type:  TYPE_INT64
+      json_name:  "seconds"
     }
-    field: {
-      name: "nanos"
-      number: 2
-      label: LABEL_OPTIONAL
-      type: TYPE_INT32
-      json_name: "nanos"
+    field:  {
+      name:  "nanos"
+      number:  2
+      label:  LABEL_OPTIONAL
+      type:  TYPE_INT32
+      json_name:  "nanos"
     }
   }
-  options: {
-    java_package: "com.google.protobuf"
-    java_outer_classname: "TimestampProto"
-    java_multiple_files: true
-    go_package: "google.golang.org/protobuf/types/known/timestamppb"
-    cc_enable_arenas: true
-    objc_class_prefix: "GPB"
-    csharp_namespace: "Google.Protobuf.WellKnownTypes"
+  options:  {
+    java_package:  "com.google.protobuf"
+    java_outer_classname:  "TimestampProto"
+    java_multiple_files:  true
+    go_package:  "google.golang.org/protobuf/types/known/timestamppb"
+    cc_enable_arenas:  true
+    objc_class_prefix:  "GPB"
+    csharp_namespace:  "Google.Protobuf.WellKnownTypes"
   }
-  syntax: "proto3"
+  syntax:  "proto3"
 }
-file: {
-  name: "happyday.proto"
-  package: "happyday"
-  dependency: "google/protobuf/timestamp.proto"
-  message_type: {
-    name: "HappyDayRequest"
-    field: {
-      name: "date"
-      number: 1
-      label: LABEL_OPTIONAL
-      type: TYPE_MESSAGE
-      type_name: ".google.protobuf.Timestamp"
-      json_name: "date"
+file:  {
+  name:  "happyday.proto"
+  package:  "happyday"
+  dependency:  "google/protobuf/timestamp.proto"
+  message_type:  {
+    name:  "HappyDayRequest"
+    field:  {
+      name:  "date"
+      number:  1
+      label:  LABEL_OPTIONAL
+      type:  TYPE_MESSAGE
+      type_name:  ".google.protobuf.Timestamp"
+      json_name:  "date"
     }
-    field: {
-      name: "includeReason"
-      number: 2
-      label: LABEL_OPTIONAL
-      type: TYPE_BOOL
-      json_name: "includeReason"
+    field:  {
+      name:  "includeReason"
+      number:  2
+      label:  LABEL_OPTIONAL
+      type:  TYPE_BOOL
+      json_name:  "includeReason"
     }
-    field: {
-      name: "double"
-      number: 3
-      label: LABEL_OPTIONAL
-      type: TYPE_DOUBLE
-      json_name: "double"
+    field:  {
+      name:  "double"
+      number:  3
+      label:  LABEL_OPTIONAL
+      type:  TYPE_DOUBLE
+      json_name:  "double"
     }
-    field: {
-      name: "int32"
-      number: 4
-      label: LABEL_OPTIONAL
-      type: TYPE_INT32
-      json_name: "int32"
+    field:  {
+      name:  "int32"
+      number:  4
+      label:  LABEL_OPTIONAL
+      type:  TYPE_INT32
+      json_name:  "int32"
     }
-    field: {
-      name: "int64"
-      number: 5
-      label: LABEL_OPTIONAL
-      type: TYPE_INT64
-      json_name: "int64"
+    field:  {
+      name:  "int64"
+      number:  5
+      label:  LABEL_OPTIONAL
+      type:  TYPE_INT64
+      json_name:  "int64"
     }
-    field: {
-      name: "string"
-      number: 6
-      label: LABEL_OPTIONAL
-      type: TYPE_STRING
-      json_name: "string"
+    field:  {
+      name:  "string"
+      number:  6
+      label:  LABEL_OPTIONAL
+      type:  TYPE_STRING
+      json_name:  "string"
     }
-    field: {
-      name: "bytes"
-      number: 7
-      label: LABEL_OPTIONAL
-      type: TYPE_BYTES
-      json_name: "bytes"
+    field:  {
+      name:  "bytes"
+      number:  7
+      label:  LABEL_OPTIONAL
+      type:  TYPE_BYTES
+      json_name:  "bytes"
     }
-    field: {
-      name: "fooEnum"
-      number: 8
-      label: LABEL_OPTIONAL
-      type: TYPE_ENUM
-      type_name: ".happyday.Foo"
-      json_name: "fooEnum"
+    field:  {
+      name:  "fooEnum"
+      number:  8
+      label:  LABEL_OPTIONAL
+      type:  TYPE_ENUM
+      type_name:  ".happyday.Foo"
+      json_name:  "fooEnum"
     }
-    field: {
-      name: "misc"
-      number: 9
-      label: LABEL_REPEATED
-      type: TYPE_MESSAGE
-      type_name: ".happyday.MiscInfo"
-      json_name: "misc"
+    field:  {
+      name:  "misc"
+      number:  9
+      label:  LABEL_REPEATED
+      type:  TYPE_MESSAGE
+      type_name:  ".happyday.MiscInfo"
+      json_name:  "misc"
     }
-    field: {
-      name: "float"
-      number: 10
-      label: LABEL_OPTIONAL
-      type: TYPE_FLOAT
-      json_name: "float"
-    }
-  }
-  message_type: {
-    name: "HappyDayResponse"
-    field: {
-      name: "isHappyDay"
-      number: 1
-      label: LABEL_OPTIONAL
-      type: TYPE_BOOL
-      json_name: "isHappyDay"
-    }
-    field: {
-      name: "reason"
-      number: 2
-      label: LABEL_OPTIONAL
-      type: TYPE_STRING
-      json_name: "reason"
-    }
-    field: {
-      name: "formattedDate"
-      number: 3
-      label: LABEL_OPTIONAL
-      type: TYPE_STRING
-      json_name: "formattedDate"
-    }
-    field: {
-      name: "err"
-      number: 4
-      label: LABEL_OPTIONAL
-      type: TYPE_STRING
-      json_name: "err"
+    field:  {
+      name:  "float"
+      number:  10
+      label:  LABEL_OPTIONAL
+      type:  TYPE_FLOAT
+      json_name:  "float"
     }
   }
-  message_type: {
-    name: "MiscInfo"
-    field: {
-      name: "weatherOfPastFewDays"
-      number: 1
-      label: LABEL_REPEATED
-      type: TYPE_STRING
-      json_name: "weatherOfPastFewDays"
+  message_type:  {
+    name:  "HappyDayResponse"
+    field:  {
+      name:  "isHappyDay"
+      number:  1
+      label:  LABEL_OPTIONAL
+      type:  TYPE_BOOL
+      json_name:  "isHappyDay"
     }
-    field: {
-      name: "fooString"
-      number: 2
-      label: LABEL_OPTIONAL
-      type: TYPE_STRING
-      oneof_index: 0
-      json_name: "fooString"
+    field:  {
+      name:  "reason"
+      number:  2
+      label:  LABEL_OPTIONAL
+      type:  TYPE_STRING
+      json_name:  "reason"
     }
-    field: {
-      name: "fooEnum"
-      number: 3
-      label: LABEL_OPTIONAL
-      type: TYPE_ENUM
-      type_name: ".happyday.Foo"
-      oneof_index: 0
-      json_name: "fooEnum"
+    field:  {
+      name:  "formattedDate"
+      number:  3
+      label:  LABEL_OPTIONAL
+      type:  TYPE_STRING
+      json_name:  "formattedDate"
     }
-    oneof_decl: {
-      name: "alternative"
-    }
-  }
-  enum_type: {
-    name: "Foo"
-    value: {
-      name: "BAR"
-      number: 0
-    }
-    value: {
-      name: "BAZ"
-      number: 1
-    }
-    value: {
-      name: "FAZ"
-      number: 2
+    field:  {
+      name:  "err"
+      number:  4
+      label:  LABEL_OPTIONAL
+      type:  TYPE_STRING
+      json_name:  "err"
     }
   }
-  syntax: "proto3"
+  message_type:  {
+    name:  "MiscInfo"
+    field:  {
+      name:  "weatherOfPastFewDays"
+      number:  1
+      label:  LABEL_REPEATED
+      type:  TYPE_STRING
+      json_name:  "weatherOfPastFewDays"
+    }
+    field:  {
+      name:  "fooString"
+      number:  2
+      label:  LABEL_OPTIONAL
+      type:  TYPE_STRING
+      oneof_index:  0
+      json_name:  "fooString"
+    }
+    field:  {
+      name:  "fooEnum"
+      number:  3
+      label:  LABEL_OPTIONAL
+      type:  TYPE_ENUM
+      type_name:  ".happyday.Foo"
+      oneof_index:  0
+      json_name:  "fooEnum"
+    }
+    oneof_decl:  {
+      name:  "alternative"
+    }
+  }
+  enum_type:  {
+    name:  "Foo"
+    value:  {
+      name:  "BAR"
+      number:  0
+    }
+    value:  {
+      name:  "BAZ"
+      number:  1
+    }
+    value:  {
+      name:  "FAZ"
+      number:  2
+    }
+  }
+  syntax:  "proto3"
 }
 =========================== Request Text     =========================== >>>
-date: {
-  seconds: 1648044939
+date:  {
+  seconds:  1648044939
 }
 =========================== Request Binary   =========================== >>>
 00000000  0a 06 08 8b d7 ec 91 06                           |........|
@@ -279,7 +280,7 @@ Understood additional curl args: []
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 11:41:25 GMT
+Date: Fri, 08 Apr 2022 12:22:10 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
@@ -288,5 +289,5 @@ Content-Length: 35
 00000010  32 30 32 32 20 31 34 3a  31 35 3a 33 39 20 47 4d  |2022 14:15:39 GM|
 00000020  54 22 00                                          |T".|
 =========================== Response Text    =========================== <<<
-formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+formattedDate:  "Wed, 23 Mar 2022 14:15:39 GMT"
 ```

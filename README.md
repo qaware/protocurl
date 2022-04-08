@@ -147,5 +147,4 @@ See [RELEASE.md](RELEASE.md)
 * Licensing, since jaegertracing/protobuf is included.
 * Bundle a curl and protoc together inside the release ZIP.
   * Mention authors and licenses for curl and protoc when bundling
-* Add argument "--protoc" which uses the protoc executable in PATH and "--protoc=/path/to/protoc" to explicitly specify
-  which protoc to use
+  * We an use GoReleaser for this: https://goreleaser.com/customization/archive/
