@@ -4,6 +4,15 @@
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "missing-curl-no-curl",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
+    "args": [
+      "--no-curl -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
@@ -11,10 +20,20 @@
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "verbose",
+    "args": [
+      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "verbose-missing-curl",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
       "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
@@ -25,56 +44,73 @@
     "args": [
       "-q -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "display-binary-and-headers",
     "args": [
       "-D -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "no-reason",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"date: { seconds: 1642044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--curl"
   },
   {
     "filename": "far-future",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 123231648044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "empty-day-epoch-time-thursday",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "empty-day-epoch-time-thursday-missing-curl",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "echo-filled",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "echo-empty",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "echo-empty-with-curl-args",
     "args": [
       "-f happyday.proto -C \"-D\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "echo-full",
@@ -85,7 +121,8 @@
       "fooEnum: BAZ string: \\\"some string here\\\" bytes: \\\"\\\\000\\\\001\\\\002\\\\377\\\\376\\\\375\\\" misc: {},",
       "misc: { weatherOfPastFewDays: \\\"1\\\", weatherOfPastFewDays: \\\"2\\\", fooEnum: FAZ }\\\n",
       "misc: { fooString: \\\"abc\\\" }\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "echo-quiet",
@@ -93,44 +130,59 @@
       "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
       "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "failure-simple",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "failure-simple-quiet",
     "args": [
       "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "missing-args",
     "args": [
       ""
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "missing-args-partial",
     "args": [
       "-f abc -i i"
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "help",
     "args": [
       "-h"
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "help-missing-curl",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
+    "args": [
+      "-h -v"
+    ],
+    "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "version",
     "args": [
       "--version"
-    ]
+    ],
+    "runAgainWithArg": "--no-curl"
   }
 ]

@@ -110,12 +110,9 @@ See [RELEASE.md](RELEASE.md)
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
   useful and viable for everyday usage.
-* **Protobuf format coverage**: The tests currently do not use strings, enums and other complex types. We want to
-  increase the test coverage here and adapt protoCURL if necessary
 * **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
   be to allow the user to import a directory of Protobuf file and have protoCURL search for the definitions given the
   request and response types.
-* **Pre-built releases of the image for various prorobuf versions on docker**
 * **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
   messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
   field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
@@ -151,6 +148,7 @@ See [RELEASE.md](RELEASE.md)
   * Or shall we say, that protocurl only runs in the WSL on Windows?
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
+* Licensing, since jaegertracing/protobuf is included.
 * Bundle a curl and protoc together inside the release ZIP.
   * Mention authors and licenses for curl and protoc when bundling
 * Add argument "--curl" which uses the curl executable in PATH and "--curl=/path/to/curl" to explicitly specify which

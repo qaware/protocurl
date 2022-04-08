@@ -1,19 +1,10 @@
 package main
 
 import (
-	"bufio"
-	"bytes"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoregistry"
-	"io/ioutil"
-	"os"
-	"os/exec"
-	"path"
-	"regexp"
-	"strings"
 )
 
 const GithubRepositoryLink = "https://github.com/qaware/protocurl"
@@ -32,6 +23,8 @@ type Config struct {
 	AdditionalCurlArgs   string
 	Verbose              bool
 	ShowOutputOnly       bool
+	ForceNoCurl          bool
+	ForceCurl            bool
 }
 
 var commit = "todo"
@@ -65,8 +58,9 @@ for the users to override it.
 */
 
 var rootCmd = &cobra.Command{
-	Short:                 "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
-	Use:                   "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text",
+	Short: "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
+	Use: "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text\n\n" +
+		"If no curl executable was found in the path, it will fall back to an internal non-configurable http request.",
 	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
@@ -88,7 +82,7 @@ func runProtocurlWorkflow() {
 
 	requestBinary := encodeToBinary(CurrentConfig.RequestType, CurrentConfig.DataText, protoRegistryFiles)
 
-	responseBinary, responseHeaders := invokeCurlRequest(requestBinary)
+	responseBinary, responseHeaders := invokeHttpRequestBasedOnConfig(requestBinary)
 
 	decodeResponse(responseBinary, responseHeaders, protoRegistryFiles)
 }
@@ -109,74 +103,27 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 	return requestBinary
 }
 
-func invokeCurlRequest(requestBinary []byte) ([]byte, string) {
-	curlPath := findExecutable(CurlExecutableName)
-
-	tmpDir, err := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
-	PanicOnError(err)
-	defer func(path string) {
-		_ = os.RemoveAll(path)
-	}(tmpDir)
-
-	requestBinaryFile := path.Join(tmpDir, "request.bin")
-	err = ioutil.WriteFile(requestBinaryFile, requestBinary, 0)
-	PanicOnError(err)
-
-	responseBinaryFile := path.Join(tmpDir, "response.bin")
-	responseHeadersTextFile := path.Join(tmpDir, "response-headers.txt")
-
-	curlArgs := []string{
-		curlPath,
-		"-s",
-		"-X", "POST",
-		"--data-binary", "@" + requestBinaryFile,
-		"--output", responseBinaryFile,
-		"--dump-header", responseHeadersTextFile,
-	}
-	curlArgs = append(curlArgs, CurrentConfig.RequestHeaders...)
-	// curlArgs = append(curlArgs, CurrentConfig.AdditionalCurlArgs)
-	//todo. need to apply bash-like splitting of arguments.
-	// This might be what we need here: https://github.com/kballard/go-shellquote/blob/master/unquote_test.go#L36
-	curlArgs = append(curlArgs, CurrentConfig.Url)
-
-	curlStdOut := bytes.NewBuffer([]byte{})
-	curlStdErr := bytes.NewBuffer([]byte{})
-	curlCmd := exec.Cmd{
-		Path:   curlPath,
-		Args:   curlArgs,
-		Stdout: bufio.NewWriter(curlStdOut),
-		Stderr: bufio.NewWriter(curlStdErr),
+func invokeHttpRequestBasedOnConfig(requestBinary []byte) ([]byte, string) {
+	if CurrentConfig.ForceNoCurl {
+		if CurrentConfig.Verbose {
+			fmt.Println("Using internal http request due to forced avoidance of curl.")
+		}
+		return invokeInternalHttpRequest(requestBinary)
 	}
 
-	err = curlCmd.Run()
-
-	if !CurrentConfig.ShowOutputOnly && curlStdOut.Len() != 0 {
-		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdOut.Bytes()))
-	}
-
-	if !CurrentConfig.ShowOutputOnly && curlStdErr.Len() != 0 {
-		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdErr.Bytes()))
-	}
-
-	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
-
-	responseBinary, err := ioutil.ReadFile(responseBinaryFile)
-	responseHeaders, err := ioutil.ReadFile(responseHeadersTextFile)
-	responseHeadersText := strings.TrimSpace(string(responseHeaders))
-
-	ensureStatusCodeIs2XX(responseHeadersText)
-
-	return responseBinary, responseHeadersText
-}
-
-func ensureStatusCodeIs2XX(headers string) {
-	httpStatusLine := strings.Split(headers, "\n")[0]
-	matches, err := regexp.MatchString("HTTP/.* 2[0-9][0-9] .*", httpStatusLine)
-	AssertSuccess(err)
-
-	if !matches {
-		err := errors.New("Request was unsuccessful. Received response status code outside of 2XX. Got: " + httpStatusLine)
-		PanicOnError(err)
+	if CurrentConfig.ForceCurl {
+		if CurrentConfig.Verbose {
+			fmt.Println("Expecting to find curl executable due to forced use of curl.")
+		}
+		curlPath, _ := findExecutable(CurlExecutableName, true)
+		return invokeCurlRequest(requestBinary, curlPath)
+	} else {
+		curlPath, err := findExecutable(CurlExecutableName, false)
+		if err != nil {
+			return invokeInternalHttpRequest(requestBinary)
+		} else {
+			return invokeCurlRequest(requestBinary, curlPath)
+		}
 	}
 }
 
@@ -195,26 +142,8 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 	fmt.Printf("%s\n", responseText)
 }
 
-var foundExecutables = make(map[string]string)
-
-func findExecutable(name string) string {
-	if foundExecutables[name] != "" {
-		return foundExecutables[name]
-	}
-
-	executable, err := exec.LookPath(name)
-	PanicWithMessageOnError(err, func() string { return "I could not find a '" + name + "' executable. Please check your PATH." })
-
-	foundExecutables[name] = executable
-
-	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
-		fmt.Printf("Found %s: %s\n", name, executable)
-	}
-	return executable
-}
-
 func addDefaultHeaderArgument() {
-	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
+	if CurrentConfig.Verbose {
 		fmt.Printf("Adding default header argument to request headers : %s\n", DefaultPrependedHeaderArgs)
 	}
 	CurrentConfig.RequestHeaders = append(DefaultPrependedHeaderArgs, CurrentConfig.RequestHeaders...)

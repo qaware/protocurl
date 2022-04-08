@@ -1,0 +1,5 @@
+######### STDOUT #########
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 13 Jan 2022 03:35:39 GMT"
+######### STDERR #########

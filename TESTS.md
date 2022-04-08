@@ -17,20 +17,23 @@ from `test/suite/testcases.json` against the testserver. Each testcase is of the
 ```
 {
   "filename": "<a filename without spaces and without extension>",
+  "beforeTestBash": "<bash statements>
   "args": [
     "<arguments for protocurl>",
     "<These are split into an array to make it easier to write them in the JSON file.>",
     "<All of these array elements will be concatenated with spaces.>"
-  ]
+  ],
+  "runAgainWithArg": "<--some-arg>"
 }
 ```
 
 For each testcase, the `args` array will be concatenated and the concatenated string will be given to `protocurl` (via
-docker run) as arguments. This happens via `test/suite/run-testcases.sh` - which is dynamically created from the JSON.
-This script contains lines of the form
+docker run) as arguments. `beforeTestBash` and `runAgainWithArg` are optional - and are replaced with `""` if not given.
+This happens via `test/suite/run-testcases.sh` - which is dynamically created from the JSON. This script contains lines
+of the form
 
 ```
-testSingleRequest '<filename>' '<args concatenated with spaces>'
+testSingleRequest '<filename>' '<args concatenated with spaces>' '<bash statements>' '--some-arg'
 ```
 
 During the execution of each line in this script, the output will be written into `test/results/$FILENAME-out.txt` -
@@ -39,6 +42,14 @@ which will be compared via `diff` to `test/results/$FILENAME-expected.txt`. If b
 Lines containing `Date: ` and will be ignored during the diffing, as they are runtime dependent and their difference is
 not relevant to the correctness of the code. Additionally, parts of the Go trace on crashes is also ignored, since the
 memory addresses in them are unstable.
+
+If `beforeTestBash` is given, then the bash statements will be executed inside the client docker container before
+invoking protocurl with the given arguments. This enables one to explicitly remove curl from the container for testing
+purposes.
+
+If `runAgainWithArg` is given, then the test case will be run twice. It will be run once with the given normal arguments
+and once more with the given `<--some-arg>` prepended to the arguments of protocurl. This is useful to run the testcases
+twice with `--no-curl` to check, that the output is (mostly) the same regardless of the http implementation used.
 
 **Examples for the inputs, outputs and arguments can hence be found in the test/results directory as well as
 test/suite/testcases.json.**

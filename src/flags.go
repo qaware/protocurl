@@ -29,8 +29,14 @@ func intialiseFlags() {
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'")
 
+	flags.BoolVar(&CurrentConfig.ForceNoCurl, "no-curl", false,
+		"Forces the use of the built-in internal http request instead of curl.")
+
+	flags.BoolVar(&CurrentConfig.ForceCurl, "curl", false,
+		"Forces the use of curl executable found in PATH. If none was found, then exits with an error.")
+
 	flags.StringVarP(&CurrentConfig.AdditionalCurlArgs, "curl-args", "C", "",
-		"Additional cURL args which will be passed on to cURL during request invocation.")
+		"Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.")
 
 	flags.BoolVarP(&CurrentConfig.Verbose, "verbose", "v", false,
 		"Prints version and enables verbose output. Also activates D.")
@@ -51,5 +57,13 @@ func propagateFlags() {
 	if CurrentConfig.ShowOutputOnly {
 		CurrentConfig.Verbose = false
 		CurrentConfig.DisplayBinaryAndHttp = false
+	}
+
+	if len(CurrentConfig.AdditionalCurlArgs) != 0 {
+		CurrentConfig.ForceCurl = true
+	}
+
+	if CurrentConfig.ForceCurl && CurrentConfig.ForceNoCurl {
+		PanicWithMessage("Both --curl and --no-curl are active.\nI cannot use and not use curl.\nPlease check your arguments via -v.")
 	}
 }

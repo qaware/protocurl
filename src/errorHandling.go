@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -24,6 +25,11 @@ func PanicOnError(err error) {
 		_, _ = fmt.Fprintln(os.Stderr, err.Error())
 		panic(interface{}(err))
 	}
+}
+
+func PanicWithMessage(message string) {
+	_, _ = fmt.Fprintln(os.Stderr, message)
+	panic(interface{}(errors.New(message)))
 }
 
 func PanicWithMessageOnError(err error, lazyMessage func() string) {

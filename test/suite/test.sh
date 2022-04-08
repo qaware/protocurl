@@ -28,37 +28,54 @@ export -f normaliseOutput
 testSingleRequest() {
   FILENAME="$1"
   ARGS="$2"
-  EXPECTED="test/results/$FILENAME-expected.txt"
-  OUT="test/results/$FILENAME-out.txt"
-  OUT_ERR="test/results/$FILENAME-out-err-tmp.txt"
-  touch "$EXPECTED"
-  normaliseOutput "$EXPECTED"
-  rm -f "$OUT" || true
-  rm -f "$OUT_ERR" || true
-  echo "######### STDOUT #########" > "$OUT"
+  BEFORE_TEST_BASH="$3"
+  RUN_AGAIN_WITH_ARG="$4"
 
-  set +e
-
-  eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" >> "$OUT"
-  echo "######### STDERR #########" >> "$OUT"
-  cat "$OUT_ERR" >> "$OUT"
-  normaliseOutput "$OUT"
-
-  diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
-
-  if [[ "$?" != 0 ]]; then
-    export TESTS_SUCCESS="false"
-    echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-    echo "=== Found difference between expected and actual output (ignoring date, go traceback, text format indentation) ==="
-    diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
-    echo "The actual output was saved into $OUT for inspection."
+  if [[ "$RUN_AGAIN_WITH_ARG" != "" ]]; then
+    NEW_ARGS="$RUN_AGAIN_WITH_ARG $ARGS"
+    NEW_FILENAME="${FILENAME}-${RUN_AGAIN_WITH_ARG#--}"
+    testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" ""
+    testSingleRequest "$NEW_FILENAME" "$NEW_ARGS" "$BEFORE_TEST_BASH" ""
   else
-    echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
+
+    EXPECTED="test/results/$FILENAME-expected.txt"
+    OUT="test/results/$FILENAME-out.txt"
+    OUT_ERR="test/results/$FILENAME-out-err-tmp.txt"
+    touch "$EXPECTED"
+    normaliseOutput "$EXPECTED"
+    rm -f "$OUT" || true
+    rm -f "$OUT_ERR" || true
+    echo "######### STDOUT #########" > "$OUT"
+
+    set +e
+
+    if [[ "$BEFORE_TEST_BASH" == "" ]]; then
+      eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" >> "$OUT"
+    else
+      ARGS="$(echo "$ARGS" | sed 's/"/\\"/g' )" # escape before usage inside quoted context
+      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME protocurl -c \"$BEFORE_TEST_BASH && ./protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
+    fi
+    echo "######### STDERR #########" >> "$OUT"
+    cat "$OUT_ERR" >> "$OUT"
+    normaliseOutput "$OUT"
+
+    diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
+
+    if [[ "$?" != 0 ]]; then
+      export TESTS_SUCCESS="false"
+      echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
+      echo "=== Found difference between expected and actual output (ignoring date, go traceback, text format indentation) ==="
+      diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
+      echo "The actual output was saved into $OUT for inspection."
+    else
+      echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
+    fi
+
+    set -e
+
+    rm -f "$OUT_ERR" || true
+
   fi
-
-  set -e
-
-  rm -f "$OUT_ERR" || true
 }
 
 runAllTests() {
@@ -67,7 +84,7 @@ runAllTests() {
 
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
-  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh)\""
+  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.runAgainWithArg // \"\"|@sh)\""
   cat test/suite/testcases.json | test/suite/jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest

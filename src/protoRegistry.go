@@ -20,13 +20,11 @@ import (
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
-	protocPath := findExecutable(ProtocExecutableName)
+	protocPath, _ := findExecutable(ProtocExecutableName, true)
 
 	tmpDir, errTmp := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
 	PanicOnError(errTmp)
-	defer func(path string) {
-		_ = os.RemoveAll(path)
-	}(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	inputFileBinPath := path.Join(tmpDir, "inputfile.bin")
 	protoDir := CurrentConfig.ProtoFilesDir
@@ -65,7 +63,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	err = proto.Unmarshal(inputFileBin, &protoFileDescriptorSet)
 	PanicOnError(err)
 
-	if !CurrentConfig.ShowOutputOnly && CurrentConfig.Verbose {
+	if CurrentConfig.Verbose {
 		fmt.Printf("%s .proto descriptor %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, strings.TrimSpace(prototext.Format(&protoFileDescriptorSet)))
 	}
 
