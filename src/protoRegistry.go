@@ -20,7 +20,7 @@ import (
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
-	protocPath, _ := findExecutable(ProtocExecutableName, true)
+	protocPath, _ := findProtocExecutable()
 
 	tmpDir, errTmp := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
 	PanicOnError(errTmp)

@@ -14,6 +14,7 @@ Invoked with following default & parsed arguments:
     "-H",
     "'Content-Type: application/x-protobuf'"
   ],
+  "CustomCurlPath": "",
   "AdditionalCurlArgs": "",
   "Verbose": true,
   "ShowOutputOnly": false,
@@ -226,7 +227,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Thu, 07 Apr 2022 23:14:16 GMT
+Date: Fri, 08 Apr 2022 11:19:13 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |

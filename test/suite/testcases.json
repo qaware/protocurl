@@ -127,6 +127,15 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "moved-curl",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl-bak",
+    "args": [
+      "--curl-path /usr/bin/curl-bak -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
     "filename": "echo-filled",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",

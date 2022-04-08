@@ -14,6 +14,7 @@ Invoked with following default & parsed arguments:
     "-H",
     "'Content-Type: application/x-protobuf'"
   ],
+  "CustomCurlPath": "",
   "AdditionalCurlArgs": "",
   "Verbose": true,
   "ShowOutputOnly": false,
@@ -225,7 +226,7 @@ Understood additional curl args: []
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 01:29:05 GMT
+Date: Fri, 08 Apr 2022 11:19:10 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

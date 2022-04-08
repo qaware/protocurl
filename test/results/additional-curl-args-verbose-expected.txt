@@ -14,6 +14,7 @@ Invoked with following default & parsed arguments:
     "-H",
     "'Content-Type: application/x-protobuf'"
   ],
+  "CustomCurlPath": "",
   "AdditionalCurlArgs": "-v -A my-user-agent",
   "Verbose": true,
   "ShowOutputOnly": false,
@@ -238,7 +239,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Fri, 08 Apr 2022 01:36:09 GMT
+< Date: Fri, 08 Apr 2022 11:33:19 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -249,7 +250,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 01:36:09 GMT
+Date: Fri, 08 Apr 2022 11:33:19 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

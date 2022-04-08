@@ -2,8 +2,8 @@
 ######### STDERR #########
 Both --curl and --no-curl are active.
 I cannot use and not use curl.
-Please check your arguments via -v.
+Please check the supplied and implied arguments via -v.
 panic: Both --curl and --no-curl are active.
 I cannot use and not use curl.
-Please check your arguments via -v.
+Please check the supplied and implied arguments via -v.
 

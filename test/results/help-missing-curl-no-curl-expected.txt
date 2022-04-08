@@ -15,6 +15,7 @@ Flags:
   -u, --URL string                Mandatory: The url to send the request to
       --curl                      Forces the use of curl executable found in PATH. If none was found, then exits with an error.
   -C, --curl-args string          Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.
+      --curl-path string          Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.
   -d, --data-text string          Mandatory: The payload data in Protobuf text format. See https://github.com/qaware/protocurl
   -D, --display-binary-and-http   Displays the binary request and response as well as the non-binary response headers.
   -h, --help                      help for protocurl
@@ -25,6 +26,6 @@ Flags:
   -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
   -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse
   -q, --show-output-only          Suppresses all output except response Protobuf as text.Overrides and deactivates -v and -D. Errors are still printed to stderr.
-  -v, --verbose                   Prints version and enables verbose output. Also activates D.
+  -v, --verbose                   Prints version and enables verbose output. Also activates -D.
       --version                   version for protocurl
 ######### STDERR #########

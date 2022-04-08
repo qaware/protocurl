@@ -8,8 +8,6 @@ import (
 )
 
 const GithubRepositoryLink = "https://github.com/qaware/protocurl"
-const ProtocExecutableName = "protoc"
-const CurlExecutableName = "curl"
 
 type Config struct {
 	ProtoFilesDir        string
@@ -20,6 +18,7 @@ type Config struct {
 	DataText             string
 	DisplayBinaryAndHttp bool
 	RequestHeaders       []string
+	CustomCurlPath       string
 	AdditionalCurlArgs   string
 	Verbose              bool
 	ShowOutputOnly       bool
@@ -115,10 +114,10 @@ func invokeHttpRequestBasedOnConfig(requestBinary []byte) ([]byte, string) {
 		if CurrentConfig.Verbose {
 			fmt.Println("Expecting to find curl executable due to forced use of curl.")
 		}
-		curlPath, _ := findExecutable(CurlExecutableName, true)
+		curlPath, _ := findCurlExecutable(true)
 		return invokeCurlRequest(requestBinary, curlPath)
 	} else {
-		curlPath, err := findExecutable(CurlExecutableName, false)
+		curlPath, err := findCurlExecutable(false)
 		if err != nil {
 			return invokeInternalHttpRequest(requestBinary)
 		} else {

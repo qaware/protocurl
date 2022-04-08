@@ -16,14 +16,18 @@ escapeString() {
 setup
 
 # ====================================================================================
-
 # Generate Usage
+echo "Generating Usage..."
+
 USAGE="$(docker run --rm protocurl -h)"
 echo "$USAGE" > doc/generated.usage.txt
 
+echo "Done."
 
 # ====================================================================================
 # Generate Example Commands
+echo "Generate EXAMPLE.md..."
+
 EXAMPLES_TEMPLATE="$(cat doc/template.EXAMPLES.md)"
 
 
@@ -91,6 +95,8 @@ echo "$EXAMPLES_TEMPLATE" \
   | sed "s%___EXAMPLE_2___%$EXAMPLE_2%" \
   | sed "s%___EXAMPLE_3___%$EXAMPLE_3%" \
   | sed "s%___EXAMPLE_4___%$EXAMPLE_4%" > EXAMPLES.md
+
+echo "Done."
 
 # ====================================================================================
 

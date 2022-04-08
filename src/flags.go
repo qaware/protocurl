@@ -3,6 +3,9 @@ package main
 func intialiseFlags() {
 	var flags = rootCmd.Flags()
 
+	// Note. If the long / short name of the arguments are changed, then the Usage and Docs need to be checked for the argument.
+	// It may be mentioned there and their mention needs to be updated.
+
 	flags.StringVarP(&CurrentConfig.ProtoFilesDir, "proto-dir", "I", "/proto",
 		"Uses the specified directory to find the proto-file.")
 
@@ -29,6 +32,9 @@ func intialiseFlags() {
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'")
 
+	flags.StringVar(&CurrentConfig.CustomCurlPath, "curl-path", "",
+		"Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.")
+
 	flags.BoolVar(&CurrentConfig.ForceNoCurl, "no-curl", false,
 		"Forces the use of the built-in internal http request instead of curl.")
 
@@ -39,7 +45,7 @@ func intialiseFlags() {
 		"Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.")
 
 	flags.BoolVarP(&CurrentConfig.Verbose, "verbose", "v", false,
-		"Prints version and enables verbose output. Also activates D.")
+		"Prints version and enables verbose output. Also activates -D.")
 
 	flags.BoolVarP(&CurrentConfig.DisplayBinaryAndHttp, "display-binary-and-http", "D", false,
 		"Displays the binary request and response as well as the non-binary response headers.")
@@ -59,11 +65,11 @@ func propagateFlags() {
 		CurrentConfig.DisplayBinaryAndHttp = false
 	}
 
-	if len(CurrentConfig.AdditionalCurlArgs) != 0 {
+	if len(CurrentConfig.AdditionalCurlArgs) != 0 || CurrentConfig.CustomCurlPath != "" {
 		CurrentConfig.ForceCurl = true
 	}
 
 	if CurrentConfig.ForceCurl && CurrentConfig.ForceNoCurl {
-		PanicWithMessage("Both --curl and --no-curl are active.\nI cannot use and not use curl.\nPlease check your arguments via -v.")
+		PanicWithMessage("Both --curl and --no-curl are active.\nI cannot use and not use curl.\nPlease check the supplied and implied arguments via -v.")
 	}
 }
