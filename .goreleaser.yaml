@@ -8,6 +8,10 @@
 #    # you may remove this if you don't need go generate
 #    - go generate ./...
 
+env:
+  - PROTO_VERSION=3.20.0
+# todo. we cannot use this like this. We need to use env templating here...
+
 builds:
   - dir: src
     env:
@@ -16,17 +20,44 @@ builds:
       - linux
       - windows
       - darwin
+    ignore:
+      # This combination is not pre-built by Google Protobuf
+      - goos: windows
+        goarch: arm64
+
 archives:
   - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
+      # adapt names to the protoc release names
+      darwin: osx
+      windows: win
+      386: x86_32
       amd64: x86_64
+      arm64: aarch_64
+
+    format: zip
+
+    files:
+      - '*.md'
+
+      # todo. make proto-version interpolated
+      # copy protoc binaries and their .proto files previously downloaded via release/get-protoc-binaries.sh
+      - src: 'release/tmp/protoc-3.20.0-{{ .Os }}-{{ .Arch }}/bin'
+        dst: 'internal/bin'
+        strip_parent: true # avoids, that protoc is copied into internal/bin/release/tmp/.../bin
+      - src: 'release/tmp/protoc-3.20.0-{{ .Os }}-{{ .Arch }}/include'
+        dst: 'internal/include'
+        # todo. We need to make sure, that when the bundled protoc is used, then the bundled .proto files are used as well.
+        # For that, we need to manually and explicitly supply the -I /path/to/protocurl/internal/include to protoc.
+        # If the user instead supplies their own --protoc-path, then we need to use the global /usr/include etc.
+
+        # I think it's easiest to simply create the Dockerfiles from prebuilt binaries etc.
+
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
+
 changelog:
   sort: asc
   filters:

@@ -131,6 +131,7 @@ See [RELEASE.md](RELEASE.md)
   a docker container.
   * Explain, that goReleaser is used.
 * Release the latest version on docker, via GitHub action under `qaware/protocurl`
+  * https://www.docker.com/blog/multi-arch-images/ use multiple-architectures
 * `docker scan`
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.

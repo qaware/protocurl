@@ -60,7 +60,8 @@ for the users to override it.
 var rootCmd = &cobra.Command{
 	Short: "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
 	Use: "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text\n\n" +
-		"If no curl executable was found in the path, it will fall back to an internal non-configurable http request.",
+		"It uses '" + CurlExecutableName + "' from PATH. If none was found, it will fall back to an internal non-configurable http request.\n" +
+		"It uses a bundled '" + ProtocExecutableName + "' which is used to parse the .proto files.",
 	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
