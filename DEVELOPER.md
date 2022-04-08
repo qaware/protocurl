@@ -3,6 +3,8 @@
 Almost all development, except for the execution of `test/suite/test.sh` is based on docker. For the execution of the
 test script, one can use native bash or attempt to use WSL and variations on Windows.
 
+As for script utilities, one needs `bash`, `jq`, `unzip` and `curl`.
+
 ## Test server
 
 When new dependencies are needed for the test server, the following command enables one to start a shell in the test

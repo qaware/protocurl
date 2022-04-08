@@ -116,7 +116,7 @@ See [RELEASE.md](RELEASE.md)
 * **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
   messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
   field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
-* **Quality of Life Improvments**: Avoid explicitly specifying the file via `-f` and instead search the message types
+* **Quality of Life Improvements**: Avoid explicitly specifying the file via `-f` and instead search the message types
   from `-i` and `-o`. Additionally, it should be sufficient to only use the name of the message type instead of the full
   path, whenever the message type is unique.
 * **Interactive input for the user**: For first time users, it might be better for them to simply start with a command
@@ -124,6 +124,15 @@ See [RELEASE.md](RELEASE.md)
   and then be prompted for the input arguments. This way, it's easier for the user to run it and to get help on each
   command. In the final step, the CLI could produce an output, where the final command can be as the full version.(
   see [example](https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46#2d6e))
+* **Auto-update to newer versions of dependencies**: There are many fixed dependencies such as the docker base image,
+  the protoc version as well as the Go modules. Ideally, we want to automatically take the newest version of any
+  dependency and rebuild a release whenever any of the dependencies update. This makes creating secure software easier
+  as minimal manual steps are involved. The following places need attention:
+  * Docker base image: src/Dockerfile
+  * PROTO_VERSION: release/get-protoc-binaries.sh
+  * Go modules
+  * Test dependencies: Docker base image, Node, Npm + packages, jq. We could always use the newest version here.
+  * Goreleaser
 
 ## Open TODOs
 

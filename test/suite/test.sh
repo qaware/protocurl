@@ -85,7 +85,7 @@ runAllTests() {
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.runAgainWithArg // \"\"|@sh)\""
-  cat test/suite/testcases.json | test/suite/jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
+  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest
   chmod +x ./test/suite/run-testcases.sh

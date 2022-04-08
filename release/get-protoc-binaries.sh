@@ -3,6 +3,7 @@ set -e
 
 PROTO_VERSION="3.20.0"
 
+# platforms and architectures for which Google released pre-built binaries
 VARIATIONS=(
   "linux-aarch_64"
   "linux-x86_32"
