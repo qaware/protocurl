@@ -136,6 +136,22 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "moved-protoc",
+    "beforeTestBash": "mv /usr/bin/protoc /usr/bin/protoc-bak",
+    "args": [
+      "--protoc-path /usr/bin/protoc-bak -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "missing-protoc",
+    "beforeTestBash": "mv /usr/bin/protoc /usr/bin/protoc-bak",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
     "filename": "echo-filled",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",

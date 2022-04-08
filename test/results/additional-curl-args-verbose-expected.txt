@@ -7,6 +7,7 @@ Invoked with following default & parsed arguments:
   "ProtoInputFilePath": "happyday.proto",
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
+  "CustomProtocPath": "",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "DisplayBinaryAndHttp": true,
@@ -239,7 +240,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Fri, 08 Apr 2022 11:33:19 GMT
+< Date: Fri, 08 Apr 2022 12:11:57 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -250,7 +251,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 11:33:19 GMT
+Date: Fri, 08 Apr 2022 12:11:57 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

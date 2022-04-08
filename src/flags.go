@@ -32,8 +32,11 @@ func intialiseFlags() {
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'")
 
+	flags.StringVar(&CurrentConfig.CustomProtocPath, "protoc-path", "",
+		"Uses the given path to invoke protoc instead of searching for "+ProtocExecutableName+" in PATH.")
+
 	flags.StringVar(&CurrentConfig.CustomCurlPath, "curl-path", "",
-		"Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.")
+		"Uses the given path to invoke curl instead of searching for "+CurlExecutableName+" in PATH. Also activates --curl.")
 
 	flags.BoolVar(&CurrentConfig.ForceNoCurl, "no-curl", false,
 		"Forces the use of the built-in internal http request instead of curl.")

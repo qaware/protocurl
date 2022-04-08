@@ -60,6 +60,10 @@ To add a test, simply add a new entry into `test/suite/testcases.json` and run t
 empty expected output file and copy the actual output side by side. You can inspect the actual output and copy it into
 the expected-output file when you are happy.
 
+If you are happy with the changes and all diffs are expected, you can also copy all output into their `*-expected.txt`
+via
+`test/suite/copy-test-results-output-to-expected.sh`.
+
 ### Example tests run
 
 Example runs can be found here: [test.yml](https://github.com/qaware/protocurl/actions/workflows/test.yml).

@@ -1,0 +1,5 @@
+######### STDOUT #########
+######### STDERR #########
+I could not find a 'protoc' executable. Please check your PATH.
+panic: exec: "protoc": executable file not found in $PATH
+

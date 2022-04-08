@@ -20,6 +20,7 @@ Flags:
       --no-curl                   Forces the use of the built-in internal http request instead of curl.
   -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
   -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
+      --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH.
   -H, --request-header string     Adds the string header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'
   -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
   -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse

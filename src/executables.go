@@ -11,17 +11,21 @@ const CurlExecutableName = "curl"
 var foundExecutables = make(map[string]string)
 
 func findProtocExecutable() (string, error) {
-	return findExecutable(ProtocExecutableName, true)
+	return getExecutablePathOrLookup(CurrentConfig.CustomProtocPath, ProtocExecutableName, true)
 }
 
 func findCurlExecutable(force bool) (string, error) {
-	if CurrentConfig.CustomCurlPath != "" {
+	return getExecutablePathOrLookup(CurrentConfig.CustomCurlPath, CurlExecutableName, force)
+}
+
+func getExecutablePathOrLookup(optionalExecPath string, name string, force bool) (string, error) {
+	if optionalExecPath != "" {
 		if CurrentConfig.Verbose {
-			fmt.Printf("Using custom curl path: %s\n", CurrentConfig.CustomCurlPath)
+			fmt.Printf("Using custom "+name+" path: %s\n", optionalExecPath)
 		}
-		return CurrentConfig.CustomCurlPath, nil
+		return optionalExecPath, nil
 	} else {
-		return findExecutable(CurlExecutableName, force)
+		return findExecutable(name, force)
 	}
 }
 

@@ -14,6 +14,7 @@ type Config struct {
 	ProtoInputFilePath   string
 	RequestType          string
 	ResponseType         string
+	CustomProtocPath     string
 	Url                  string
 	DataText             string
 	DisplayBinaryAndHttp bool
