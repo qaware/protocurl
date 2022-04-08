@@ -2,9 +2,8 @@
 ######### STDERR #########
 Failed to convert input .proto to FileDescriptorSet. Error: exit status 1
 protoc stderr:
-C: warning: directory does not exist.
-/Program Files/Git/does-not-exist: warning: directory does not exist.
-Could not make proto path relative: C:/Program Files/Git/does-not-exist/happyday.proto: No such file or directory
+does-not-exist: warning: directory does not exist.
+Could not make proto path relative: does-not-exist/happyday.proto: No such file or directory
 
 panic: exit status 1
 

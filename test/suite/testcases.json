@@ -42,7 +42,7 @@
   {
     "filename": "invalid-protofile-dir",
     "args": [
-      "--proto-dir /does-not-exist -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--proto-dir does-not-exist -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ]
   },
