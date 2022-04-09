@@ -2,10 +2,8 @@
 =========================== Request Text     =========================== >>>
 includeReason: true
 =========================== CURL ERROR       ===========================
-*   Trying ::1:8080...
-* connect to ::1 port 8080 failed: Connection refused
-*   Trying ::1:8080...
-* Connected to localhost (::1) port 8080 (#0)
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
 > POST /echo HTTP/1.1
 > Host: localhost:8080
 > User-Agent: curl/7.74.0
@@ -19,7 +17,7 @@ includeReason: true
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Sat, 09 Apr 2022 23:06:24 GMT
+< Date: Sat, 09 Apr 2022 23:31:48 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 2

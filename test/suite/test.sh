@@ -12,6 +12,7 @@ export TESTS_SUCCESS="true"
 
 source test/suite/setup.sh
 
+NORMALISED_ASPECTS="date, go traceback, text format indentation"
 normaliseOutput() {
   # normalise line endings
   sed -i 's/^M$//g' "$1"
@@ -22,9 +23,6 @@ normaliseOutput() {
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
   sed -i "s/:  /: /g" "$1"
-
-  # -v on curl might show 127.0.0.1 or ::1 for localhost. but this difference does not matter
-  sed -i "s/127.0.0.1/::1/g" "$1"
 }
 export -f normaliseOutput
 
@@ -67,7 +65,7 @@ testSingleRequest() {
     if [[ "$?" != 0 ]]; then
       export TESTS_SUCCESS="false"
       echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-      echo "=== Found difference between expected and actual output (ignoring date, go traceback, text format indentation) ==="
+      echo "=== Found difference between expected and actual output (ignoring $NORMALISED_ASPECTS) ==="
       diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
       echo "The actual output was saved into $OUT for inspection."
     else

@@ -15,7 +15,7 @@ Invoked with following default & parsed arguments:
     "'Content-Type: application/x-protobuf'"
   ],
   "CustomCurlPath": "",
-  "AdditionalCurlArgs": "-v -A my-user-agent",
+  "AdditionalCurlArgs": "-v --ipv4 -A my-user-agent",
   "Verbose": true,
   "ShowOutputOnly": false,
   "ForceNoCurl": false,
@@ -226,12 +226,10 @@ includeReason: true
 Expecting to find curl executable due to forced use of curl.
 Found curl: /usr/bin/curl
 Invoking curl http request.
-Understood additional curl args: ["-v" "-A" "my-user-agent"]
+Understood additional curl args: ["-v" "--ipv4" "-A" "my-user-agent"]
 =========================== CURL ERROR       ===========================
-*   Trying ::1:8080...
-* connect to ::1 port 8080 failed: Connection refused
-*   Trying ::1:8080...
-* Connected to localhost (::1) port 8080 (#0)
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
 > POST /happy-day/verify HTTP/1.1
 > Host: localhost:8080
 > User-Agent: my-user-agent
@@ -245,7 +243,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Sat, 09 Apr 2022 23:05:51 GMT
+< Date: Sat, 09 Apr 2022 23:31:11 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -256,7 +254,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 09 Apr 2022 23:05:51 GMT
+Date: Sat, 09 Apr 2022 23:31:11 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65
