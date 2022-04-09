@@ -29,10 +29,13 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	inputFileBinPath := path.Join(tmpDir, "inputfile.bin")
 	protoDir := CurrentConfig.ProtoFilesDir
 
+	googleProtobufInclude := getGoogleProtobufIncludePath()
+
 	protocArgs := []string{
 		protocPath,
 		"--include_imports",
 		"-o", inputFileBinPath,
+		"-I", googleProtobufInclude, // todo. this should only be used, when the bundled protoc is used. we need more logic here!
 		"-I", protoDir,
 		path.Join(protoDir, CurrentConfig.ProtoInputFilePath),
 	}
@@ -71,6 +74,20 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	PanicOnError(err)
 
 	return protoRegistryFiles
+}
+
+func getGoogleProtobufIncludePath() string {
+	protocurlPath, err := os.Executable()
+	PanicOnError(err)
+
+	includePath := path.Join(protocurlPath, "../internal/include")
+
+	if CurrentConfig.Verbose {
+		fmt.Printf("Found path of currently running protocurl: %s\nImplied google protobuf include: %s\n",
+			protocurlPath, includePath)
+	}
+
+	return includePath
 }
 
 func resolveMessageByName(messageType string, registry *protoregistry.Files) *protoreflect.MessageDescriptor {

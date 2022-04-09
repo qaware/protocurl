@@ -155,6 +155,8 @@ See [RELEASE.md](RELEASE.md)
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
 * Licensing, since jaegertracing/protobuf is included.
-* Bundle a curl and protoc together inside the release ZIP.
-  * Mention authors and licenses for curl and protoc when bundling
-  * We an use GoReleaser for this: https://goreleaser.com/customization/archive/
+* Bundle protoc together inside the release ZIP.
+  * Mention authors and licenses for protoc when bundling
+  * We want to use GoReleaser for this: https://goreleaser.com/customization/archive/
+  * We want to use the bundled protoc include when the bundled protoc is used. otherwise, we use the global include
+    library.
