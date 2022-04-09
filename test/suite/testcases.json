@@ -136,18 +136,49 @@
     "runAgainWithArg": "--no-curl"
   },
   {
-    "filename": "moved-protoc",
-    "beforeTestBash": "mv /usr/bin/protoc /usr/bin/protoc-bak",
+    "filename": "global-protoc",
+    "beforeTestBash": "mv /protocurl/protocurl-internal/bin/protoc /usr/bin/protoc && chmod +X /usr/bin/protoc",
+    "args": [
+      "--protoc -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "missing-protocurl-internal",
+    "beforeTestBash": "mv /protocurl/protocurl-internal /moved",
+    "args": [
+      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "global-protoc-and-lib",
+    "beforeTestBash": "mv /protocurl/protocurl-internal/bin/protoc /usr/bin/protoc-bak && chmod +X /usr/bin/protoc-bak && mv /protocurl/protocurl-internal/include /usr/bin/include",
     "args": [
       "--protoc-path /usr/bin/protoc-bak -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
   {
-    "filename": "missing-protoc",
-    "beforeTestBash": "mv /usr/bin/protoc /usr/bin/protoc-bak",
+    "filename": "moved-lib",
+    "beforeTestBash": "mv /protocurl/protocurl-internal/include /usr/bin/include",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "missing-protoc",
+    "beforeTestBash": "mv /protocurl/protocurl-internal/bin /usr/bin/protoc-bak",
+    "args": [
+      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "missing-protoc-global",
+    "args": [
+      "-v --protoc -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },

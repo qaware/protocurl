@@ -4,7 +4,10 @@ Error: required flag(s) "URL", "data-text", "proto-file", "request-type", "respo
 Usage:
   protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
 
-If no curl executable was found in the path, it will fall back to an internal non-configurable http request.
+It uses 'curl' from PATH. If none was found, it will fall back to an internal non-configurable http request.
+It uses a bundled 'protoc' (by default) which is used to parse the .proto files.
+The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via 'protoc'.
+If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from 
 
 Examples:
   protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d "myField: true, otherField: 1337"
@@ -20,7 +23,8 @@ Flags:
       --no-curl                   Forces the use of the built-in internal http request instead of curl.
   -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
   -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
-      --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH.
+      --protoc                    Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.
+      --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH. Also activates --protoc.
   -H, --request-header string     Adds the string header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'
   -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
   -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse

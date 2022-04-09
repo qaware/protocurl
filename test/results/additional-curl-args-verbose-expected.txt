@@ -7,7 +7,6 @@ Invoked with following default & parsed arguments:
   "ProtoInputFilePath": "happyday.proto",
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
-  "CustomProtocPath": "",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "DisplayBinaryAndHttp": true,
@@ -20,9 +19,12 @@ Invoked with following default & parsed arguments:
   "Verbose": true,
   "ShowOutputOnly": false,
   "ForceNoCurl": false,
-  "ForceCurl": true
+  "ForceCurl": true,
+  "GlobalProtoc": false,
+  "CustomProtocPath": ""
 }
-Found protoc: /usr/bin/protoc
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -226,6 +228,8 @@ Found curl: /usr/bin/curl
 Invoking curl http request.
 Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== CURL ERROR       ===========================
+*   Trying ::1:8080...
+* connect to ::1 port 8080 failed: Connection refused
 *   Trying 127.0.0.1:8080...
 * Connected to localhost (127.0.0.1) port 8080 (#0)
 > POST /happy-day/verify HTTP/1.1
@@ -237,10 +241,11 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 > Content-Type: application/x-www-form-urlencoded
 > 
 } [15 bytes data]
+* upload completely sent off: 15 out of 15 bytes
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Fri, 08 Apr 2022 12:11:57 GMT
+< Date: Sat, 09 Apr 2022 23:05:51 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -251,7 +256,7 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 12:11:57 GMT
+Date: Sat, 09 Apr 2022 23:05:51 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

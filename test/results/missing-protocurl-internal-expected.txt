@@ -24,8 +24,14 @@ Invoked with following default & parsed arguments:
   "CustomProtocPath": ""
 }
 ######### STDERR #########
-Could not find bundled executable protoc 
-Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
-panic: Could not find bundled executable protoc 
-Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
+Cannot find 'protocurl-internal' directory.
+Please ensure that you correctly extracted the full protocurl archive.
+I was expecting to find a directory 'protocurl-internal' side by side to theprotocurl executable.
+The executable was found at /protocurl/protocurl
+Error: lstat /protocurl/protocurl-internal: no such file or directory
+panic: Cannot find 'protocurl-internal' directory.
+Please ensure that you correctly extracted the full protocurl archive.
+I was expecting to find a directory 'protocurl-internal' side by side to theprotocurl executable.
+The executable was found at /protocurl/protocurl
+Error: lstat /protocurl/protocurl-internal: no such file or directory
 

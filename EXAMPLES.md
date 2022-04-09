@@ -62,7 +62,6 @@ Invoked with following default & parsed arguments:
   "ProtoInputFilePath": "happyday.proto",
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
-  "CustomProtocPath": "",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "date: { seconds: 1648044939}",
   "DisplayBinaryAndHttp": true,
@@ -75,9 +74,12 @@ Invoked with following default & parsed arguments:
   "Verbose": true,
   "ShowOutputOnly": false,
   "ForceNoCurl": false,
-  "ForceCurl": false
+  "ForceCurl": false,
+  "GlobalProtoc": false,
+  "CustomProtocPath": ""
 }
-Found protoc: /usr/bin/protoc
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
 =========================== .proto descriptor ===========================
 file:  {
   name:  "google/protobuf/timestamp.proto"
@@ -280,7 +282,7 @@ Understood additional curl args: []
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 12:22:10 GMT
+Date: Sat, 09 Apr 2022 23:12:10 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

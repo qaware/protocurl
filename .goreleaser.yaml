@@ -42,15 +42,17 @@ archives:
       # todo. make proto-version interpolated
       # copy protoc binaries and their .proto files previously downloaded via release/get-protoc-binaries.sh
       - src: 'release/tmp/protoc-3.20.0-{{ .Os }}-{{ .Arch }}/bin'
-        dst: 'internal/bin'
-        strip_parent: true # avoids, that protoc is copied into internal/bin/release/tmp/.../bin
+        dst: 'protocurl-internal/bin'
+        strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
       - src: 'release/tmp/protoc-3.20.0-{{ .Os }}-{{ .Arch }}/include'
-        dst: 'internal/include'
+        dst: 'protocurl-/include'
         # todo. We need to make sure, that when the bundled protoc is used, then the bundled .proto files are used as well.
-        # For that, we need to manually and explicitly supply the -I /path/to/protocurl/internal/include to protoc.
+        # For that, we need to manually and explicitly supply the -I /path/to/protocurl/protocurl-internal/include to protoc.
         # If the user instead supplies their own --protoc-path, then we need to use the global /usr/include etc.
 
         # I think it's easiest to simply create the Dockerfiles from prebuilt binaries etc.
+
+        # todo. create docker image with this archive's content
 
 checksum:
   name_template: 'checksums.txt'

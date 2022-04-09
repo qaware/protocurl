@@ -17,10 +17,7 @@ See [usage notes](doc/generated.usage.txt).
 
 # Installation
 
-1. Clone this repository
-2. Build the `protocurl:latest` image via: `docker build -f src/Dockerfile -t protocurl .`
-
-todo: update once everything is in go
+todo. download archive, extract, add symlink in /usr/bin/protocurl. todo. `docker pull qaware/protocurl`
 
 # Examples
 
@@ -133,6 +130,9 @@ See [RELEASE.md](RELEASE.md)
   * Go modules
   * Test dependencies: Docker base image, Node, Npm + packages, jq. We could always use the newest version here.
   * Goreleaser
+* **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
+  work with the filesdescriptorset.
+* **Fix duplicated error messages**
 
 ## Open TODOs
 
@@ -154,7 +154,7 @@ See [RELEASE.md](RELEASE.md)
   * https://pkg.go.dev/google.golang.org/protobuf/proto#pkg-types
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
-* Licensing, since jaegertracing/protobuf is included.
+* Licensing, since protoc is included.
 * Bundle protoc together inside the release ZIP.
   * Mention authors and licenses for protoc when bundling
   * We want to use GoReleaser for this: https://goreleaser.com/customization/archive/

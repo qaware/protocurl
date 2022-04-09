@@ -7,7 +7,6 @@ Invoked with following default & parsed arguments:
   "ProtoInputFilePath": "happyday.proto",
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
-  "CustomProtocPath": "",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "DisplayBinaryAndHttp": true,
@@ -20,9 +19,12 @@ Invoked with following default & parsed arguments:
   "Verbose": true,
   "ShowOutputOnly": false,
   "ForceNoCurl": true,
-  "ForceCurl": false
+  "ForceCurl": false,
+  "GlobalProtoc": false,
+  "CustomProtocPath": ""
 }
-Found protoc: /usr/bin/protoc
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -228,7 +230,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Fri, 08 Apr 2022 12:11:28 GMT
+Date: Sat, 09 Apr 2022 23:05:39 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |

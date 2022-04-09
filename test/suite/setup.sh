@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/Dockerfile . && echo 'Done.'"
+export BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/local.Dockerfile . && echo 'Done.'"
 
 export START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d > /dev/null 2>&1 && echo 'Done.'"
 export STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down > /dev/null 2>&1 && echo 'Done.'"
