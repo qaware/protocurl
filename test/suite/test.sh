@@ -14,14 +14,17 @@ source test/suite/setup.sh
 
 normaliseOutput() {
   # normalise line endings
-  sed -i 's/^M$//' "$1"
+  sed -i 's/^M$//g' "$1"
 
   # deletes all lines starting at a go traceback
   sed -i '/goroutine 1.*/,$d' "$1"
 
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
-  sed -i "s/:  /: /" "$1"
+  sed -i "s/:  /: /g" "$1"
+
+  # -v on curl might show 127.0.0.1 or ::1 for localhost. but this difference does not matter
+  sed -i "s/127.0.0.1/::1/g" "$1"
 }
 export -f normaliseOutput
 

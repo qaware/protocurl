@@ -230,8 +230,8 @@ Understood additional curl args: ["-v" "-A" "my-user-agent"]
 =========================== CURL ERROR       ===========================
 *   Trying ::1:8080...
 * connect to ::1 port 8080 failed: Connection refused
-*   Trying 127.0.0.1:8080...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
+*   Trying ::1:8080...
+* Connected to localhost (::1) port 8080 (#0)
 > POST /happy-day/verify HTTP/1.1
 > Host: localhost:8080
 > User-Agent: my-user-agent
