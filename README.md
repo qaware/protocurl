@@ -136,8 +136,8 @@ See [RELEASE.md](RELEASE.md)
 
 ## Open TODOs
 
-* Rewrite the Tool in Go. Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as
-  a docker container.
+* Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as a docker
+  container (https://goreleaser.com/customization/docker_manifest/)
   * Explain, that goReleaser is used.
 * Release the latest version on docker, via GitHub action under `qaware/protocurl`
   * https://www.docker.com/blog/multi-arch-images/ use multiple-architectures

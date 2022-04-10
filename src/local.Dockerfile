@@ -7,5 +7,5 @@ COPY release/tmp/protoc-3.20.0-linux-x86_64/bin/protoc /protocurl/protocurl-inte
 COPY release/tmp/protoc-3.20.0-linux-x86_64/include/ /protocurl/protocurl-internal/include/
 COPY src/*go* /protocurl/
 RUN go get -d ./...
-RUN go build -o protocurl
+RUN go build -v -ldflags="-X 'main.version=<version>' -X 'main.commit=<commit>'" -o protocurl
 ENTRYPOINT ["/protocurl/protocurl"]

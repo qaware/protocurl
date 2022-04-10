@@ -1,5 +1,5 @@
 ######### STDOUT #########
-protocurl todo, build todo
+protocurl <version>, build <commit>
 Adding default header argument to request headers : [-H 'Content-Type: application/x-protobuf']
 Invoked with following default & parsed arguments:
 {
@@ -243,7 +243,7 @@ Understood additional curl args: ["-v" "--ipv4" "-A" "my-user-agent"]
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Sat, 09 Apr 2022 23:31:11 GMT
+< Date: Sat, 09 Apr 2022 23:57:26 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -254,7 +254,7 @@ Understood additional curl args: ["-v" "--ipv4" "-A" "my-user-agent"]
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 09 Apr 2022 23:31:11 GMT
+Date: Sat, 09 Apr 2022 23:57:26 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

@@ -1,5 +1,5 @@
 ######### STDOUT #########
-protocurl todo, build todo
+protocurl <version>, build <commit>
 
 Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.
 

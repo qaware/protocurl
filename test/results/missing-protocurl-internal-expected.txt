@@ -1,5 +1,5 @@
 ######### STDOUT #########
-protocurl todo, build todo
+protocurl <version>, build <commit>
 Adding default header argument to request headers : [-H 'Content-Type: application/x-protobuf']
 Invoked with following default & parsed arguments:
 {

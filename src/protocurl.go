@@ -28,8 +28,8 @@ type Config struct {
 	CustomProtocPath     string
 }
 
-var commit = "todo"
-var version = "todo"
+var commit string
+var version string
 
 var DefaultPrependedHeaderArgs = []string{"-H", "'Content-Type: application/x-protobuf'"}
 
