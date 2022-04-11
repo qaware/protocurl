@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install Go
         run: |
-          sudo apt update
-          sudo apt install -y golang
+          sudo apt-get update
+          sudo apt-get install -y golang
           go install github.com/goreleaser/goreleaser@latest
       - name: Set Version
         run: |
