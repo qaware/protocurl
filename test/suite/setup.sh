@@ -1,10 +1,28 @@
 #!/bin/bash
 
-export BUILD_PROTOCURL="echo 'Building protocurl...' && docker build -q -t protocurl:latest -f src/local.Dockerfile . && echo 'Done.'"
+source release/source.sh
 
-export START_SERVER="echo 'Starting server...' && docker-compose -f test/servers/compose.yml up --build -d > /dev/null 2>&1 && echo 'Done.'"
-export STOP_SERVER="echo 'Stopping server...' && docker-compose -f test/servers/compose.yml down > /dev/null 2>&1 && echo 'Done.'"
+buildProtocurl() {
+  echo 'Building protocurl...' &&
+    docker build -q -t protocurl:latest -f src/local.Dockerfile \
+      --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH . &&
+    echo 'Done.'
+}
+export -f buildProtocurl
 
+startServer() {
+  echo 'Starting server...' &&
+    docker-compose -f test/servers/compose.yml up --build -d >/dev/null 2>&1 &&
+    echo 'Done.'
+}
+export -f startServer
+
+stopServer() {
+  echo 'Stopping server...' &&
+    docker-compose -f test/servers/compose.yml down >/dev/null 2>&1 &&
+    echo 'Done.'
+}
+export -f stopServer
 
 isServerReady() {
   rm -rf tmpfile.log || true
@@ -20,7 +38,6 @@ isServerReady() {
   grep -q 'Listening to port' tmpfile.log
 }
 export -f isServerReady
-
 
 ensureServerIsReady() {
   echo "Waiting for server to become ready..."
@@ -43,20 +60,18 @@ ensureServerIsReady() {
 }
 export -f ensureServerIsReady
 
-
 setup() {
   tearDown
 
-  eval $BUILD_PROTOCURL
-  eval $START_SERVER
+  buildProtocurl
+  startServer
 
   ensureServerIsReady
 }
 export -f setup
 
-
 tearDown() {
   rm -rf tmpfile.log || true
-  eval $STOP_SERVER
+  stopServer
 }
 export -f tearDown

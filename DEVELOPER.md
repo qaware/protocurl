@@ -1,12 +1,14 @@
 # Developer
 
-Almost all development, except for the execution of `test/suite/test.sh` is based on docker. For the execution of the
-test script, one can use native bash or attempt to use WSL and variations on Windows.
+For development it is recommanded to use the a bash-like Terminal either natively (Linux, Mac) or via MinGW on Windows.
 
-As for script utilities, one needs `bash`, `jq`, `unzip` and `curl`. One also needs to download the protoc binaries for
-the local development via `release/get-protoc-binaries.sh`.
+**Preconditions**
 
-For development the [local.Dockerfile](src/local.Dockerfile) is used.
+* As for script utilities, one needs `bash`, `jq`, `unzip` and `curl`.
+* One also needs to download the protoc binaries for the local development via `release/0-get-protoc-binaries.sh`.
+
+For development the [local.Dockerfile](src/local.Dockerfile) is used. To build the image simply
+run `source test/suite/setup.sh` and then `buildProtocurl`
 
 ## Test server
 
