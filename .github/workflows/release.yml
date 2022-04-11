@@ -28,6 +28,8 @@ jobs:
         run: |
           ./release/0-get-protoc-binaries.sh
       - name: Build Archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./release/1-build-go-archive.sh
       - name: DockerHub Release
