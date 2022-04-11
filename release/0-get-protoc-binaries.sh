@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-PROTO_VERSION="3.20.0"
+source release/source.sh
 
 # platforms and architectures for which Google released pre-built binaries
 VARIATIONS=(
@@ -23,8 +23,13 @@ for PLAT_ARCH in "${VARIATIONS[@]}"; do
   echo "Downloading $URL ..."
   curl -s -L -o "release/tmp/protoc-$PROTO_VERSION-$PLAT_ARCH.zip" "$URL"
 
-  # Normalise platform name for integration into Goreleaser
-  NORM_PLAT_ARCH="$(echo "$PLAT_ARCH" | sed "s/win32/win-x86_32/" | sed "s/win64/win-x86_64/")"
+  # Normalise platform name for integration into Goreleaser and docker
+  NORM_PLAT_ARCH="$(echo "$PLAT_ARCH" |
+    sed "s/win32/win-386/" |
+    sed "s/win64/win-amd64/" |
+    sed "s/x86_64/amd64/" |
+    sed "s/x86_32/386/" |
+    sed "s/aarch_64/arm64/")"
 
   echo "Extracting $PROTO_VERSION-$PLAT_ARCH to $PROTO_VERSION-$NORM_PLAT_ARCH"
   unzip -q -d "release/tmp/protoc-$PROTO_VERSION-$NORM_PLAT_ARCH" "release/tmp/protoc-$PROTO_VERSION-$PLAT_ARCH.zip"
