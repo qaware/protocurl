@@ -15,7 +15,7 @@ jobs:
       - name: Install Go
         run: |
           sudo apt update
-          sudo apt install -y go
+          sudo apt install -y golang
           go install github.com/goreleaser/goreleaser@latest
       - name: Set Version
         run: |
