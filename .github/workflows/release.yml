@@ -20,4 +20,3 @@ jobs:
           echo "VERSION: $VERSION"
           git tag "${{ github.event.inputs.name }}"
           echo "VERSION: $VERSION"
-          
