@@ -16,7 +16,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y golang
-          go install github.com/goreleaser/goreleaser@latest
+          sudo go install github.com/goreleaser/goreleaser
       - name: Set Version
         run: |
           echo "Input version: ${{ github.event.inputs.name }}"
