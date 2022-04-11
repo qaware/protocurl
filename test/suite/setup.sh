@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export VVERSION="v0.0.0-test"
 source release/source.sh
 
 buildProtocurl() {
