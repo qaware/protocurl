@@ -20,10 +20,10 @@ jobs:
           source release/source.sh
       - name: Protoc
         run: |
-          ./0-get-protoc-binaries.sh
+          ./release/0-get-protoc-binaries.sh
       - name: Build Archive
         run: |
-          ./1-build-go-archive.sh
+          ./release/1-build-go-archive.sh
       - name: DockerHub Release
         run: |
-          ./2-release-docker-image.sh
+          ./release/2-release-docker-image.sh
