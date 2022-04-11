@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip curl
-          git fetch --tags
+          git fetch --tags origin
           ./release/0-get-protoc-binaries.sh
 
       - name: Tests
