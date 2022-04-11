@@ -36,3 +36,5 @@ node_modules/
 
 # GoReleaser
 dist/
+# template output
+.goreleaser.yaml

@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip curl
-          ./release/get-protoc-binaries.sh
+          ./release/0-get-protoc-binaries.sh
 
       - name: Tests
         run: |

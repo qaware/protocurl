@@ -3,7 +3,7 @@
 We use [GoReleaser](https://goreleaser.com/) to create static binaries. They are released via GitHub Action
 here (<todo>).
 
-The relevant configuration is in [.goreleaser.yml](.goreleaser.yaml).
+The relevant configuration is in [template.goreleaser.yml](template.goreleaser.yaml).
 
 ### Setup
 

@@ -126,7 +126,7 @@ See [RELEASE.md](RELEASE.md)
   dependency and rebuild a release whenever any of the dependencies update. This makes creating secure software easier
   as minimal manual steps are involved. The following places need attention:
   * Docker base image: src/Dockerfile
-  * PROTO_VERSION: release/get-protoc-binaries.sh
+  * PROTO_VERSION: release/0-get-protoc-binaries.sh
   * Go modules
   * Test dependencies: Docker base image, Node, Npm + packages, jq. We could always use the newest version here.
   * Goreleaser
