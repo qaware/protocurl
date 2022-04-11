@@ -12,7 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup
+      - name: Install Go
+        run: |
+          sudo apt update
+          sudo apt install -y go
+          go install github.com/goreleaser/goreleaser@latest
+      - name: Set Version
         run: |
           echo "Input version: ${{ github.event.inputs.name }}"
           git fetch --tags origin
