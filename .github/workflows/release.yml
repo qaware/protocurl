@@ -16,8 +16,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y golang wget
-          wget https://github.com/goreleaser/goreleaser/releases/download/v1.7.0/goreleaser_1.7.0_amd64.deb
-          dpkg -i goreleaser*.deb
+          wget -q https://github.com/goreleaser/goreleaser/releases/download/v1.7.0/goreleaser_1.7.0_amd64.deb
+          sudo dpkg -i goreleaser*.deb
       - name: Set Version
         run: |
           echo "Input version: ${{ github.event.inputs.name }}"
