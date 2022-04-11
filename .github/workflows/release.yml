@@ -18,8 +18,7 @@ jobs:
           sudo apt-get install -y wget
           wget -q https://go.dev/dl/go1.18.linux-amd64.tar.gz
           sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          sudo echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile
-          source /etc/profile
+          export PATH=\$PATH:/usr/local/go/bin
           wget -q https://github.com/goreleaser/goreleaser/releases/download/v1.7.0/goreleaser_1.7.0_amd64.deb
           sudo dpkg -i goreleaser*.deb
           rm -f *.deb *.gz
@@ -36,6 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          export PATH=\$PATH:/usr/local/go/bin
           ./release/1-build-go-archive.sh
       - name: DockerHub Release
         run: |
