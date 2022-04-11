@@ -7,7 +7,7 @@ export PROTO_VERSION="3.20.0"
 # should be one of 386, amd64 and arm64
 export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"
 
-export VVERSION="$(git describe --tags --abbrev=0)"
+export VVERSION="$( git for-each-ref --sort="*committerdate" --format '%(refname:short)' refs/tags | tail -n 1)"
 
 if [[ "$VVERSION" =~ v.*\..*\..* ]]; then
   export VERSION="${VVERSION#"v"}"
