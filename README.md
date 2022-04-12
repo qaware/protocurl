@@ -119,7 +119,7 @@ In summary:
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
-  test server
+  test server. Use officially released docker image.
 
 ## Development
 

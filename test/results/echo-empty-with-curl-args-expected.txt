@@ -8,16 +8,15 @@ includeReason: true
 > Host: localhost:8080
 > User-Agent: curl/7.74.0
 > Accept: */*
-> 'Content-Type: application/x-protobuf'
+> Content-Type: application/x-protobuf
 > Content-Length: 2
-> Content-Type: application/x-www-form-urlencoded
 > 
 } [2 bytes data]
 * upload completely sent off: 2 out of 2 bytes
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Tue, 12 Apr 2022 08:59:16 GMT
+< Date: Tue, 12 Apr 2022 16:18:14 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 2

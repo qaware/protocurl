@@ -1,6 +1,6 @@
 ######### STDOUT #########
 protocurl <version>, build <commit>
-Adding default header argument to request headers : [-H 'Content-Type: application/x-protobuf']
+Adding default header argument to request headers : [-H Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
@@ -12,7 +12,7 @@ Invoked with following default & parsed arguments:
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "-H",
-    "'Content-Type: application/x-protobuf'"
+    "Content-Type: application/x-protobuf"
   ],
   "CustomCurlPath": "",
   "AdditionalCurlArgs": "",

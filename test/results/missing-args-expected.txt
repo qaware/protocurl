@@ -7,7 +7,9 @@ Usage:
 It uses 'curl' from PATH. If none was found, it will fall back to an internal non-configurable http request.
 It uses a bundled 'protoc' (by default) which is used to parse the .proto files.
 The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via 'protoc'.
-If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from 
+If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.
+The Header 'Content-Type: application/x-protobuf' is set as a request header by default.
+When converting between binary and text, the encoding UTF-8 is always used.
 
 Examples:
   protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d "myField: true, otherField: 1337"

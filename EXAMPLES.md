@@ -55,7 +55,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
   -d "date: { seconds: 1648044939}"
 
 protocurl <version>, build <commit>
-Adding default header argument to request headers : [-H 'Content-Type: application/x-protobuf']
+Adding default header argument to request headers : [-H Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
@@ -67,7 +67,7 @@ Invoked with following default & parsed arguments:
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "-H",
-    "'Content-Type: application/x-protobuf'"
+    "Content-Type: application/x-protobuf"
   ],
   "CustomCurlPath": "",
   "AdditionalCurlArgs": "",
@@ -282,7 +282,7 @@ Understood additional curl args: []
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 12 Apr 2022 15:48:21 GMT
+Date: Tue, 12 Apr 2022 16:18:01 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
