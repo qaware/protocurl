@@ -16,7 +16,7 @@ jobs:
       - name: Install Go
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
+          sudo apt-get install -y wget zip unzip
           wget -q https://go.dev/dl/go1.18.linux-amd64.tar.gz
           sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
           export PATH="$PATH:/usr/local/go/bin"

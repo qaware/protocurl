@@ -4,7 +4,7 @@ For development it is recommanded to use the a bash-like Terminal either nativel
 
 **Preconditions**
 
-* As for script utilities, one needs `bash`, `jq`, `unzip` and `curl`.
+* As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
 * One also needs to download the protoc binaries for the local development via `release/0-get-protoc-binaries.sh`.
 
 For development the [local.Dockerfile](src/local.Dockerfile) is used. To build the image simply

@@ -19,13 +19,13 @@ builds:
 
 # https://goreleaser.com/customization/archive/
 archives:
-  - replacements: # adapt names to the protoc release names
-      darwin: osx
-      windows: win
-    format: zip
+  - format: zip
     files:
       - README.md
       - LICENSE.md
+      - src: 'dist/protocurl_{{ .Os }}_{{ .Arch }}'
+        dst: 'bin'
+        strip_parent: true
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
         dst: 'protocurl-internal/bin'

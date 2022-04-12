@@ -25,8 +25,9 @@ for PLAT_ARCH in "${VARIATIONS[@]}"; do
 
   # Normalise platform name for integration into Goreleaser and docker
   NORM_PLAT_ARCH="$(echo "$PLAT_ARCH" |
-    sed "s/win32/win-386/" |
-    sed "s/win64/win-amd64/" |
+    sed "s/win32/windows-386/" |
+    sed "s/win64/windows-amd64/" |
+    sed "s/osx/darwin/" |
     sed "s/x86_64/amd64/" |
     sed "s/x86_32/386/" |
     sed "s/aarch_64/arm64/")"

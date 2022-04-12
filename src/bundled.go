@@ -21,12 +21,12 @@ func getProtocurlInternalPath() (string, error) {
 
 	internalPathErrorMsg := "Cannot find '" + ProtocurlInternalName + "' directory.\n" +
 		"Please ensure that you correctly extracted the full protocurl archive.\n" +
-		"I was expecting to find a directory '" + ProtocurlInternalName + "' side by side to the" +
+		"I was expecting to find a directory '" + ProtocurlInternalName + "' side by side to the " +
 		"protocurl executable.\n" +
 		"The executable was found at " + protocurlPath + "\n" +
 		"Error: "
 
-	protocurlInternalPath, err := normaliseFilePath(path.Join(protocurlPath, "../"+ProtocurlInternalName))
+	protocurlInternalPath, err := normaliseFilePath(path.Join(protocurlPath, "../../"+ProtocurlInternalName))
 	if err != nil {
 		return "", errors.New(internalPathErrorMsg + err.Error())
 	}

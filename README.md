@@ -2,28 +2,26 @@
 
 ![test status](https://github.com/qaware/protocurl/actions/workflows/test.yml/badge.svg)
 
-todo.
+Like cURL, but for Protobuf: Command-line tool for interacting with Protobuf over REST-ful HTTP endpoints
 
-# Usage
+## Installation
 
-1. docker
-2. bash
+#### Native Binary
 
-todo: easier usage of the tool
+1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
+2. Extract the archive into a folder, e.g. `/usr/local/protocurl`.
+3. Add symlink to the binary in the folder: `ln -s /usr/local/protocurl/bin/protocurl /usr/local/bin/protocurl`
+4. Test that it works via `protocurl -h`
 
-## CLI Arguments
+#### Docker
 
-See [usage notes](doc/generated.usage.txt).
+Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See examples below.
 
-# Installation
+## How to use
 
-todo. download archive, extract, add symlink in /usr/bin/protocurl. todo. `docker pull qaware/protocurl`
+See [usage notes](doc/generated.usage.txt) and [EXAMPLES.md](EXAMPLES.md).
 
-# Examples
-
-See [EXAMPLES.md](EXAMPLES.md)
-
-# Protobuf Text Format
+## Protobuf Text Format
 
 Aside from JSON, Protobuf also natively supports a text format. This is the only format, which `protoc` natively
 implements and exposes.
@@ -91,19 +89,19 @@ In summary:
 
 [This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
 
-# How to contribute
+## How to contribute
 
 todo. And also link to [Developer](DEVELOPER.md).
 
-# Tests
+## Tests
 
 See [TESTS.md](TESTS.md)
 
-# Release
+## Release
 
 See [RELEASE.md](RELEASE.md)
 
-# Potential Improvements
+## Potential Improvements
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
   useful and viable for everyday usage.
@@ -130,17 +128,13 @@ See [RELEASE.md](RELEASE.md)
   * Go modules
   * Test dependencies: Docker base image, Node, Npm + packages, jq. We could always use the newest version here.
   * Goreleaser
+  * Github Action versions
 * **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
   work with the filesdescriptorset.
 * **Fix duplicated error messages**
 
-## Open TODOs
+### Open TODOs
 
-* Use [GoRelease](https://goreleaser.com/intro/) to create static binaries and to release it as a docker
-  container (https://goreleaser.com/customization/docker_manifest/)
-  * Explain, that goReleaser is used.
-* Release the latest version on docker, via GitHub action under `qaware/protocurl`
-  * https://www.docker.com/blog/multi-arch-images/ use multiple-architectures
 * `docker scan`
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
@@ -154,9 +148,4 @@ See [RELEASE.md](RELEASE.md)
   * https://pkg.go.dev/google.golang.org/protobuf/proto#pkg-types
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
-* Licensing, since protoc is included.
-* Bundle protoc together inside the release ZIP.
-  * Mention authors and licenses for protoc when bundling
-  * We want to use GoReleaser for this: https://goreleaser.com/customization/archive/
-  * We want to use the bundled protoc include when the bundled protoc is used. otherwise, we use the global include
-    library.
+* Mention authors and licenses for protoc when bundling
