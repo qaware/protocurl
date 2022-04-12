@@ -96,6 +96,8 @@ echo "$EXAMPLES_TEMPLATE" \
   | sed "s%___EXAMPLE_3___%$EXAMPLE_3%" \
   | sed "s%___EXAMPLE_4___%$EXAMPLE_4%" > EXAMPLES.md
 
+normaliseOutput EXAMPLES.md
+
 echo "Done."
 
 # ====================================================================================

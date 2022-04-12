@@ -75,3 +75,17 @@ tearDown() {
   stopServer
 }
 export -f tearDown
+
+export NORMALISED_ASPECTS="date, go traceback, text format indentation"
+normaliseOutput() {
+  # normalise line endings
+  sed -i 's/^M$//g' "$1"
+
+  # deletes all lines starting at a go traceback
+  sed -i '/goroutine 1.*/,$d' "$1"
+
+  # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
+  # But this difference does not actually matter, hence we normalise this away.
+  sed -i "s/:  /: /g" "$1"
+}
+export -f normaliseOutput
