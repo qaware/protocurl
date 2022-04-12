@@ -7,8 +7,6 @@ retrieveLatestVersion() {
   REPO="$1"
   TAG_FILTER="$2"
 
-  echo "Retrieving latest information from github.com/$REPO ..."
-
   GITHUB_REFS="$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/$REPO/git/matching-refs/tags")"
@@ -28,8 +26,6 @@ retrieveLatestVersion() {
   fi
 
   LATEST_VERSION="${LATEST_VERSION#"refs/tags/"}"
-
-  echo "Found latest $REPO as: $LATEST_VERSION"
 }
 
 
@@ -42,21 +38,20 @@ echo "Established Protobuf version $PROTO_VERSION"
 # retrieve version: go
 retrieveLatestVersion "golang/go" "go1[.][0-9]+[.][0-9]+"
 GO_VERSION="${LATEST_VERSION#"go"}"
-GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")"
-echo "Removed patch version for go: $GO_VERSION"
+GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
+echo "Established Go version: $GO_VERSION"
 
 
 # retrieve version: goreleaser
 retrieveLatestVersion "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+"
 export GORELEASER_VERSION="$LATEST_VERSION"
+echo "Established Goreleaser version: $GORELEASER_VERSION"
 
 
 
 # compute download urls
 ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/")"
 
-GO_DOWNLOAD_URL="https://go.dev/dl/go${GO_VERSION}.linux-$ARCH.tar.gz"
-echo "Established Go download url: $GO_DOWNLOAD_URL"
+export GO_DOWNLOAD_URL="https://go.dev/dl/go${GO_VERSION}.linux-$ARCH.tar.gz"
 
 export GORELEASER_DOWNLOAD_URL="https://github.com/goreleaser/goreleaser/releases/download/${GORELEASER_VERSION}/goreleaser_${GORELEASER_VERSION#"v"}_${ARCH}.deb"
-echo "Established Goreleaser download url: $GORELEASER_DOWNLOAD_URL"

@@ -2,11 +2,26 @@
 
 source release/source.sh
 
+PROTOCURL_IMAGE=""
 buildProtocurl() {
-  echo 'Building protocurl...' &&
-    docker build -q -t protocurl:latest -f src/local.Dockerfile \
-      --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH . &&
-    echo 'Done.'
+  if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
+    export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
+    echo "Pulling $PROTOCURL_IMAGE ..." && docker pull $PROTOCURL_IMAGE && echo "Done."
+
+    customNormaliseOutput() {
+      sed -i -E "s/protocurl .*, build .*/protocurl <version>, build <commit>/g" "$1"
+    }
+    export -f customNormaliseOutput
+  else
+    export PROTOCURL_IMAGE="protocurl:latest"
+    echo "Building $PROTOCURL_IMAGE ..." &&
+      docker build -q -t $PROTOCURL_IMAGE -f src/local.Dockerfile \
+        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH . &&
+      echo "Done."
+
+    customNormaliseOutput() { true; }
+    export -f customNormaliseOutput
+  fi
 }
 export -f buildProtocurl
 
@@ -87,5 +102,7 @@ normaliseOutput() {
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
   sed -i "s/:  /: /g" "$1"
+
+  customNormaliseOutput "$1"
 }
 export -f normaliseOutput
