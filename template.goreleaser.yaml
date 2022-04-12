@@ -1,5 +1,8 @@
 # Documentation at https://goreleaser.com
 
+# This file is a template and expressions such as __PROTOC_VERSION__ are replaced
+# with envrionment variables such as $PROTOC_VERSION before usage.
+
 # https://goreleaser.com/customization/build/
 builds:
   - dir: src

@@ -60,7 +60,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/i386,linux/arm64
           build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}
+          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
           file: release/Dockerfile
           push: true
           context: .
