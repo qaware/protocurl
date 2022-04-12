@@ -33,8 +33,8 @@ archives:
       - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
         dst: 'protocurl-internal/bin'
         strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
-      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include'
-        dst: 'protocurl-internal/include'
+      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+        dst: 'protocurl-internal/include/google/protobuf'
         strip_parent: true
 
 checksum:
