@@ -12,6 +12,8 @@ builds:
       # This combination is not pre-built by Google Protobuf
       - goos: windows
         goarch: arm64
+      # todo. inspect why this does not build yet.
+      - goos: darwin
 
 archives:
   - replacements: # adapt names to the protoc release names
