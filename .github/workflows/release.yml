@@ -39,5 +39,7 @@ jobs:
           export PATH=$PATH:/usr/local/go/bin
           ./release/1-build-go-archive.sh
       - name: DockerHub Release
+        env:
+          VERSION: ${{ github.event.inputs.name }}
         run: |
           ./release/2-release-docker-image.sh
