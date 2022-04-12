@@ -119,16 +119,8 @@ See [RELEASE.md](RELEASE.md)
   and then be prompted for the input arguments. This way, it's easier for the user to run it and to get help on each
   command. In the final step, the CLI could produce an output, where the final command can be as the full version.(
   see [example](https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46#2d6e))
-* **Auto-update to newer versions of dependencies**: There are many fixed dependencies such as the docker base image,
-  the protoc version as well as the Go modules. Ideally, we want to automatically take the newest version of any
-  dependency and rebuild a release whenever any of the dependencies update. This makes creating secure software easier
-  as minimal manual steps are involved. The following places need attention:
-  * Docker base image: src/Dockerfile
-  * PROTO_VERSION: release/0-get-protoc-binaries.sh
-  * Go modules
-  * Test dependencies: Docker base image, Node, Npm + packages, jq. We could always use the newest version here.
-  * Goreleaser
-  * Github Action versions
+* **Auto-update to newer versions of
+  dependencies**: [Dependabot](https://github.com/qaware/protocurl/network/dependencies)
 * **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
   work with the filesdescriptorset.
 * **Fix duplicated error messages**
@@ -139,13 +131,5 @@ See [RELEASE.md](RELEASE.md)
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
 * Apply 12 factor CLI app principles
-* Add documentation explaining how the protobuf processing works with links to go protobuf SDK
-  * https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect
-  * https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb#Message.ProtoReflect
-  * https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect#Descriptor
-  * https://pkg.go.dev/google.golang.org/protobuf/encoding/prototext
-  * https://pkg.go.dev/google.golang.org/protobuf/proto#Unmarshal
-  * https://pkg.go.dev/google.golang.org/protobuf/proto#pkg-types
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
-* Mention authors and licenses for protoc when bundling

@@ -17,6 +17,20 @@ import (
 	"strings"
 )
 
+/*
+Given a directory of .proto files, we use `protoc` to convert these to
+an equivalent FileDescriptorSet payload where imports have been resolved.
+This FileDescriptorSet is then promoted to a *protoregistry.Files where
+messages types given by the user can be looked up - and where payloads of these types
+can be created.
+
+See:
+	FileDescriptorSet: https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto
+	https://pkg.go.dev/google.golang.org/protobuf/reflect/protoreflect
+	https://pkg.go.dev/google.golang.org/protobuf/reflect/protodesc
+	https://pkg.go.dev/google.golang.org/protobuf/reflect/protoregistry
+*/
+
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {

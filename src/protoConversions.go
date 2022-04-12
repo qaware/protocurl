@@ -8,6 +8,20 @@ import (
 	"strings"
 )
 
+/*
+Given a *protoregistry.Files corresponding to the provided .proto files, we can
+resolve the protobuf message descriptor given its name and use dynamicpb.NewMessage
+to create a message of that message type without needing to generate go code at runtime.
+
+Given a message, simple converters in prototext can be used for the conversion between binary and text format.
+
+See:
+	https://pkg.go.dev/google.golang.org/protobuf/encoding/prototext
+	https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb
+	https://pkg.go.dev/google.golang.org/protobuf/reflect/protoregistry
+
+*/
+
 var binaryMarshalOptions = proto.MarshalOptions{
 	Deterministic: true, // stabilises test output
 }
