@@ -32,17 +32,20 @@ func intialiseFlags() {
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'")
 
+	flags.BoolVar(&CurrentConfig.GlobalProtoc, "protoc", false,
+		"Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.")
+
 	flags.StringVar(&CurrentConfig.CustomProtocPath, "protoc-path", "",
-		"Uses the given path to invoke protoc instead of searching for "+ProtocExecutableName+" in PATH.")
+		"Uses the given path to invoke protoc instead of searching for "+ProtocExecutableName+" in PATH. Also activates --protoc.")
+
+	flags.BoolVar(&CurrentConfig.ForceCurl, "curl", false,
+		"Forces the use of curl executable found in PATH. If none was found, then exits with an error.")
 
 	flags.StringVar(&CurrentConfig.CustomCurlPath, "curl-path", "",
 		"Uses the given path to invoke curl instead of searching for "+CurlExecutableName+" in PATH. Also activates --curl.")
 
 	flags.BoolVar(&CurrentConfig.ForceNoCurl, "no-curl", false,
 		"Forces the use of the built-in internal http request instead of curl.")
-
-	flags.BoolVar(&CurrentConfig.ForceCurl, "curl", false,
-		"Forces the use of curl executable found in PATH. If none was found, then exits with an error.")
 
 	flags.StringVarP(&CurrentConfig.AdditionalCurlArgs, "curl-args", "C", "",
 		"Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.")
@@ -70,6 +73,10 @@ func propagateFlags() {
 
 	if len(CurrentConfig.AdditionalCurlArgs) != 0 || CurrentConfig.CustomCurlPath != "" {
 		CurrentConfig.ForceCurl = true
+	}
+
+	if CurrentConfig.CustomProtocPath != "" {
+		CurrentConfig.GlobalProtoc = true
 	}
 
 	if CurrentConfig.ForceCurl && CurrentConfig.ForceNoCurl {

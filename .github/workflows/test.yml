@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,8 +18,10 @@ jobs:
 
       - name: Setup
         run: |
-          sudo apt-get install jq
-          cp "$(which jq)" test/suite/jq
+          sudo apt-get update
+          sudo apt-get install -y jq zip unzip curl
+          git fetch --tags origin
+          ./release/0-get-protoc-binaries.sh
 
       - name: Tests
         run: |

@@ -20,12 +20,11 @@ Invoked with following default & parsed arguments:
   "ShowOutputOnly": false,
   "ForceNoCurl": false,
   "ForceCurl": false,
-  "GlobalProtoc": false,
+  "GlobalProtoc": true,
   "CustomProtocPath": ""
 }
+GlobalProtoc is set, hence bundled protoc will be ignored.
 ######### STDERR #########
-Could not find bundled executable protoc 
-Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
-panic: Could not find bundled executable protoc 
-Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
+I could not find a 'protoc' executable. Please check your PATH.
+panic: exec: "protoc": executable file not found in $PATH
 

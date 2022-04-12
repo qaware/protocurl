@@ -1,0 +1,48 @@
+# Documentation at https://goreleaser.com
+
+# https://goreleaser.com/customization/build/
+builds:
+  - dir: src
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    ignore:
+      # This combination is not pre-built by Google Protobuf
+      - goos: windows
+        goarch: arm64
+      # todo. this does not build inside github action
+      - goos: darwin
+
+
+# https://goreleaser.com/customization/archive/
+archives:
+  - format: zip
+    files:
+      - README.md
+      - LICENSE.md
+      - src: 'dist/protocurl_{{ .Os }}_{{ .Arch }}'
+        dst: 'bin'
+        strip_parent: true
+      # copy protoc binaries and their .proto files previously downloaded
+      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
+        dst: 'protocurl-internal/bin'
+        strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
+      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include'
+        dst: 'protocurl-internal/include'
+        strip_parent: true
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

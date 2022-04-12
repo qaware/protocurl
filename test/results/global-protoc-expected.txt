@@ -1,0 +1,11 @@
+######### STDOUT #########
+######### STDERR #########
+Failed to convert input .proto to FileDescriptorSet. Error: exit status 1
+protoc stderr:
+/usr/bin/include: warning: directory does not exist.
+google/protobuf/timestamp.proto: File not found.
+happyday.proto:5:1: Import "google/protobuf/timestamp.proto" was not found or had errors.
+happyday.proto:8:3: "google.protobuf.Timestamp" is not defined.
+
+panic: exit status 1
+

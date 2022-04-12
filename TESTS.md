@@ -2,12 +2,10 @@
 
 The tests are run automatically via GitHub Actions [here](.github/workflows/test.yml).
 
-To run the tests locally:
+Run tests via `./test/suite/test.sh "$PWD"` (bash) from the repository root directory.
 
-1. Install `https://stedolan.github.io/jq/` into `test/suite/jq` (executable)
-2. Run tests via `./test/suite/test.sh "$PWD"` (bash) from the repository root directory.
-   * It needs the full path to the current working directory, as otherwise the docker volume mount fails in WSL on
-     Windows. Concretely, on WSL Windows, we need to use `./test/suite/test.sh "c:/path/to/protocurl/repository"`
+* It needs the full path to the current working directory, as otherwise the docker volume mount fails in WSL on Windows.
+  Concretely, on WSL Windows, we need to use `./test/suite/test.sh "c:/path/to/protocurl/repository"`
 
 ### How the tests work
 

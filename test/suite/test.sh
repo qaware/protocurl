@@ -12,16 +12,17 @@ export TESTS_SUCCESS="true"
 
 source test/suite/setup.sh
 
+NORMALISED_ASPECTS="date, go traceback, text format indentation"
 normaliseOutput() {
   # normalise line endings
-  sed -i 's/^M$//' "$1"
+  sed -i 's/^M$//g' "$1"
 
   # deletes all lines starting at a go traceback
   sed -i '/goroutine 1.*/,$d' "$1"
 
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
-  sed -i "s/:  /: /" "$1"
+  sed -i "s/:  /: /g" "$1"
 }
 export -f normaliseOutput
 
@@ -53,7 +54,7 @@ testSingleRequest() {
       eval "$RUN_CLIENT --name $FILENAME protocurl $ARGS" 2> "$OUT_ERR" >> "$OUT"
     else
       ARGS="$(echo "$ARGS" | sed 's/"/\\"/g' )" # escape before usage inside quoted context
-      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME protocurl -c \"$BEFORE_TEST_BASH && ./protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
+      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME protocurl -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
     fi
     echo "######### STDERR #########" >> "$OUT"
     cat "$OUT_ERR" >> "$OUT"
@@ -64,7 +65,7 @@ testSingleRequest() {
     if [[ "$?" != 0 ]]; then
       export TESTS_SUCCESS="false"
       echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
-      echo "=== Found difference between expected and actual output (ignoring date, go traceback, text format indentation) ==="
+      echo "=== Found difference between expected and actual output (ignoring $NORMALISED_ASPECTS) ==="
       diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
       echo "The actual output was saved into $OUT for inspection."
     else
@@ -85,7 +86,7 @@ runAllTests() {
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.runAgainWithArg // \"\"|@sh)\""
-  cat test/suite/testcases.json | test/suite/jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
+  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest
   chmod +x ./test/suite/run-testcases.sh
