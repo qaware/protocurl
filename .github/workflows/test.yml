@@ -25,11 +25,11 @@ jobs:
 
       - name: Tests
         run: |
-          bash ./test/suite/test.sh "$PWD"
+          ./test/suite/test.sh "$PWD"
 
       - name: Check Docs
         run: |
-          bash ./doc/generate-docs.sh "$PWD"
+          ./doc/generate-docs.sh "$PWD"
           
           # "Only a single line diff in EXMAPLES.md is allowed due to non-constant HTTP Date Header."
           EXPECTED_DIFF="$(echo -e "1\t1\tEXAMPLES.md")"

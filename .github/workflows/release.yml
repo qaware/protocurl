@@ -13,59 +13,65 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set Version
+      #      - name: Set Version
+      #        run: |
+      #          echo "Input version: ${{ github.event.inputs.version }}"
+      #          git fetch --tags origin
+      #          git tag "v${{ github.event.inputs.version }}"
+      #          git push --tags
+      #          source release/source.sh
+
+      #      - name: Install Go and Goreleaser
+      #        run: |
+      #          sudo apt-get -q update
+      #          sudo apt-get -q install -y jq zip unzip curl
+      #
+      #          source release/source.sh
+      #
+      #          wget -q "$GO_DOWNLOAD_URL"
+      #          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
+      #          export PATH="$PATH:/usr/local/go/bin"
+      #
+      #          wget -q "$GORELEASER_DOWNLOAD_URL"
+      #          sudo dpkg -i goreleaser*.deb
+      #
+      #          rm -f *.deb *.gz
+
+      #      - name: Protoc
+      #        run: |
+      #          ./release/0-get-protoc-binaries.sh
+      #
+      #      - name: Build Archive
+      #        env:
+      #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #        run: |
+      #          export PATH=$PATH:/usr/local/go/bin
+      #          ./release/1-build-go-archive.sh
+      #
+      #      - name: DockerHub Login
+      #        uses: docker/login-action@v1
+      #        with:
+      #          username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      #
+      #      - name: Setup QEMU for docker buildx
+      #        uses: docker/setup-qemu-action@v1
+      #
+      #      - name: Setup Docker Buildx
+      #        uses: docker/setup-buildx-action@v1
+      #
+      #      - name: DockerHub Build and Release
+      #        uses: docker/build-push-action@v2
+      #        with:
+      #          platforms: linux/amd64,linux/i386,linux/arm64
+      #          build-args: VERSION=${{ github.event.inputs.version }}
+      #          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
+      #          file: release/Dockerfile
+      #          push: true
+      #          context: .
+
+      - name: Test Release
         run: |
-          echo "Input version: ${{ github.event.inputs.version }}"
           git fetch --tags origin
-          git tag "v${{ github.event.inputs.version }}"
-          git push --tags
-          source release/source.sh
-
-      - name: Install Go and Goreleaser
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y wget zip unzip
-          
-          source release/source.sh
-          
-          wget -q "$GO_DOWNLOAD_URL"
-          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          export PATH="$PATH:/usr/local/go/bin"
-          
-          wget -q "$GORELEASER_DOWNLOAD_URL"
-          sudo dpkg -i goreleaser*.deb
-          
-          rm -f *.deb *.gz
-
-      - name: Protoc
-        run: |
-          ./release/0-get-protoc-binaries.sh
-
-      - name: Build Archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          export PATH=$PATH:/usr/local/go/bin
-          ./release/1-build-go-archive.sh
-
-      - name: DockerHub Login
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Setup QEMU for docker buildx
-        uses: docker/setup-qemu-action@v1
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: DockerHub Build and Release
-        uses: docker/build-push-action@v2
-        with:
-          platforms: linux/amd64,linux/i386,linux/arm64
-          build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
-          file: release/Dockerfile
-          push: true
-          context: .
+          export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
+          ./test/suite/test.sh "$PWD"
