@@ -26,3 +26,7 @@ Now it's possible to add new dependencies via `npm install <new-package>`
 Generate the main docs (.md files etc.) in bash/WSL via `doc/generate-docs.sh <absolute-path-to-protocurl-repository>`.
 
 Once a pull request is ready, run this to generate updated docs.
+
+## Release
+
+See [RELEASE.md](RELEASE.md)

@@ -1,22 +1,15 @@
 # Release
 
-We use [GoReleaser](https://goreleaser.com/) to create static binaries. They are released via GitHub Action
-here (<todo>).
+We use [GoReleaser](https://goreleaser.com/) to create static binaries and Docker Buildx to build muöti-architecture
+images.
 
-The relevant configuration is in [template.goreleaser.yml](template.goreleaser.yaml).
+The relevant configuration for the release process is in [template.goreleaser.yml](template.goreleaser.yaml)
+and [release/source.sh](release/source.sh). See also the [release GitHub Action](.github/workflows/release.yml).
 
-### Setup
+### Developing
 
 To make changes to the release process, first [install GoReleaser](https://goreleaser.com/install/).
 
-### Check configuration file
+You can now inspect the script files and actions used by the GitHub Release Action and change them.
 
-```
-goreleaser check
-```
-
-### Local Release during Development
-
-```
-goreleaser release --snapshot --rm-dist
-```
+The script files also show alternative commands that can be used, when developing the release process locally.

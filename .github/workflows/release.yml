@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)'
+        description: 'Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)'
         required: true
 
 jobs:
@@ -63,6 +63,4 @@ jobs:
           tags: qaware/protocurl:${{ github.event.inputs.version }}
           file: release/Dockerfile
           push: true
-          context: .
-        env:
           context: .

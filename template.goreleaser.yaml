@@ -1,5 +1,6 @@
 # Documentation at https://goreleaser.com
 
+# https://goreleaser.com/customization/build/
 builds:
   - dir: src
     env:
@@ -12,9 +13,11 @@ builds:
       # This combination is not pre-built by Google Protobuf
       - goos: windows
         goarch: arm64
-      # todo. inspect why this does not build yet.
+      # todo. this does not build inside github action
       - goos: darwin
 
+
+# https://goreleaser.com/customization/archive/
 archives:
   - replacements: # adapt names to the protoc release names
       darwin: osx
