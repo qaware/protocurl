@@ -40,7 +40,7 @@ testSingleRequest() {
       eval "$RUN_CLIENT --name $FILENAME $PROTOCURL_IMAGE $ARGS" 2> "$OUT_ERR" >> "$OUT"
     else
       ARGS="$(echo "$ARGS" | sed 's/"/\\"/g' )" # escape before usage inside quoted context
-      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME protocurl -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
+      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME $PROTOCURL_IMAGE -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
     fi
     echo "######### STDERR #########" >> "$OUT"
     cat "$OUT_ERR" >> "$OUT"
