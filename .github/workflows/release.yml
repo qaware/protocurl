@@ -27,6 +27,7 @@ jobs:
           echo "Input version: ${{ github.event.inputs.name }}"
           git fetch --tags origin
           git tag "v${{ github.event.inputs.name }}"
+          git push --tags
           source release/source.sh
       - name: Protoc
         run: |
@@ -37,6 +38,7 @@ jobs:
         run: |
           export PATH=$PATH:/usr/local/go/bin
           ./release/1-build-go-archive.sh
+          ls dist
       - name: DockerHub Release
         run: |
           ./release/2-release-docker-image.sh
