@@ -15,9 +15,9 @@ Like cURL, but for Protobuf: Command-line tool for interacting with Protobuf ove
 
 #### Docker
 
-Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See examples below.
+Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See [examples](EXAMPLES.md) below.
 
-## How to use
+## Usage and Examples
 
 See [usage notes](doc/generated.usage.txt) and [EXAMPLES.md](EXAMPLES.md).
 
@@ -89,18 +89,6 @@ In summary:
 
 [This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
 
-## How to contribute
-
-todo. And also link to [Developer](DEVELOPER.md).
-
-## Tests
-
-See [TESTS.md](TESTS.md)
-
-## Release
-
-See [RELEASE.md](RELEASE.md)
-
 ## Potential Improvements
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
@@ -130,6 +118,13 @@ See [RELEASE.md](RELEASE.md)
 * `docker scan`
 * Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
   One will need " " (with a space) instead.
-* Apply 12 factor CLI app principles
 * Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
   test server
+
+## Development
+
+About the CI/CD tests: [TESTS.md](TESTS.md)
+
+For developers: [DEVELOPER.md](DEVELOPER.md)
+
+How to make a release: [RELEASE.md](RELEASE.md)

@@ -1,6 +1,6 @@
 # Developer
 
-For development it is recommanded to use the a bash-like Terminal either natively (Linux, Mac) or via MinGW on Windows.
+For development it is recommended to use the a bash-like Terminal either natively (Linux, Mac) or via MinGW on Windows.
 
 **Preconditions**
 

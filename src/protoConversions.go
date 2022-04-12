@@ -35,7 +35,7 @@ func protoTextToMsgAndBinary(messageType string, text string, registry *protoreg
 	messageDescriptor := resolveMessageByName(messageType, registry)
 	msg := dynamicpb.NewMessage(*messageDescriptor)
 
-	err := prototext.Unmarshal([]byte(text), msg) // todo. which encoding is used here?
+	err := prototext.Unmarshal([]byte(text), msg)
 	PanicOnError(err)
 
 	binary, err := binaryMarshalOptions.Marshal(msg)
@@ -53,7 +53,7 @@ func protoBinaryToMsgAndText(messageType string, binary []byte, registry *protor
 
 	textBytes, err := textFormatOptions.Marshal(msg)
 	PanicOnError(err)
-	text := string(textBytes) // todo. which encoding is used here?
+	text := string(textBytes)
 	text = strings.TrimSuffix(text, "\n")
 
 	return text, msg

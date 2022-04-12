@@ -31,9 +31,7 @@ type Config struct {
 var commit string
 var version string
 
-var DefaultPrependedHeaderArgs = []string{"-H", "'Content-Type: application/x-protobuf'"}
-
-// todo. ^ document this in Usage.
+var DefaultPrependedHeaderArgs = []string{"-H", "Content-Type: application/x-protobuf"}
 
 var CurrentConfig = Config{}
 
@@ -64,7 +62,9 @@ var rootCmd = &cobra.Command{
 		"It uses '" + CurlExecutableName + "' from PATH. If none was found, it will fall back to an internal non-configurable http request.\n" +
 		"It uses a bundled '" + ProtocExecutableName + "' (by default) which is used to parse the .proto files.\n" +
 		"The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via '" + ProtocExecutableName + "'.\n" +
-		"If the bundled '" + ProtocExecutableName + "' is used, then these .proto files are included. Otherwise .proto files from ",
+		"If the bundled '" + ProtocExecutableName + "' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.\n" +
+		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default.\n" +
+		"When converting between binary and text, the encoding UTF-8 is always used.",
 	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
