@@ -18,7 +18,7 @@ jobs:
           sudo apt-get install -y wget
           wget -q https://go.dev/dl/go1.18.linux-amd64.tar.gz
           sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          export PATH=\$PATH:/usr/local/go/bin
+          export PATH="$PATH:/usr/local/go/bin"
           wget -q https://github.com/goreleaser/goreleaser/releases/download/v1.7.0/goreleaser_1.7.0_amd64.deb
           sudo dpkg -i goreleaser*.deb
           rm -f *.deb *.gz
