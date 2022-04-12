@@ -4,7 +4,10 @@ We use [GoReleaser](https://goreleaser.com/) to create static binaries and Docke
 images.
 
 The relevant configuration for the release process is in [template.goreleaser.yml](template.goreleaser.yaml)
-and [release/source.sh](release/source.sh). See also the [release GitHub Action](.github/workflows/release.yml).
+and [release/source.sh](release/source.sh). It **automatically** fetches the **latest** Go, Goreleaser and Protobuf
+versions via GitHub API.
+
+See also the [release GitHub Action](.github/workflows/release.yml).
 
 ### Developing
 

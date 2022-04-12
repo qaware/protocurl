@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-# single point of configuration for bundled proto version
-export PROTO_VERSION="3.20.0"
+source ./release/get-latest-dependencies-versions.sh
 
 # should be one of 386, amd64 and arm64
 export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"

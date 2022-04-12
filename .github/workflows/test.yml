@@ -18,8 +18,8 @@ jobs:
 
       - name: Setup
         run: |
-          sudo apt-get update
-          sudo apt-get install -y jq zip unzip curl
+          sudo apt-get -q update
+          sudo apt-get -q install -y jq zip unzip curl
           git fetch --tags origin
           ./release/0-get-protoc-binaries.sh
 
