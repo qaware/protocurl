@@ -39,6 +39,7 @@ jobs:
           export PATH=$PATH:/usr/local/go/bin
           ./release/1-build-go-archive.sh
           ls dist
+          echo ".dockerignore" && cat .dockerignore || true
       - name: DockerHub Release
         run: |
           ./release/2-release-docker-image.sh
