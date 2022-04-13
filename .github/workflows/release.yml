@@ -6,6 +6,10 @@ on:
       version:
         description: 'Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)'
         required: true
+      force:
+        description: "Enter 'force-reuse-tag', if you want to change an existing git tag. CAUTION!"
+        required: false
+        default: ""
 
 jobs:
   release:
@@ -15,10 +19,15 @@ jobs:
 
       - name: Set Version
         run: |
-          echo "Input version: ${{ github.event.inputs.version }}"
+          VERSION="${{ github.event.inputs.version }}"
+          FORCE="${{ github.event.inputs.force }}"
+          echo "Input version: $VERSION, force: $FORCE"
           git fetch --tags origin
-          git tag "v${{ github.event.inputs.version }}"
-          git push --tags
+          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="" || GIT_ARG="--force"
+          set -x
+          git tag $GIT_ARG "v${{ github.event.inputs.version }}"
+          git push --tags $GIT_ARG
+          set +x
           source release/source.sh
 
       - name: Install Go and Goreleaser
