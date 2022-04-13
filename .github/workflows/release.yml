@@ -23,7 +23,7 @@ jobs:
           FORCE="${{ github.event.inputs.force }}"
           echo "Input version: $VERSION, force: $FORCE"
           git fetch --tags origin
-          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="" || GIT_ARG="--force"
+          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
           set -x
           git tag $GIT_ARG "v${{ github.event.inputs.version }}"
           git push --tags $GIT_ARG
@@ -34,16 +34,16 @@ jobs:
         run: |
           sudo apt-get -q update
           sudo apt-get -q install -y jq zip unzip curl
-          
+
           source release/source.sh
-          
+
           wget -q "$GO_DOWNLOAD_URL"
           sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
           export PATH="$PATH:/usr/local/go/bin"
-          
+
           wget -q "$GORELEASER_DOWNLOAD_URL"
           sudo dpkg -i goreleaser*.deb
-          
+
           rm -f *.deb *.gz
 
       - name: Protoc
@@ -84,3 +84,11 @@ jobs:
           git fetch --tags origin
           export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
           ./test/suite/test.sh "$PWD"
+
+      - name: Security Scan
+        uses: azure/container-scan@v0
+        continue-on-error: true
+        with:
+          image-name: qaware/protocurl:${{ github.event.inputs.version }}
+          severity-threshold: high
+          run-quality-checks: true

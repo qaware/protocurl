@@ -152,7 +152,6 @@ Once a pull request is ready, run this to generate updated docs.
 ### Open TODOs
 
 * Resolve final TODOs.
-* How to get notified for high docker image vulnerabilities? https://hub.docker.com/repository/docker/qaware/protocurl
 * Make readme more fancy and mention highlights such as extensive testing, automatic latest version for dependencies (
   Go, Goreleaser, Protobuf), etc.
 * Make 1.0.0 release.
