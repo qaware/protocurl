@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:stable-slim
 ARG VERSION
 ARG TARGETARCH
 RUN apt-get -q update && \
