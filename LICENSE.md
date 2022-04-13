@@ -1,3 +1,4 @@
+```
 Copyright (c) 2022, Swaneet Sahoo, QAware GmbH
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -15,7 +16,7 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 
 The following list acknowledges the bundled dependencies used:
 
-Google Protobuf, https://github.com/protocolbuffers/protobuf
+  Google Protobuf, https://github.com/protocolbuffers/protobuf
 
     Copyright 2008 Google Inc.  All rights reserved.
 
@@ -51,3 +52,4 @@ Google Protobuf, https://github.com/protocolbuffers/protobuf
     of the input file used when generating it.  This code is not
     standalone and requires a support library to be linked with it.  This
     support library is itself covered by the above license.
+```
