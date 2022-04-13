@@ -16,8 +16,6 @@ builds:
       # This combination is not pre-built by Google Protobuf
       - goos: windows
         goarch: arm64
-      # todo. this does not build inside github action
-      - goos: darwin
 
 
 # https://goreleaser.com/customization/archive/
