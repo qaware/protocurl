@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func intialiseFlags() {
 	var flags = rootCmd.Flags()
 
@@ -30,7 +32,7 @@ func intialiseFlags() {
 	AssertSuccess(rootCmd.MarkFlagRequired("data-text"))
 
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
-		"Adds the `string` header to the invocation of cURL. E.g. -H 'MyHeader: FooBar'")
+		"Adds the `string` header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.")
 
 	flags.BoolVar(&CurrentConfig.GlobalProtoc, "protoc", false,
 		"Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.")
@@ -82,4 +84,12 @@ func propagateFlags() {
 	if CurrentConfig.ForceCurl && CurrentConfig.ForceNoCurl {
 		PanicWithMessage("Both --curl and --no-curl are active.\nI cannot use and not use curl.\nPlease check the supplied and implied arguments via -v.")
 	}
+
+	if CurrentConfig.ForceNoCurl && len(CurrentConfig.RequestHeaders) != 0 {
+		PanicDueToUnsupportedHeadersWhenInternalHttp(CurrentConfig.RequestHeaders)
+	}
+}
+
+func PanicDueToUnsupportedHeadersWhenInternalHttp(headers []string) {
+	PanicWithMessage(fmt.Sprintf("Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: %+q", headers))
 }

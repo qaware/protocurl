@@ -104,6 +104,9 @@ normaliseOutput() {
   # But this difference does not actually matter, hence we normalise this away.
   sed -i "s/:  /: /g" "$1"
 
+  # remove lines with random tamporary folder names
+  sed -i "s|/tmp/protocurl-temp.*|<tmp>|g" "$1"
+
   customNormaliseOutput "$1"
 }
 export -f normaliseOutput

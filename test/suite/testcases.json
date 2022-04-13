@@ -16,6 +16,14 @@
     ]
   },
   {
+    "filename": "missing-curl-header-args-not-possible",
+    "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
+    "args": [
+      "-H \"x-abc: def\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "other-days-are-happy-days",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
@@ -50,6 +58,14 @@
     "filename": "verbose",
     "args": [
       "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "verbose-custom-headers",
+    "args": [
+      "-v -H \"x-abc: def\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"

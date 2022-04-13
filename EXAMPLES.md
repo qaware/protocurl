@@ -55,7 +55,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
   -d "date: { seconds: 1648044939}"
 
 protocurl <version>, build <commit>
-Adding default header argument to request headers : [-H Content-Type: application/x-protobuf]
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
@@ -66,7 +66,6 @@ Invoked with following default & parsed arguments:
   "DataText": "date: { seconds: 1648044939}",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
-    "-H",
     "Content-Type: application/x-protobuf"
   ],
   "CustomCurlPath": "",
@@ -279,10 +278,23 @@ date: {
 Found curl: /usr/bin/curl
 Invoking curl http request.
 Understood additional curl args: []
+Total curl args:
+  -s
+  -X
+  POST
+  --data-binary
+  @<tmp>
+  --output
+  <tmp>
+  --dump-header
+  <tmp>
+  -H
+  Content-Type: application/x-protobuf
+  http://localhost:8080/happy-day/verify
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 12 Apr 2022 16:18:01 GMT
+Date: Wed, 13 Apr 2022 12:39:38 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

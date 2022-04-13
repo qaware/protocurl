@@ -31,7 +31,8 @@ type Config struct {
 var commit string
 var version string
 
-var DefaultPrependedHeaderArgs = []string{"-H", "Content-Type: application/x-protobuf"}
+var DefaultContentType = "application/x-protobuf"
+var DefaultHeaders = []string{"Content-Type: " + DefaultContentType} // first element needs to be content type, for checks in httpRequest.go
 
 var CurrentConfig = Config{}
 
@@ -148,9 +149,9 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 
 func addDefaultHeaderArgument() {
 	if CurrentConfig.Verbose {
-		fmt.Printf("Adding default header argument to request headers : %s\n", DefaultPrependedHeaderArgs)
+		fmt.Printf("Adding default header argument to request headers : %s\n", DefaultHeaders)
 	}
-	CurrentConfig.RequestHeaders = append(DefaultPrependedHeaderArgs, CurrentConfig.RequestHeaders...)
+	CurrentConfig.RequestHeaders = append(DefaultHeaders, CurrentConfig.RequestHeaders...)
 }
 
 func setAndShowVersion() {

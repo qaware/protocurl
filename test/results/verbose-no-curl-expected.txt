@@ -1,6 +1,6 @@
 ######### STDOUT #########
 protocurl <version>, build <commit>
-Adding default header argument to request headers : [-H Content-Type: application/x-protobuf]
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
@@ -11,7 +11,6 @@ Invoked with following default & parsed arguments:
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
-    "-H",
     "Content-Type: application/x-protobuf"
   ],
   "CustomCurlPath": "",
@@ -230,7 +229,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Tue, 12 Apr 2022 16:17:34 GMT
+Date: Wed, 13 Apr 2022 12:35:32 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |

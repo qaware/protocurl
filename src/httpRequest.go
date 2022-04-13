@@ -21,7 +21,11 @@ func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 		fmt.Println("Invoking internal http request.")
 	}
 
-	httpResponse, err := http.Post(CurrentConfig.Url, "application/x-protobuf", bytes.NewReader(requestBinary)) // todo. additional headers
+	if len(CurrentConfig.RequestHeaders) != 1 || CurrentConfig.RequestHeaders[0] != DefaultHeaders[0] {
+		PanicDueToUnsupportedHeadersWhenInternalHttp(CurrentConfig.RequestHeaders)
+	}
+
+	httpResponse, err := http.Post(CurrentConfig.Url, DefaultContentType, bytes.NewReader(requestBinary))
 	PanicWithMessageOnError(err, func() string { return "Failed internal HTTP request. Error: " + err.Error() })
 	defer func() { _ = httpResponse.Body.Close() }()
 
@@ -60,7 +64,9 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 		"--output", responseBinaryFile,
 		"--dump-header", responseHeadersTextFile,
 	}
-	curlArgs = append(curlArgs, CurrentConfig.RequestHeaders...)
+	for _, header := range CurrentConfig.RequestHeaders {
+		curlArgs = append(curlArgs, "-H", header)
+	}
 
 	individualAdditionalCurlArgs, err := shellquote.Split(CurrentConfig.AdditionalCurlArgs)
 	PanicOnError(err)
@@ -70,6 +76,10 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 	curlArgs = append(curlArgs, individualAdditionalCurlArgs...)
 
 	curlArgs = append(curlArgs, CurrentConfig.Url)
+
+	if CurrentConfig.Verbose {
+		fmt.Printf("Total curl args:\n  %s\n", strings.Join(curlArgs[1:], "\n  "))
+	}
 
 	curlStdOut := bytes.NewBuffer([]byte{})
 	curlStdErr := bytes.NewBuffer([]byte{})
