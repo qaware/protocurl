@@ -6,6 +6,9 @@ Like cURL, but for Protobuf: Command-line tool for interacting with Protobuf ove
 
 ## Installation
 
+`protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
+configurable http requests. Otherwise `protocurl` will use a simple non-configurable fallback http implementation.
+
 #### Native Binary
 
 1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
