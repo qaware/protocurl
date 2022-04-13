@@ -1,3 +1,37 @@
+# Why does this branch exist?
+
+This branch was created as an attempt to compile the C++ Google Protobuf source code.
+
+**Why?** Because, we wanted to
+access [this class](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.compiler.importer)
+to be able to directly parse .proto files during runtime and work with them dynamically. This is only possible in C++ (
+which is what protobuf is written in) and in no other language SDKs.
+
+Alternatively, we could use any other language (e.g. Go, as it is now) and use a `protoc` during runtime. This is
+unfortunate in that it adds a runtime dependency which cannot be avoided at all.
+
+For ease of use and simplicity, protocurl should only be a simple fat binary - instead of requiring to run with a
+bundled or PATH protoc.
+
+**Why did we not choose C++, and write the CLI in that?** Because we wanted cross-compiled fat binaries and for the
+scope of the tool and the effort necessary, we did not have the background knowledge and time investment to figure out
+how to cross-compile Google protobuf libraries into the protocurl fat binaries. We did however succeed in compiling
+Google Protobuf as is on a custom build platform. Cross-compilation and fat binaries in C++ with CMake and Bazel is
+hard, if you have little or no experience with them.
+
+**So why does this branch exist?** For documentation and for the eventual possibility of getting rid of the protoc
+dependency during runtime.
+
+**How?** We could in principle compile the minimally needed methods to a [WebAssembly](https://webassembly.org/)
+binary (.wasm) - which can be embedded into the fat binary and be called efficiently with Go code with a Go WASM
+runtime (e.g. [wasmer-go](https://github.com/wasmerio/wasmer-go)).
+
+**Why brother with that?** Using WASM is an interesting learning experience, and it has a good future. This approach
+will simplify builds, deployment, avoid fallback logic in the code as well as simplify usage for users. Finally, it's as
+fast as native code instead of spawning a new process every time.
+
+### ==========================================================
+
 # protoCURL
 
 todo.
@@ -166,8 +200,7 @@ In summary:
 * nested messages are described with `{ ... }` opening a new context and describing their fields recursively
 * scalar values are describes similar to JSON
 * enum values are referenced by their name
-* built-in messages (such
-  as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
+* built-in messages (such as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
   are described just like user-defined custom messages via `{ ... }` and their message fields
 
 [This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
