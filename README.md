@@ -89,7 +89,40 @@ In summary:
 
 [This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
 
-## Potential Improvements
+## Development
+
+For development it is recommended to use the a bash-like Terminal either natively (Linux, Mac) or via MinGW on Windows.
+
+About the CI/CD tests: [TESTS.md](TESTS.md)
+
+How to make a release: [RELEASE.md](RELEASE.md)
+
+#### Setup
+
+* As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
+* One also needs to download the protoc binaries for the local development via `release/0-get-protoc-binaries.sh`.
+
+For development the [local.Dockerfile](src/local.Dockerfile) is used. To build the image simply
+run `source test/suite/setup.sh` and then `buildProtocurl`
+
+#### Test Server
+
+When new dependencies are needed for the test server, the following command enables one to start a shell in the test
+server.
+
+```
+docker run -v "$PWD/test/servers:/servers" -it nodeserver:v1 /bin/bash
+```
+
+Now it's possible to add new dependencies via `npm install <new-package>`
+
+#### Updating Docs after changes
+
+Generate the main docs (.md files etc.) in bash/WSL via `doc/generate-docs.sh <absolute-path-to-protocurl-repository>`.
+
+Once a pull request is ready, run this to generate updated docs.
+
+## Potential Features
 
 * **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
   useful and viable for everyday usage.
@@ -112,20 +145,14 @@ In summary:
 * **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
   work with the filesdescriptorset.
 * **Fix duplicated error messages**
+* **Cross-platform CLI tests**: Create new GitHub Action tests such that they run on Windows + macOS + Linux runners
+  with the native protoCURL CLI against the test server.
+  See [this](https://www.zettlr.com/post/continuous-cross-platform-deployment-github-actions).
 
 ### Open TODOs
 
-* Add note, that on some platforms such as Windows, an empty request text will not properly function if used with "".
-  One will need " " (with a space) instead.
-* Adapt tests such that they run on GitHub Windows + macOS + Linux runners with the native protoCURL CLI against the
-  test server. Use officially released docker image.
+* Resolve final TODOs.
 * Make readme more fancy and mention highlights such as extensive testing, automatic latest version for dependencies (
   Go, Goreleaser, Protobuf), etc.
-
-## Development
-
-About the CI/CD tests: [TESTS.md](TESTS.md)
-
-For developers: [DEVELOPER.md](DEVELOPER.md)
-
-How to make a release: [RELEASE.md](RELEASE.md)
+* Make 1.0.0 release.
+* Make docker image repository and GitHub repo public
