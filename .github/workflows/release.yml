@@ -23,7 +23,7 @@ jobs:
           FORCE="${{ github.event.inputs.force }}"
           echo "Input version: $VERSION, force: $FORCE"
           git fetch --tags origin
-          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="" || GIT_ARG="--force"
+          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
           set -x
           git tag $GIT_ARG "v${{ github.event.inputs.version }}"
           git push --tags $GIT_ARG
