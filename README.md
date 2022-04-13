@@ -48,7 +48,7 @@ message HappyDayRequest {
   
   double myDouble = 3;
   int64 myInt64 = 5;
-  string myString = 6;
+  repeated string myString = 6;
   repeated NestedMessage messages = 9;
 }
 
@@ -68,8 +68,9 @@ A `HappyDayRequest` message in text format might look like this:
 ```
 includeReason: true,
 myInt64: 123123123123,
-myString: "hello world",
-myDouble: 123.456,
+myString: "hello world"
+myString: 'single quotes are also possible'
+myDouble: 123.456
 messages: { fooEnum: BAR, i: 0, i: 1, i: 1337 },
 messages: { i: 15, fooEnum: BAZ, i: -1337 },
 messages: { },
@@ -84,7 +85,7 @@ In summary:
 * repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
   consecutively.
 * nested messages are described with `{ ... }` opening a new context and describing their fields recursively
-* scalar values are describes similar to JSON
+* scalar values are describes similar to JSON. Single and double quotes are both possible for strings.
 * enum values are referenced by their name
 * built-in messages (such
   as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
@@ -151,6 +152,10 @@ Once a pull request is ready, run this to generate updated docs.
 * **Cross-platform CLI tests**: Create new GitHub Action tests such that they run on Windows + macOS + Linux runners
   with the native protoCURL CLI against the test server.
   See [this](https://www.zettlr.com/post/continuous-cross-platform-deployment-github-actions).
+* **Add step by step example of creating a protocurl request.**
+* **Enable variant of protocurl with user-provided proto files compiled in.** E.g. we could use the protocurl docker
+  image and give an example, where one could simply compile a set of proto files into a new image via Dockerfile. Then
+  one could simply avoid providing the `-v` volume bind as well as the `-I`.
 
 ## FAQ
 
@@ -174,5 +179,10 @@ Once a pull request is ready, run this to generate updated docs.
 
 ### Open TODOs
 
+* Properly remove protocurl.exe from GitHub release archive.
+* Test native CLI once on Windows, Linux and Mac at least once.
+  * Custom protoc path may lead to the error `/usr/bin/include: warning: directory does not exist.`. Perhaps this is not
+    a good default?
+  * Finding protoc and curl does not work on Windows due to .exe extension. We need to add this extension for windows.
 * Make 1.0.0 release.
 * Make docker image repository and GitHub repo public
