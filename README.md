@@ -151,7 +151,6 @@ Once a pull request is ready, run this to generate updated docs.
 
 ### Open TODOs
 
-* Resolve final TODOs.
 * Make readme more fancy and mention highlights such as extensive testing, automatic latest version for dependencies (
   Go, Goreleaser, Protobuf), etc.
 * Make 1.0.0 release.
