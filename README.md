@@ -152,9 +152,27 @@ Once a pull request is ready, run this to generate updated docs.
   with the native protoCURL CLI against the test server.
   See [this](https://www.zettlr.com/post/continuous-cross-platform-deployment-github-actions).
 
+## FAQ
+
+* **How is protocurl different from grpccurl?** [grpccurl](https://github.com/fullstorydev/grpcurl) only works with gRPC
+  service with corresponding endpoints. However, classic REST HTTP endpoints with binary Protobuf payloads are only
+  possible with `protocurl`.
+* **Why is the use of a runtime curl recommended with protocurl?** curl is a simple, flexible and mature command line
+  tool to interact with HTTP endpoints. In principle, we could simply use the HTTP implementation provided by the host
+  programming language (Go).
+  (This is what we do if no curl was found in the PATH.) However, it is very likely that the more people use protocurl,
+  the more they will request for more features. We would like to avoid implementing the plentiful features which
+  correspond to an easy to use http CLI, since HTTP can be complex. This is essentially what curl already does. Hence,
+  all advanced features are only possible with curl.
+* **What are some nice features of protocurl?**
+  * The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
+    based on their effect on the behavior/output.
+  * The build and release process is optimised for minimal maintenance efforts. During release build, the latest
+    versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
+  * The documentation and examples are generated via scripts and enable one to update the examples automatically rather
+    than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
+
 ### Open TODOs
 
-* Make readme more fancy and mention highlights such as extensive testing, automatic latest version for dependencies (
-  Go, Goreleaser, Protobuf), etc.
 * Make 1.0.0 release.
 * Make docker image repository and GitHub repo public
