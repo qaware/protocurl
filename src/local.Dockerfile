@@ -1,4 +1,4 @@
-FROM debian:11.3-slim
+FROM debian:stable
 # A developer variant of protocurl for local development. See DEVELOPER.md
 ARG PROTO_VERSION
 ARG ARCH
