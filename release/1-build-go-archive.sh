@@ -18,9 +18,3 @@ goreleaser release --rm-dist
 
 set +x
 
-# Goreleaser adds the binary at the root in the zip. We don't want it there, hence we remove it.
-for file in dist/*.zip; do
-  # on windows during dev: install 7z.exe as zip.exe into bin and use d instead of -d
-  zip -d "$file" protocurl || true
-  zip -d "$file" protocurl.exe || true
-done
