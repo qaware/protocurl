@@ -70,25 +70,49 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Check DockerHub image does not already exist (unless force)
+      - name: Check DockerHub image does not already exist (except if force or snapshot)
         run: |
-          if [[ "$FORCE" != "force-reuse-tag" ]]; then
-            URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
-            JSON="$(curl -s "$URL")"
-            if [[ "$JSON" == *"\"creator\""* ]]; then
-              echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
-              echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
-              exit 1
-            fi
+          if [[ "$FORCE" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
+            echo "No check needed."
+            exit 0
+          fi
+          URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
+          JSON="$(curl -s "$URL")"
+          if [[ "$JSON" == *"\"creator\""* ]]; then
+            echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
+            echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
+            exit 1
           fi
           echo "OK. Building and pushing the docker image would not overwrite an existing tag."
 
-      - name: DockerHub Build and Release
+      - name: Decide if qaware/protocurl:latest should be published
+        run: |
+          # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+          echo "publish_latest=false" >> $GITHUB_ENV
+          if [[ "$SNAPSHOT" == "false" ]]; then
+            TAG=qaware/protocurl:latest
+            echo "$TAG will be set"
+            echo "publish_latest=true" >> $GITHUB_ENV
+          fi
+
+      - name: DockerHub Build and Release (with latest)
         uses: docker/build-push-action@v2
+        if: env.publish_latest == 'true'
         with:
           platforms: linux/amd64,linux/i386,linux/arm64
           build-args: VERSION=${{ github.event.inputs.version }}
           tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
+          file: release/Dockerfile
+          push: true
+          context: .
+
+      - name: DockerHub Build and Release (without latest)
+        uses: docker/build-push-action@v2
+        if: env.publish_latest == 'false'
+        with:
+          platforms: linux/amd64,linux/i386,linux/arm64
+          build-args: VERSION=${{ github.event.inputs.version }}
+          tags: qaware/protocurl:${{ github.event.inputs.version }}
           file: release/Dockerfile
           push: true
           context: .
