@@ -18,7 +18,7 @@ const CurlExecutableName = "curl"     // You may want to wrap it within osAwareE
 const GlobalGoogleProtobufIncludePath = "/usr/bin/include"
 
 var extensions = map[string]string{"windows": ".exe"}
-var currentOsExt = (extensions)[runtime.GOOS] // todo. how to test this in CI?
+var currentOsExt = (extensions)[runtime.GOOS]
 
 var foundExecutables = make(map[string]string)
 

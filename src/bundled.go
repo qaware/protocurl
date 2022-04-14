@@ -28,7 +28,6 @@ func getProtocurlInternalPath() (string, error) {
 		"The executable was found at " + protocurlPath + "\n" +
 		"Error: "
 
-	// todo. add windows tests for this
 	// /path/to/pc/bin/protocurl[ext] -> /path/to/pc/protocurl-internal
 	unnormalisedProtocurlInternalPath := filepath.Join(filepath.Dir(filepath.Dir(protocurlPath)), ProtocurlInternalName)
 	protocurlInternalPath, err := normaliseFilePath(unnormalisedProtocurlInternalPath)

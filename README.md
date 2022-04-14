@@ -157,6 +157,15 @@ Once a pull request is ready, run this to generate updated docs.
 * **Enable variant of protocurl with user-provided proto files compiled in.** E.g. we could use the protocurl docker
   image and give an example, where one could simply compile a set of proto files into a new image via Dockerfile. Then
   one could simply avoid providing the `-v` volume bind as well as the `-I`.
+* **Proto default library path** Custom protoc path may lead to the
+  error `/usr/bin/include: warning: directory does not exist.`. This can happen, when the user installed the libraries
+  into a different path. We could deal with this in a better way. Furthermore, one needs to use a workaround when using
+  a custom protoc and custom .protol-lib as both the users .proto files and the .proto-lib needs to be contained
+  correctly.
+* **Better release process** Due to certain limitations the current CI/CD pipeline runs some tests on the final release
+  after it has been published to DockerHub and on GitHub. Ideally, we should not do that as other might be downloading
+  the release in the meanwhile. One solution to this is the use of promotions from an release candidate which is
+  published and tested - before being finally promoted (renamed) to a full release.
 
 ## FAQ
 
@@ -177,9 +186,6 @@ Once a pull request is ready, run this to generate updated docs.
     versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
   * The documentation and examples are generated via scripts and enable one to update the examples automatically rather
     than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
-* **Proto default library path** Custom protoc path may lead to the
-  error `/usr/bin/include: warning: directory does not exist.`. This can happen, when the user installed the libraries
-  into a different path. We could deal with this in a better way.
 
 ### Open TODOs
 

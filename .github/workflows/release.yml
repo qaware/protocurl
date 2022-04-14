@@ -17,118 +17,164 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set Version
-        run: |
-          VERSION="${{ github.event.inputs.version }}"
-          FORCE="${{ github.event.inputs.force }}"
-          echo "Input version: $VERSION, force: $FORCE"
-          git fetch --tags origin
-          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
-          set -x
-          git tag $GIT_ARG "v${{ github.event.inputs.version }}"
-          git push --tags $GIT_ARG
-          set +x
-          source release/source.sh
+  #      - name: Set Version
+  #        run: |
+  #          VERSION="${{ github.event.inputs.version }}"
+  #          FORCE="${{ github.event.inputs.force }}"
+  #          echo "Input version: $VERSION, force: $FORCE"
+  #          git fetch --tags origin
+  #          [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
+  #          set -x
+  #          git tag $GIT_ARG "v${{ github.event.inputs.version }}"
+  #          git push --tags $GIT_ARG
+  #          set +x
+  #          source release/source.sh
+  #
+  #      - name: Install Go and Goreleaser
+  #        run: |
+  #          sudo apt-get -q update
+  #          sudo apt-get -q install -y jq zip unzip curl
+  #
+  #          source release/source.sh
+  #
+  #          wget -q "$GO_DOWNLOAD_URL"
+  #          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
+  #          export PATH="$PATH:/usr/local/go/bin"
+  #
+  #          wget -q "$GORELEASER_DOWNLOAD_URL"
+  #          sudo dpkg -i goreleaser*.deb
+  #
+  #          rm -f *.deb *.gz
+  #
+  #      - name: Protoc
+  #        run: |
+  #          ./release/0-get-protoc-binaries.sh
+  #
+  #      - name: Build Archive
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        run: |
+  #          export PATH=$PATH:/usr/local/go/bin
+  #          export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
+  #          ./release/1-build-go-archive.sh
+  #
+  #      - name: DockerHub Login
+  #        uses: docker/login-action@v1
+  #        with:
+  #          username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #
+  #      - name: Setup QEMU for docker buildx
+  #        uses: docker/setup-qemu-action@v1
+  #
+  #      - name: Setup Docker Buildx
+  #        uses: docker/setup-buildx-action@v1
+  #
+  #      - name: Check DockerHub image does not already exist (except if force or snapshot)
+  #        run: |
+  #          source release/source.sh
+  #          if [[ "${{ github.event.inputs.force }}" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
+  #            echo "No check needed."
+  #            exit 0
+  #          fi
+  #          URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
+  #          JSON="$(curl -s "$URL")"
+  #          if [[ "$JSON" == *"\"creator\""* ]]; then
+  #            echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
+  #            echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
+  #            exit 1
+  #          fi
+  #          echo "OK. Building and pushing the docker image would not overwrite an existing tag."
+  #
+  #      - name: Decide if qaware/protocurl:latest should be published
+  #        run: |
+  #          # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+  #          echo "publish_latest=false" >> $GITHUB_ENV
+  #          source release/source.sh
+  #          if [[ "$SNAPSHOT" == "false" ]]; then
+  #            TAG=qaware/protocurl:latest
+  #            echo "$TAG will be set"
+  #            echo "publish_latest=true" >> $GITHUB_ENV
+  #          fi
+  #
+  #      - name: DockerHub Build and Release (with latest)
+  #        uses: docker/build-push-action@v2
+  #        if: env.publish_latest == 'true'
+  #        with:
+  #          platforms: linux/amd64,linux/i386,linux/arm64
+  #          build-args: VERSION=${{ github.event.inputs.version }}
+  #          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
+  #          file: release/Dockerfile
+  #          push: true
+  #          context: .
+  #
+  #      - name: DockerHub Build and Release (without latest)
+  #        uses: docker/build-push-action@v2
+  #        if: env.publish_latest == 'false'
+  #        with:
+  #          platforms: linux/amd64,linux/i386,linux/arm64
+  #          build-args: VERSION=${{ github.event.inputs.version }}
+  #          tags: qaware/protocurl:${{ github.event.inputs.version }}
+  #          file: release/Dockerfile
+  #          push: true
+  #          context: .
+  #
+  #      - name: Test Release
+  #        run: |
+  #          git fetch --tags origin
+  #          export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
+  #          ./test/suite/test.sh "$PWD"
+  #
+  #      - name: Security Scan
+  #        uses: azure/container-scan@v0
+  #        continue-on-error: true
+  #        with:
+  #          image-name: qaware/protocurl:${{ github.event.inputs.version }}
+  #          severity-threshold: high
+  #          run-quality-checks: true
 
-      - name: Install Go and Goreleaser
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y jq zip unzip curl
 
-          source release/source.sh
+  post-release-test-windows:
+    runs-on: windows-latest
+    needs: [ release ]
+    steps:
+      - uses: actions/checkout@v3
 
-          wget -q "$GO_DOWNLOAD_URL"
-          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          export PATH="$PATH:/usr/local/go/bin"
+      - name: Choco Install github client
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install gh -y --limit-output
 
-          wget -q "$GORELEASER_DOWNLOAD_URL"
-          sudo dpkg -i goreleaser*.deb
+      - name: Choco Install curl
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install curl -y --limit-output
 
-          rm -f *.deb *.gz
-
-      - name: Protoc
-        run: |
-          ./release/0-get-protoc-binaries.sh
-
-      - name: Build Archive
+      - name: Download release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          export PATH=$PATH:/usr/local/go/bin
-          export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
-          ./release/1-build-go-archive.sh
+          $ErrorActionPreference = "Stop"
+          Write-Output "Downloading release from Github ..."
+          gh release download v${{ github.event.inputs.version }} --pattern '*windows*amd64*.zip'
+          Write-Output "working dir after download"
+          ls
+          Write-Output "Attempting to extract"
+          Expand-Archive *.zip -DestinationPath my-protocurl
+          Write-Output "After extract"
+          ls my-protocurl
 
-      - name: DockerHub Login
-        uses: docker/login-action@v1
+      - uses: actions/setup-node@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          node-version: '17.7.2'
 
-      - name: Setup QEMU for docker buildx
-        uses: docker/setup-qemu-action@v1
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Check DockerHub image does not already exist (except if force or snapshot)
+      - name: Start test server
         run: |
-          source release/source.sh
-          if [[ "${{ github.event.inputs.force }}" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
-            echo "No check needed."
-            exit 0
-          fi
-          URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
-          JSON="$(curl -s "$URL")"
-          if [[ "$JSON" == *"\"creator\""* ]]; then
-            echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
-            echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
-            exit 1
-          fi
-          echo "OK. Building and pushing the docker image would not overwrite an existing tag."
+          $ErrorActionPreference = "Stop"
+          cd test
+          & ".\servers\windows-start-server.ps1"
 
-      - name: Decide if qaware/protocurl:latest should be published
+      - name: Test extracted release
         run: |
-          # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
-          echo "publish_latest=false" >> $GITHUB_ENV
-          source release/source.sh
-          if [[ "$SNAPSHOT" == "false" ]]; then
-            TAG=qaware/protocurl:latest
-            echo "$TAG will be set"
-            echo "publish_latest=true" >> $GITHUB_ENV
-          fi
-
-      - name: DockerHub Build and Release (with latest)
-        uses: docker/build-push-action@v2
-        if: env.publish_latest == 'true'
-        with:
-          platforms: linux/amd64,linux/i386,linux/arm64
-          build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
-          file: release/Dockerfile
-          push: true
-          context: .
-
-      - name: DockerHub Build and Release (without latest)
-        uses: docker/build-push-action@v2
-        if: env.publish_latest == 'false'
-        with:
-          platforms: linux/amd64,linux/i386,linux/arm64
-          build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}
-          file: release/Dockerfile
-          push: true
-          context: .
-
-      - name: Test Release
-        run: |
-          git fetch --tags origin
-          export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
-          ./test/suite/test.sh "$PWD"
-
-      - name: Security Scan
-        uses: azure/container-scan@v0
-        continue-on-error: true
-        with:
-          image-name: qaware/protocurl:${{ github.event.inputs.version }}
-          severity-threshold: high
-          run-quality-checks: true
+          $ErrorActionPreference = "Stop"
+          & ".\test\suite\windows-tests.ps1" ".\my-protocurl"
