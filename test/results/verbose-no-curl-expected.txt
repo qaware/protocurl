@@ -1,5 +1,5 @@
 ######### STDOUT #########
-protocurl <version>, build <commit>
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
@@ -229,7 +229,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Wed, 13 Apr 2022 12:35:32 GMT
+Date: Thu, 14 Apr 2022 08:20:31 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |

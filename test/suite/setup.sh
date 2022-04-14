@@ -9,8 +9,8 @@ buildProtocurl() {
     echo "Pulling $PROTOCURL_IMAGE ..." && docker pull $PROTOCURL_IMAGE && echo "Done."
 
     customNormaliseOutput() {
-      sed -i -E "s/protocurl version .*, build .*/protocurl version <version>, build <commit>/g" "$1"
-      sed -i -E "s/protocurl [0-9].*, build .*/protocurl <version>, build <commit>/g" "$1"
+      sed -i -E "s/protocurl version .*, build .*/protocurl version <version>, build <hash>/g" "$1"
+      sed -i -E "s/protocurl [0-9].*, build .*/protocurl <version>, build <hash>/g" "$1"
     }
     export -f customNormaliseOutput
   else

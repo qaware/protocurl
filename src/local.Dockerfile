@@ -8,5 +8,5 @@ COPY release/tmp/protoc-$PROTO_VERSION-linux-$ARCH/bin/protoc /protocurl/protocu
 COPY release/tmp/protoc-$PROTO_VERSION-linux-$ARCH/include/ /protocurl/protocurl-internal/include/
 COPY src/*go* /protocurl/
 RUN go get -d ./...
-RUN go build -v -ldflags="-X 'main.version=<version>' -X 'main.commit=<commit>'" -o bin/protocurl
+RUN go build -v -ldflags="-X 'main.version=<version>' -X 'main.commit=<hash>'" -o bin/protocurl
 ENTRYPOINT ["/protocurl/bin/protocurl"]

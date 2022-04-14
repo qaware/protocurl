@@ -54,7 +54,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
-protocurl <version>, build <commit>
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
@@ -294,7 +294,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Wed, 13 Apr 2022 12:39:38 GMT
+Date: Thu, 14 Apr 2022 08:19:51 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

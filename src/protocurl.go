@@ -8,6 +8,7 @@ import (
 )
 
 const GithubRepositoryLink = "https://github.com/qaware/protocurl"
+const BugReportsLink = "https://github.com/qaware/protocurl/issues"
 
 type Config struct {
 	ProtoFilesDir        string
@@ -65,8 +66,9 @@ var rootCmd = &cobra.Command{
 		"The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via '" + ProtocExecutableName + "'.\n" +
 		"If the bundled '" + ProtocExecutableName + "' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.\n" +
 		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default.\n" +
-		"When converting between binary and text, the encoding UTF-8 is always used.",
-	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d \"myField: true, otherField: 1337\"",
+		"When converting between binary and text, the encoding UTF-8 is always used.\n\n" +
+		"Bug reports: " + BugReportsLink,
+	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://example.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -155,6 +157,6 @@ func addDefaultHeaderArgument() {
 }
 
 func setAndShowVersion() {
-	rootCmd.Version = fmt.Sprintf("%s, build %s", version, commit)
+	rootCmd.Version = fmt.Sprintf("%s, build %s, %s", version, commit[:6], GithubRepositoryLink)
 	rootCmd.SetHelpTemplate("protocurl {{.Version}}\n\n" + rootCmd.HelpTemplate())
 }

@@ -1,5 +1,5 @@
 ######### STDOUT #########
-protocurl <version>, build <commit>
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {

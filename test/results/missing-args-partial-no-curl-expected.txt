@@ -11,8 +11,10 @@ If the bundled 'protoc' is used, then these .proto files are included. Otherwise
 The Header 'Content-Type: application/x-protobuf' is set as a request header by default.
 When converting between binary and text, the encoding UTF-8 is always used.
 
+Bug reports: https://github.com/qaware/protocurl/issues
+
 Examples:
-  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://foo.com/api -d "myField: true, otherField: 1337"
+  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://example.com/api -d "myField: true, otherField: 1337"
 
 Flags:
   -u, --URL string                Mandatory: The url to send the request to
