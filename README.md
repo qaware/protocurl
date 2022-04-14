@@ -13,7 +13,8 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 
 1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
 2. Extract the archive into a folder, e.g. `/usr/local/protocurl`.
-3. Add symlink to the binary in the folder: `ln -s /usr/local/protocurl/bin/protocurl /usr/local/bin/protocurl`
+3. Add symlink to the binary in the folder. e.g. `ln -s /usr/local/protocurl/bin/protocurl /usr/local/bin/protocurl`
+   Or add the binary folder `/usr/local/protocurl/bin` to your system-wide path.
 4. Test that it works via `protocurl -h`
 
 #### Docker
@@ -176,13 +177,14 @@ Once a pull request is ready, run this to generate updated docs.
     versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
   * The documentation and examples are generated via scripts and enable one to update the examples automatically rather
     than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
+* **Proto default library path** Custom protoc path may lead to the
+  error `/usr/bin/include: warning: directory does not exist.`. This can happen, when the user installed the libraries
+  into a different path. We could deal with this in a better way.
 
 ### Open TODOs
 
-* Properly remove protocurl.exe from GitHub release archive.
 * Test native CLI once on Windows, Linux and Mac at least once.
-  * Custom protoc path may lead to the error `/usr/bin/include: warning: directory does not exist.`. Perhaps this is not
-    a good default?
   * Finding protoc and curl does not work on Windows due to .exe extension. We need to add this extension for windows.
+* Resolve all TODOs.
 * Make 1.0.0 release.
 * Make docker image repository and GitHub repo public

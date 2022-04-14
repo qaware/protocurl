@@ -6,12 +6,17 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 const ProtocExecutableName = "protoc"
 const CurlExecutableName = "curl"
 
 const GlobalGoogleProtobufIncludePath = "/usr/bin/include"
+
+var extensions = map[string]string{"windows": ".exe"}
+var currentOsExt = (extensions)[runtime.GOOS] // todo. how to test this in CI?
 
 var foundExecutables = make(map[string]string)
 
@@ -35,13 +40,26 @@ func findCurlExecutable(force bool) (string, error) {
 
 func getExecutablePathOrLookup(optionalExecPath string, name string, force bool) (string, error) {
 	if optionalExecPath != "" {
+		execPathWithExt := addOsSpecificExtension(optionalExecPath)
 		if CurrentConfig.Verbose {
 			fmt.Printf("Using custom "+name+" path: %s\n", optionalExecPath)
 		}
-		return optionalExecPath, nil
+		return execPathWithExt, nil
 	} else {
-		return findExecutable(name, force)
+		return findExecutable(addOsSpecificExtension(name), force)
 	}
+}
+
+//goland:noinspection GoBoolExpressions
+func addOsSpecificExtension(path string) string {
+	if runtime.GOOS == "windows" && !strings.HasSuffix(path, currentOsExt) {
+		var newPath = path + currentOsExt
+		if CurrentConfig.Verbose {
+			fmt.Printf("Path after os extension (%s): %s\n", currentOsExt, newPath)
+		}
+		return newPath
+	}
+	return path
 }
 
 // Returns the filesystem path for the executable of the given name in the env PATH.
