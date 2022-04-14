@@ -11,7 +11,7 @@ import (
 	"net/http/httputil"
 	"os"
 	"os/exec"
-	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -49,12 +49,12 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 	PanicOnError(err)
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
-	requestBinaryFile := path.Join(tmpDir, "request.bin")
+	requestBinaryFile := filepath.Join(tmpDir, "request.bin")
 	err = ioutil.WriteFile(requestBinaryFile, requestBinary, 0)
 	PanicOnError(err)
 
-	responseBinaryFile := path.Join(tmpDir, "response.bin")
-	responseHeadersTextFile := path.Join(tmpDir, "response-headers.txt")
+	responseBinaryFile := filepath.Join(tmpDir, "response.bin")
+	responseHeadersTextFile := filepath.Join(tmpDir, "response-headers.txt")
 
 	curlArgs := []string{
 		curlPath,

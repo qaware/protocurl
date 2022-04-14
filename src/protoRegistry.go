@@ -13,7 +13,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -40,7 +40,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	PanicOnError(errTmp)
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
-	inputFileBinPath := path.Join(tmpDir, "inputfile.bin")
+	inputFileBinPath := filepath.Join(tmpDir, "inputfile.bin")
 	protoDir := CurrentConfig.ProtoFilesDir
 
 	googleProtobufInclude := getGoogleProtobufIncludePath(isBundled)
@@ -51,7 +51,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 		"-o", inputFileBinPath,
 		"-I", googleProtobufInclude,
 		"-I", protoDir,
-		path.Join(protoDir, CurrentConfig.ProtoInputFilePath),
+		filepath.Join(protoDir, CurrentConfig.ProtoInputFilePath),
 	}
 
 	protocErr := bytes.NewBuffer([]byte{})

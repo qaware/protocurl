@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
-const ProtocExecutableName = "protoc"
-const CurlExecutableName = "curl"
+// We're always using path/filepath instead of path for OS-aware path operations
+
+const ProtocExecutableName = "protoc" // You may want to wrap it within osAwareExecutableName
+const CurlExecutableName = "curl"     // You may want to wrap it within osAwareExecutableName
 
 const GlobalGoogleProtobufIncludePath = "/usr/bin/include"
 
@@ -40,18 +42,18 @@ func findCurlExecutable(force bool) (string, error) {
 
 func getExecutablePathOrLookup(optionalExecPath string, name string, force bool) (string, error) {
 	if optionalExecPath != "" {
-		execPathWithExt := addOsSpecificExtension(optionalExecPath)
+		execPathWithExt := osAwareExecutableName(optionalExecPath)
 		if CurrentConfig.Verbose {
 			fmt.Printf("Using custom "+name+" path: %s\n", optionalExecPath)
 		}
 		return execPathWithExt, nil
 	} else {
-		return findExecutable(addOsSpecificExtension(name), force)
+		return findExecutable(osAwareExecutableName(name), force)
 	}
 }
 
 //goland:noinspection GoBoolExpressions
-func addOsSpecificExtension(path string) string {
+func osAwareExecutableName(path string) string {
 	if runtime.GOOS == "windows" && !strings.HasSuffix(path, currentOsExt) {
 		var newPath = path + currentOsExt
 		if CurrentConfig.Verbose {
@@ -90,15 +92,16 @@ func findExecutable(name string, force bool) (string, error) {
 }
 
 func getInternalProtocExec() (string, error) {
+	protocName := osAwareExecutableName(ProtocExecutableName)
 	protocurlInternalPath, err := getProtocurlInternalPath()
 	if err != nil {
 		return "", err
 	}
-	protocInternalPath := filepath.Join(protocurlInternalPath, "bin", ProtocExecutableName)
+	protocInternalPath := filepath.Join(protocurlInternalPath, "bin", protocName)
 
 	_, err = os.Stat(protocInternalPath)
 	if os.IsNotExist(err) {
-		return "", errors.New("Could not find bundled executable " + ProtocExecutableName + " \nError: " + err.Error())
+		return "", errors.New("Could not find bundled executable " + protocName + " \nError: " + err.Error())
 	} else if err != nil {
 		return "", err
 	}
@@ -111,7 +114,11 @@ func getInternalProtocExec() (string, error) {
 }
 
 func normaliseFilePath(filePath string) (string, error) {
-	filePath, err := filepath.EvalSymlinks(filePath)
+	filePath, err := filepath.Abs(filePath)
+	if err != nil {
+		return "", err
+	}
+	filePath, err = filepath.EvalSymlinks(filePath)
 	if err != nil {
 		return "", err
 	}

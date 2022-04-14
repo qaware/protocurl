@@ -72,7 +72,8 @@ jobs:
 
       - name: Check DockerHub image does not already exist (except if force or snapshot)
         run: |
-          if [[ "$FORCE" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
+          source release/source.sh
+          if [[ "${{ github.event.inputs.force }}" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
             echo "No check needed."
             exit 0
           fi
@@ -89,6 +90,7 @@ jobs:
         run: |
           # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
           echo "publish_latest=false" >> $GITHUB_ENV
+          source release/source.sh
           if [[ "$SNAPSHOT" == "false" ]]; then
             TAG=qaware/protocurl:latest
             echo "$TAG will be set"

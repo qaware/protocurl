@@ -184,7 +184,6 @@ Once a pull request is ready, run this to generate updated docs.
 ### Open TODOs
 
 * Test native CLI once on Windows, Linux and Mac at least once.
-  * Finding protoc and curl does not work on Windows due to .exe extension. We need to add this extension for windows.
 * Resolve all TODOs.
 * Make 1.0.0 release.
 * Make docker image repository and GitHub repo public
