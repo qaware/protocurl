@@ -187,8 +187,4 @@ Once a pull request is ready, run this to generate updated docs.
     versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
   * The documentation and examples are generated via scripts and enable one to update the examples automatically rather
     than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
-
-### Open TODOs
-
-* Make 1.0.0 release.
-* Make docker image repository and GitHub repo public
+  
