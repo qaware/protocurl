@@ -1,8 +1,13 @@
 # Tests
 
-The tests are run automatically via GitHub Actions [here](.github/workflows/test.yml).
+There are two tests. The docker-containerized tests and cross-platform native tests (running on windows, macos, etc.).
+The containerized tests do much of the heavy lifting in ensuring correctness - whereas the native tests ensure that the
+basic functionality work cross-platform and contains regression tests for OS-specific behavior.
 
-Run tests via `./test/suite/test.sh "$PWD"` (bash) from the repository root directory.
+## Containerized Tests
+
+The tests are run automatically via GitHub Actions [here](.github/workflows/test.yml). Run them
+via `./test/suite/test.sh "$PWD"` (bash) from the repository root directory.
 
 * It needs the full path to the current working directory, as otherwise the docker volume mount fails in WSL on Windows.
   Concretely, on WSL Windows, we need to use `./test/suite/test.sh "c:/path/to/protocurl/repository"`
@@ -136,3 +141,7 @@ Waited 2 seconds already...
 Stopping server...
 Done.
 ```
+
+## Cross-Platform Native Tests
+
+todo.

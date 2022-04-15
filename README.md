@@ -151,7 +151,8 @@ Once a pull request is ready, run this to generate updated docs.
   work with the filesdescriptorset.
 * **Fix duplicated error messages**
 * **Cross-platform CLI tests**: Create new GitHub Action tests such that they run on Windows + macOS + Linux runners
-  with the native protoCURL CLI against the test server.
+  with the native protoCURL CLI against the test server. Using Powershell as a cross-platform scripting language may be
+  helpful for that in contrast to the existing bash scripts.
   See [this](https://www.zettlr.com/post/continuous-cross-platform-deployment-github-actions).
 * **Add step by step example of creating a protocurl request.**
 * **Enable variant of protocurl with user-provided proto files compiled in.** E.g. we could use the protocurl docker
@@ -181,7 +182,8 @@ Once a pull request is ready, run this to generate updated docs.
   all advanced features are only possible with curl.
 * **What are some nice features of protocurl?**
   * The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
-    based on their effect on the behavior/output.
+    based on their effect on the behavior/output. Furthermore, there are also a few cross-platform native CI tests
+    running on Windows and MacOS runners.
   * The build and release process is optimised for minimal maintenance efforts. During release build, the latest
     versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
   * The documentation and examples are generated via scripts and enable one to update the examples automatically rather

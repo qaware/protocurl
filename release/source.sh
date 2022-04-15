@@ -6,7 +6,9 @@ source ./release/get-latest-dependencies-versions.sh
 # should be one of 386, amd64 and arm64
 export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"
 
-export VVERSION="$(git for-each-ref --sort='-committerdate' --count 1 --format '%(refname:short)' refs/tags)"
+if [[ "$VVERSION" == "" ]]; then
+  export VVERSION="$(git for-each-ref --sort='-committerdate' --count 1 --format '%(refname:short)' refs/tags)"
+fi
 
 # any version: e.g. v1.2.3, v23.45.67-dev
 if [[ "$VVERSION" =~ v.*\..*\..* ]]; then
