@@ -178,3 +178,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           & ".\test\suite\windows-tests.ps1" ".\my-protocurl"
+
+        # TODO. add tests which test against globally installed version
+
+        # todo. add mac os tests?
