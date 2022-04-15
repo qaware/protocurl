@@ -74,7 +74,7 @@ Example runs are shown at the end of this document.
 The multi-platform native tests are described in [test/suite/native-tests.ps1](test/suite/native-tests.ps1). It uses
 Powershell to make cross-platform scripting possible and easier.
 
-These tests are run in [.github/workflows/release.yml][.github/workflows/release.yml] after the release was created. The
+These tests are run in [.github/workflows/release.yml](.github/workflows/release.yml) after the release was created. The
 jobs are named `post-release-test-<OS>`. After setting up the machine, they start the server
 via [test/servers/native-start-server.ps1](test/servers/native-start-server.ps1) and run the tests.
 

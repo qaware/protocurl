@@ -170,15 +170,15 @@ Once a pull request is ready, run this to generate updated docs.
 ## FAQ
 
 * **How is protocurl different from grpccurl?** [grpccurl](https://github.com/fullstorydev/grpcurl) only works with gRPC
-  service with corresponding endpoints. However, classic REST HTTP endpoints with binary Protobuf payloads are only
+  services with corresponding endpoints. However, classic REST HTTP endpoints with binary Protobuf payloads are only
   possible with `protocurl`.
 * **Why is the use of a runtime curl recommended with protocurl?** curl is a simple, flexible and mature command line
   tool to interact with HTTP endpoints. In principle, we could simply use the HTTP implementation provided by the host
-  programming language (Go).
-  (This is what we do if no curl was found in the PATH.) However, it is very likely that the more people use protocurl,
-  the more they will request for more features. We would like to avoid implementing the plentiful features which
-  correspond to an easy to use http CLI, since HTTP can be complex. This is essentially what curl already does. Hence,
-  all advanced features are only possible with curl.
+  programming language (Go) - and this is what we do if no curl was found in the PATH. However, as more people use
+  protocurl, they will request for more features - leading to a feature creep in such a 'simple' tool as protocurl. We
+  would like to avoid implementing the plentiful features which are necessary for a proper HTTP CLI tool, because HTTP
+  can be complex. Since is essentially what curl already does, we recommend using curl and all advanced features are
+  only possible with curl.
 * **What are some nice features of protocurl?**
   * The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
     based on their effect on the behavior/output. Furthermore, there are also a few cross-platform native CI tests
