@@ -165,7 +165,8 @@ Once a pull request is ready, run this to generate updated docs.
 * **Better release process** Due to certain limitations the current CI/CD pipeline runs some tests on the final release
   after it has been published to DockerHub and on GitHub. Ideally, we should not do that as other might be downloading
   the release in the meanwhile. One solution to this is the use of promotions from an release candidate which is
-  published and tested - before being finally promoted (renamed) to a full release.
+  published and tested - before being finally promoted (renamed) to a full release. Furthermore, the `prerelease: auto`
+  option of [goreleaser release](https://goreleaser.com/customization/release/)) could be used.
 
 ## FAQ
 
