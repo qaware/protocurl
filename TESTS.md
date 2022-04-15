@@ -1,8 +1,8 @@
 # Tests
 
-There are two tests. The docker-containerized tests and cross-platform native tests (running on windows, macos, etc.).
+There are two tests. The docker-containerized tests and multi-platform native tests (running on windows, macos, etc.).
 The containerized tests do much of the heavy lifting in ensuring correctness - whereas the native tests ensure that the
-basic functionality work cross-platform and contains regression tests for OS-specific behavior.
+basic functionality work multi-platform and contains regression tests for OS-specific behavior.
 
 ## Containerized Tests
 
@@ -67,7 +67,21 @@ If you are happy with the changes and all diffs are expected, you can also copy 
 via
 `test/suite/copy-test-results-output-to-expected.sh`.
 
-### Example tests run
+Example runs are shown at the end of this document.
+
+## Multi-Platform Native Tests
+
+The multi-platform native tests are described in [test/suite/native-tests.ps1](test/suite/native-tests.ps1). It uses
+Powershell to make cross-platform scripting possible and easier.
+
+These tests are run in [.github/workflows/release.yml][.github/workflows/release.yml] after the release was created. The
+jobs are named `post-release-test-<OS>`. After setting up the machine, they start the server
+via [test/servers/native-start-server.ps1](test/servers/native-start-server.ps1) and run the tests.
+
+The output is not tested rigorously like the containerized tests. Only the successful exit is tested implicitly as the
+Powershell is set to stop on the first error via `$ErrorActionPreference = "Stop"`.
+
+## Example Containerized Tests
 
 Example runs can be found here: [test.yml](https://github.com/qaware/protocurl/actions/workflows/test.yml).
 
@@ -75,10 +89,14 @@ Running the tests might look like this:
 
 ```
 $ ./test/suite/test.sh "$PWD"
+Established Protobuf version 3.20.0
+Established Go version: 1.18
+Established Goreleaser version: v1.7.0
+Using VERSION=0.0.43, VVERSION=v0.0.43, SNAPSHOT=false, BUILD_ARCH=amd64, PROTO_VERSION=3.20.0
 Stopping server...
 Done.
-Building protocurl...
-sha256:6dcdabdb0e09bb8545dc1cbf599f61778eaa15451b0955ec26496c86a17b4653
+Building protocurl:latest ...
+sha256:31e53eda86190d57f39be5075a50cfd82ee2aee73094945ba63c9d63e1381879
 Done.
 Starting server...
 Done.
@@ -89,6 +107,7 @@ Waited 2 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - missing-curl-no-curl
+✨✨✨ SUCCESS ✨✨✨ - missing-curl-header-args-not-possible
 ✨✨✨ SUCCESS ✨✨✨ - other-days-are-happy-days
 ✨✨✨ SUCCESS ✨✨✨ - other-days-are-happy-days-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - other-days-are-happy-days-moved-protofiles
@@ -97,6 +116,8 @@ Waited 2 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - invalid-protofile-dir
 ✨✨✨ SUCCESS ✨✨✨ - verbose
 ✨✨✨ SUCCESS ✨✨✨ - verbose-no-curl
+✨✨✨ SUCCESS ✨✨✨ - verbose-custom-headers
+✨✨✨ SUCCESS ✨✨✨ - verbose-custom-headers-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - verbose-missing-curl
 ✨✨✨ SUCCESS ✨✨✨ - quiet-with-content
 ✨✨✨ SUCCESS ✨✨✨ - quiet-with-content-no-curl
@@ -113,6 +134,14 @@ Waited 2 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - empty-day-epoch-time-thursday-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - empty-day-epoch-time-thursday-missing-curl
 ✨✨✨ SUCCESS ✨✨✨ - empty-day-epoch-time-thursday-missing-curl-no-curl
+✨✨✨ SUCCESS ✨✨✨ - moved-curl
+✨✨✨ SUCCESS ✨✨✨ - moved-curl-no-curl
+✨✨✨ SUCCESS ✨✨✨ - global-protoc
+✨✨✨ SUCCESS ✨✨✨ - missing-protocurl-internal
+✨✨✨ SUCCESS ✨✨✨ - global-protoc-and-lib
+✨✨✨ SUCCESS ✨✨✨ - moved-lib
+✨✨✨ SUCCESS ✨✨✨ - missing-protoc
+✨✨✨ SUCCESS ✨✨✨ - missing-protoc-global
 ✨✨✨ SUCCESS ✨✨✨ - echo-filled
 ✨✨✨ SUCCESS ✨✨✨ - echo-filled-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - echo-empty
@@ -141,7 +170,3 @@ Waited 2 seconds already...
 Stopping server...
 Done.
 ```
-
-## Cross-Platform Native Tests
-
-todo.

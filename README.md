@@ -150,10 +150,9 @@ Once a pull request is ready, run this to generate updated docs.
 * **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
   work with the filesdescriptorset.
 * **Fix duplicated error messages**
-* **Cross-platform CLI tests**: Create new GitHub Action tests such that they run on Windows + macOS + Linux runners
-  with the native protoCURL CLI against the test server. Using Powershell as a cross-platform scripting language may be
-  helpful for that in contrast to the existing bash scripts.
-  See [this](https://www.zettlr.com/post/continuous-cross-platform-deployment-github-actions).
+* **Promoting containerized tests to native tests**: While we already have containerized tests in bash - having them in
+  Powershell may enable us to run these more rigorous tests directly on the respective platforms instead of the
+  container only.
 * **Add step by step example of creating a protocurl request.**
 * **Enable variant of protocurl with user-provided proto files compiled in.** E.g. we could use the protocurl docker
   image and give an example, where one could simply compile a set of proto files into a new image via Dockerfile. Then
@@ -191,7 +190,5 @@ Once a pull request is ready, run this to generate updated docs.
 
 ### Open TODOs
 
-* Test native CLI once on Windows, Linux and Mac at least once.
-* Resolve all TODOs.
 * Make 1.0.0 release.
 * Make docker image repository and GitHub repo public
