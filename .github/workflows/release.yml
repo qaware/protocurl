@@ -174,11 +174,9 @@ jobs:
           cd test
           & ".\servers\windows-start-server.ps1"
 
-      - name: Test extracted release
+      - name: Test extracted release and global installation
         run: |
           $ErrorActionPreference = "Stop"
           & ".\test\suite\windows-tests.ps1" ".\my-protocurl"
-
-        # TODO. add tests which test against globally installed version
 
         # todo. add mac os tests?
