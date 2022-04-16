@@ -1,15 +1,15 @@
 # Release
 
-We use [GoReleaser](https://goreleaser.com/) to create static binaries and Docker Buildx to build muöti-architecture
+We use [GoReleaser](https://goreleaser.com/) to create static binaries and Docker Buildx to build multi-architecture
 images.
 
 The relevant configuration for the release process is in [template.goreleaser.yml](template.goreleaser.yaml)
 and [release/source.sh](release/source.sh). It **automatically** fetches the **latest** Go, Goreleaser and Protobuf
 versions via GitHub API.
 
-See also the [release GitHub Action](.github/workflows/release.yml).
+See also the [.github/workflows/release.yml](.github/workflows/release.yml).
 
-### Developing
+## Development
 
 To make changes to the release process, first [install GoReleaser](https://goreleaser.com/install/).
 
@@ -33,8 +33,8 @@ The release process works like this:
 * [Docker Buildx](https://docs.docker.com/engine/reference/commandline/buildx/) is used to build multi-architecture
   images and push them to [qaware/protocurl](https://hub.docker.com/r/qaware/protocurl)
 * Native tests for multiple platforms are run. If these tests fail then the release candidate needs to be fixed.
-* This should only happen for release candidates - as proper releases should only be created once a release candidate
-  passes all tests.
+  * This should only happen for release candidates - as proper releases should only be created once a release candidate
+    passes all tests.
 
 After fixing the code and the tests, a release candidate's tag can be overwritten by setting the option `force`
 to `force-reuse-tag` when invoking the workflow. This should only be used when a release candidate is released again
