@@ -127,46 +127,9 @@ Generate the main docs (.md files etc.) in bash/WSL via `doc/generate-docs.sh <a
 
 Once a pull request is ready, run this to generate updated docs.
 
-## Potential Features
+## Enhancements and Bugs
 
-* **JSON support**: protoCURL currently only uses the text format. Using JSON as a conversion format would make it more
-  useful and viable for everyday usage.
-* **Multi-file support**: Currently, the request and response messages need to be in the same file. An improvement would
-  be to allow the user to import a directory of Protobuf file and have protoCURL search for the definitions given the
-  request and response types.
-* **Raw Format**: If no .proto files for the response are available, then it's still possible to receive and decode
-  messages. The decoding can happen in a way which only shows the field numbers and the field contents - without the
-  field names - by using `protoc --decode_raw`. This might be useful for users of protoCURL.
-* **Quality of Life Improvements**: Avoid explicitly specifying the file via `-f` and instead search the message types
-  from `-i` and `-o`. Additionally, it should be sufficient to only use the name of the message type instead of the full
-  path, whenever the message type is unique.
-* **Interactive input for the user**: For first time users, it might be better for them to simply start with a command
-  like `protocurl -u URL`
-  and then be prompted for the input arguments. This way, it's easier for the user to run it and to get help on each
-  command. In the final step, the CLI could produce an output, where the final command can be as the full version.(
-  see [example](https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46#2d6e))
-* **Auto-update to newer versions of
-  dependencies**: [Dependabot](https://github.com/qaware/protocurl/network/dependencies)
-* **Accept proto file descriptor set payload as argument**: This enables one to skip using a protoc binary and directly
-  work with the filesdescriptorset.
-* **Fix duplicated error messages**
-* **Promoting containerized tests to native tests**: While we already have containerized tests in bash - having them in
-  Powershell may enable us to run these more rigorous tests directly on the respective platforms instead of the
-  container only.
-* **Add step by step example of creating a protocurl request.**
-* **Enable variant of protocurl with user-provided proto files compiled in.** E.g. we could use the protocurl docker
-  image and give an example, where one could simply compile a set of proto files into a new image via Dockerfile. Then
-  one could simply avoid providing the `-v` volume bind as well as the `-I`.
-* **Proto default library path** Custom protoc path may lead to the
-  error `/usr/bin/include: warning: directory does not exist.`. This can happen, when the user installed the libraries
-  into a different path. We could deal with this in a better way. Furthermore, one needs to use a workaround when using
-  a custom protoc and custom .protol-lib as both the users .proto files and the .proto-lib needs to be contained
-  correctly.
-* **Better release process** Due to certain limitations the current CI/CD pipeline runs some tests on the final release
-  after it has been published to DockerHub and on GitHub. Ideally, we should not do that as other might be downloading
-  the release in the meanwhile. One solution to this is the use of promotions from an release candidate which is
-  published and tested - before being finally promoted (renamed) to a full release. Furthermore, the `prerelease: auto`
-  option of [goreleaser release](https://goreleaser.com/customization/release/)) could be used.
+See [issues](https://github.com/qaware/protocurl/issues).
 
 ## FAQ
 

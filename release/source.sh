@@ -7,7 +7,7 @@ source ./release/get-latest-dependencies-versions.sh
 export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"
 
 if [[ "$VVERSION" == "" ]]; then
-  export VVERSION="$(git for-each-ref --sort='-committerdate' --count 1 --format '%(refname:short)' refs/tags)"
+  export VVERSION="$(git tag --points-at HEAD --sort -version:refname | head -n 1)"
 fi
 
 # any version: e.g. v1.2.3, v23.45.67-dev
