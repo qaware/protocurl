@@ -50,6 +50,14 @@ jobs:
         run: |
           ./release/0-get-protoc-binaries.sh
 
+      - name: Delete GitHub Release (if force)
+        if: github.event.inputs.force == 'force-reuse-tag'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          echo "Deleting existing release, if it exists"
+          gh release delete -y "v${{ github.event.inputs.version }}" || true
+
       - name: Build Archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
