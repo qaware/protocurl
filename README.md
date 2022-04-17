@@ -1,8 +1,8 @@
 # protoCURL
 
-![test status](https://github.com/qaware/protocurl/actions/workflows/test.yml/badge.svg)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/qaware/protocurl?label=Release&logo=GitHub&sort=semver)
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&sort=semver)
+[![Tests Status](https://github.com/qaware/protocurl/actions/workflows/test.yml/badge.svg)](https://github.com/qaware/protocurl/actions/workflows/test.yml)
+[![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/qaware/protocurl?label=Release&logo=GitHub&sort=semver)](https://github.com/qaware/protocurl/releases)
+[![DockerHub Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&sort=semver)](https://hub.docker.com/r/qaware/protocurl/tags)
 
 Like cURL, but for Protobuf: Command-line tool for interacting with Protobuf over REST-ful HTTP endpoints
 
