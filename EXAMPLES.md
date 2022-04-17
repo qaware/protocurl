@@ -58,11 +58,11 @@ reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
-With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this
+With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this request against a non-existing endpoint
 ```
 $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest \
-   -u http://localhost:8080/happy-day/verify \
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+   -u http://localhost:8080/does-not-exist \
    -d ""
 ```
 will produce no output and only show this error:
@@ -319,7 +319,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sun, 17 Apr 2022 17:57:57 GMT
+Date: Sun, 17 Apr 2022 18:03:38 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

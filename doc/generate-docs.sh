@@ -91,8 +91,8 @@ EXAMPLE_OUTPUT_ONLY="$ESCAPED"
 
 # EXAMPLE OUTPUT ONLY WITH ERROR =============================
 EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest \\
-   -u http://localhost:8080/happy-day/verify \\
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+   -u http://localhost:8080/does-not-exist \\
    -d \"\""
 
 escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1"
