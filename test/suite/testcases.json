@@ -63,6 +63,13 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "verbose-long-args-equals-args",
+    "args": [
+      "-v -f happyday.proto --request-type happyday.HappyDayRequest -o=happyday.HappyDayResponse --url=http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "verbose-custom-headers",
     "args": [
       "-v -H \"x-abc: def\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",

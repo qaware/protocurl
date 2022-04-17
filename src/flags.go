@@ -23,9 +23,9 @@ func intialiseFlags() {
 		"Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse")
 	AssertSuccess(rootCmd.MarkFlagRequired("response-type"))
 
-	flags.StringVarP(&CurrentConfig.Url, "URL", "u", "",
+	flags.StringVarP(&CurrentConfig.Url, "url", "u", "",
 		"Mandatory: The url to send the request to")
-	AssertSuccess(rootCmd.MarkFlagRequired("URL"))
+	AssertSuccess(rootCmd.MarkFlagRequired("url"))
 
 	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
 		"Mandatory: The payload data in Protobuf text format. See "+GithubRepositoryLink)
