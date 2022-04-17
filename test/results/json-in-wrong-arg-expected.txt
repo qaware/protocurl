@@ -1,5 +1,5 @@
 ######### STDOUT #########
 ######### STDERR #########
-proto: syntax error (line 1:1): invalid field name: {
-panic: proto: syntax error (line 1:1): invalid field name: {
+Specified input format text is different from inferred format json. Please check your arguments.
+panic: Specified input format text is different from inferred format json. Please check your arguments.
 

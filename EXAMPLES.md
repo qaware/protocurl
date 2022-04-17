@@ -79,6 +79,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
+Inferred input text type as text.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
@@ -89,6 +90,8 @@ Invoked with following default & parsed arguments:
   "ResponseType": "happyday.HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "date: { seconds: 1648044939}",
+  "InTextType": "text",
+  "OutTextType": "text",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
@@ -215,6 +218,13 @@ file: {
       type: TYPE_FLOAT
       json_name: "float"
     }
+    field: {
+      name: "NonCamel_case_FieldName"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "NonCamelCaseFieldName"
+    }
   }
   message_type: {
     name: "HappyDayResponse"
@@ -319,7 +329,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sun, 17 Apr 2022 18:03:38 GMT
+Date: Sun, 17 Apr 2022 23:55:24 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

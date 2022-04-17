@@ -1,6 +1,6 @@
 ######### STDOUT #########
 =========================== Request JSON     =========================== >>>
-{"date":"9999-12-31T23:59:59Z","includeReason":true}
+{"date":"2022-03-23T14:15:39Z","includeReason":true,"NonCamel_case_FieldName":"text"}
 =========================== Response JSON    =========================== <<<
-{"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}
+{"reason":"Tough luck on Wednesday... 😕","formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
 ######### STDERR #########

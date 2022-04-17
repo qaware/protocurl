@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type InTextType string
 
@@ -17,14 +20,23 @@ const (
 	OJsonPretty = "json:pretty"
 )
 
-var TextTypeDisplayName = map[string]string{
+var DisplayType = map[string]string{
 	IText:       "Text",
 	IJson:       "JSON",
 	OJsonPretty: "JSON",
 }
 
+func displayIn(inText InTextType) string {
+	return DisplayType[string(inText)]
+}
+
+func displayOut(outText OutTextType) string {
+	return DisplayType[string(outText)]
+}
+
 var tmpInTextType string
 var tmpOutTextType string
+var tmpDataTextInferredType InTextType
 
 func intialiseFlags() {
 	var flags = rootCmd.Flags()
@@ -47,19 +59,22 @@ func intialiseFlags() {
 		"Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse")
 	AssertSuccess(rootCmd.MarkFlagRequired("response-type"))
 
-	flags.StringVar(&tmpInTextType, "in", "text",
-		"Specifies, in which format the input -d should be interpreted in. 'text' uses the Protobuf text format and 'json' uses JSON.")
+	flags.StringVar(&tmpInTextType, "in", "",
+		"Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON.")
 
-	flags.StringVar(&tmpOutTextType, "out", "text",
-		"Produces the output in the specified format. 'text' produces Protobuf text format. 'json' produces dense JSON and "+
-			"'json:pretty' produces pretty-printed JSON.")
+	flags.StringVar(&tmpOutTextType, "out", "",
+		"Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and "+
+			"'json:pretty' produces pretty-printed JSON. "+
+			"The produced JSON always uses the original Protobuf field names instead of lowelCamelCasing them.")
 
 	flags.StringVarP(&CurrentConfig.Url, "url", "u", "",
 		"Mandatory: The url to send the request to")
 	AssertSuccess(rootCmd.MarkFlagRequired("url"))
 
 	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
-		"Mandatory: The payload data in Protobuf text format. See "+GithubRepositoryLink)
+		"Mandatory: The payload data in Protobuf text format or JSON. "+
+			"It is inferred from the input as JSON if the first token is a '{'. "+
+			"The format can be set explicitly via --in. See "+GithubRepositoryLink)
 	AssertSuccess(rootCmd.MarkFlagRequired("data-text"))
 
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
@@ -96,12 +111,37 @@ func intialiseFlags() {
 
 func propagateFlags() {
 
+	if CurrentConfig.Verbose {
+		CurrentConfig.DisplayBinaryAndHttp = true
+	}
+
+	if CurrentConfig.ShowOutputOnly {
+		CurrentConfig.Verbose = false
+		CurrentConfig.DisplayBinaryAndHttp = false
+	}
+
+	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {
+		tmpDataTextInferredType = IJson
+	} else {
+		tmpDataTextInferredType = IText
+	}
+	if CurrentConfig.Verbose {
+		fmt.Printf("Inferred input text type as %s.\n", tmpDataTextInferredType)
+	}
+
 	if tmpInTextType == IText {
 		CurrentConfig.InTextType = IText
 	} else if tmpInTextType == IJson {
 		CurrentConfig.InTextType = IJson
-	} else {
+	} else if tmpInTextType != "" {
 		PanicWithMessage(fmt.Sprintf("Unknown input format %s. Expected %s or %s for --in", tmpInTextType, IText, IJson))
+	} else {
+		CurrentConfig.InTextType = tmpDataTextInferredType
+	}
+
+	if CurrentConfig.InTextType != tmpDataTextInferredType {
+		PanicWithMessage(fmt.Sprintf("Specified input format %s is different from inferred format %s. "+
+			"Please check your arguments.", CurrentConfig.InTextType, tmpDataTextInferredType))
 	}
 
 	if tmpOutTextType == OText {
@@ -110,17 +150,10 @@ func propagateFlags() {
 		CurrentConfig.OutTextType = OJsonDense
 	} else if tmpOutTextType == OJsonPretty {
 		CurrentConfig.OutTextType = OJsonPretty
-	} else {
+	} else if tmpOutTextType != "" {
 		PanicWithMessage(fmt.Sprintf("Unknown output format %s. Expected %s, %s or %s for --out", tmpOutTextType, OText, OJsonDense, OJsonPretty))
-	}
-
-	if CurrentConfig.Verbose {
-		CurrentConfig.DisplayBinaryAndHttp = true
-	}
-
-	if CurrentConfig.ShowOutputOnly {
-		CurrentConfig.Verbose = false
-		CurrentConfig.DisplayBinaryAndHttp = false
+	} else {
+		CurrentConfig.OutTextType = OutTextType(tmpDataTextInferredType)
 	}
 
 	if len(CurrentConfig.AdditionalCurlArgs) != 0 || CurrentConfig.CustomCurlPath != "" {

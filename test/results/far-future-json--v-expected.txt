@@ -1,5 +1,5 @@
 ######### STDOUT #########
-Inferred input text type as JSON.
+Inferred input text type as json.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
@@ -9,9 +9,9 @@ Invoked with following default & parsed arguments:
   "RequestType": "happyday.HappyDayRequest",
   "ResponseType": "happyday.HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
-  "DataText": "{ includeReason: true, date: { seconds: 1648044939, nanos: 152000000 } }",
+  "DataText": "{ \"includeReason\": true, \"date\": \"9999-12-31T23:59:59Z\"}",
   "InTextType": "json",
-  "OutTextType": "text",
+  "OutTextType": "json",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
@@ -138,6 +138,13 @@ file: {
       type: TYPE_FLOAT
       json_name: "float"
     }
+    field: {
+      name: "NonCamel_case_FieldName"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "NonCamelCaseFieldName"
+    }
   }
   message_type: {
     name: "HappyDayResponse"
@@ -217,7 +224,38 @@ file: {
   }
   syntax: "proto3"
 }
+=========================== Request JSON     =========================== >>>
+{"date":"9999-12-31T23:59:59Z","includeReason":true}
+=========================== Request Binary   =========================== >>>
+00000000  0a 07 08 ff 82 d1 ff af  07 10 01                 |...........|
+Found curl: /usr/bin/curl
+Invoking curl http request.
+Understood additional curl args: []
+Total curl args:
+  -s
+  -X
+  POST
+  --data-binary
+  @<tmp>
+  --output
+  <tmp>
+  --dump-header
+  <tmp>
+  -H
+  Content-Type: application/x-protobuf
+  http://localhost:8080/happy-day/verify
+=========================== Response Headers =========================== <<<
+HTTP/1.1 200 OK
+Content-Type: application/x-protobuf
+Date: Sun, 17 Apr 2022 23:33:26 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Content-Length: 63
+=========================== Response Binary  =========================== <<<
+00000000  08 01 12 1a 46 72 69 64  61 79 20 69 73 20 61 20  |....Friday is a |
+00000010  48 61 70 70 79 20 44 61  79 21 20 e2 ad 90 1a 1d  |Happy Day! .....|
+00000020  46 72 69 2c 20 33 31 20  44 65 63 20 39 39 39 39  |Fri, 31 Dec 9999|
+00000030  20 32 33 3a 35 39 3a 35  39 20 47 4d 54 22 00     | 23:59:59 GMT".|
+=========================== Response JSON    =========================== <<<
+{"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}
 ######### STDERR #########
-proto: syntax error (line 1:3): invalid value includeReason
-panic: proto: syntax error (line 1:3): invalid value includeReason
-

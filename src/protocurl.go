@@ -109,7 +109,7 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 
 	if !CurrentConfig.ShowOutputOnly {
 		fmt.Printf("%s Request %s     %s %s\n%s\n",
-			VISUAL_SEPARATOR, TextTypeDisplayName[string(CurrentConfig.InTextType)], VISUAL_SEPARATOR,
+			VISUAL_SEPARATOR, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
 			SEND, reconstructedRequestText)
 	}
 
@@ -155,7 +155,7 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 
 	if !CurrentConfig.ShowOutputOnly {
 		fmt.Printf("%s Response %s    %s %s\n",
-			VISUAL_SEPARATOR, TextTypeDisplayName[string(CurrentConfig.OutTextType)], VISUAL_SEPARATOR, RECV)
+			VISUAL_SEPARATOR, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
 	}
 	fmt.Printf("%s\n", responseText)
 }
