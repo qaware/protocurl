@@ -18,6 +18,20 @@ ___EXAMPLE_2___
 ___EXAMPLE_3___
 ```
 
+Use `-q` to show the text format output only.
+```
+___EXAMPLE_OUTPUT_ONLY___
+```
+
+With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this
+```
+___EXAMPLE_OUTPUT_ONLY_WITH_ERR_1___
+```
+will produce no output and only show this error:
+```
+___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___
+```
+
 Use `-v` for verbose output:
 
 ```

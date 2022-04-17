@@ -74,6 +74,43 @@ escapeString "$EXAMPLE_3"
 EXAMPLE_3="$ESCAPED"
 
 
+# EXAMPLE OUTPUT ONLY =============================
+EXAMPLE_OUTPUT_ONLY="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+   -u http://localhost:8080/happy-day/verify \\
+   -d \"includeReason: true\"
+
+$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
+  -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify \
+  -d "includeReason: true")"
+
+escapeString "$EXAMPLE_OUTPUT_ONLY"
+EXAMPLE_OUTPUT_ONLY="$ESCAPED"
+
+
+# EXAMPLE OUTPUT ONLY WITH ERROR =============================
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest \\
+   -u http://localhost:8080/happy-day/verify \\
+   -d \"\""
+
+escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1"
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="$ESCAPED"
+
+docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
+  -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -u http://localhost:8080/does-not-exist \
+  -d "" 2>.EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out || true
+
+normaliseOutput .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out
+# we need to normalise the gorouting trace away, as otherwise it would remove everything after that in the final normalisation
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="$(cat .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out)"
+rm -rf .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out
+escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2"
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="${ESCAPED}... stacktrace here ..."
+
+
 # EXAMPLE_4 ============================
 EXAMPLE_4="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
   -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
@@ -94,6 +131,9 @@ echo "$EXAMPLES_TEMPLATE" \
   | sed "s%___EXAMPLE_1___%$EXAMPLE_1%" \
   | sed "s%___EXAMPLE_2___%$EXAMPLE_2%" \
   | sed "s%___EXAMPLE_3___%$EXAMPLE_3%" \
+  | sed "s%___EXAMPLE_OUTPUT_ONLY___%$EXAMPLE_OUTPUT_ONLY%" \
+  | sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_1___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1%" \
+  | sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2%" \
   | sed "s%___EXAMPLE_4___%$EXAMPLE_4%" > EXAMPLES.md
 
 normaliseOutput EXAMPLES.md

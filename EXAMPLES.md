@@ -46,6 +46,31 @@ date: {
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
+Use `-q` to show the text format output only.
+```
+$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+   -u http://localhost:8080/happy-day/verify \
+   -d "includeReason: true"
+
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+```
+
+With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this
+```
+$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest \
+   -u http://localhost:8080/happy-day/verify \
+   -d ""
+```
+will produce no output and only show this error:
+```
+Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
+panic: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found... stacktrace here ...
+```
+
 Use `-v` for verbose output:
 
 ```
@@ -294,7 +319,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Thu, 14 Apr 2022 14:20:16 GMT
+Date: Sun, 17 Apr 2022 17:57:57 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
