@@ -9,6 +9,8 @@ Invoked with following default & parsed arguments:
   "ResponseType": "happyday.HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
+  "InTextType": "text",
+  "OutTextType": "text",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
@@ -241,7 +243,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sun, 17 Apr 2022 20:09:41 GMT
+Date: Sun, 17 Apr 2022 21:04:59 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

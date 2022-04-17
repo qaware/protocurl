@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+docker: Error response from daemon: Conflict. The container name "/json-in" is already in use by container "1a89eafddb9df602c2c4a7588c862740cceef40204a8e8dc977ed0f7b0248119". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.

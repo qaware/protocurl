@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoregistry"
 )
@@ -17,6 +18,8 @@ type Config struct {
 	ResponseType         string
 	Url                  string
 	DataText             string
+	InTextType           InTextType
+	OutTextType          OutTextType
 	DisplayBinaryAndHttp bool
 	RequestHeaders       []string
 	CustomCurlPath       string

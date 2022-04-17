@@ -8,6 +8,75 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "wednesday-is-not-a-happy-day-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 1648044939, \"nanos\": 152000000 } }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "in-wrong",
+    "args": [
+      "--in=bad -f f -i i -o o -u u -d \"\""
+    ]
+  },
+  {
+    "filename": "out-wrong",
+    "args": [
+      "--out=bad -f f -i i -o o -u u -d \"\""
+    ]
+  },
+  {
+    "filename": "json-in",
+    "args": [
+      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 1648044939, \"nanos\": 152000000 } }\""
+    ]
+  },
+  {
+    "filename": "json-i-pretty",
+    "args": [
+      "--in=json:pretty -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 1648044939, \"nanos\": 152000000 } }\""
+    ]
+  },
+  {
+    "filename": "json-in-wrong-arg",
+    "args": [
+      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 1648044939, \"nanos\": 152000000 } }\""
+    ]
+  },
+  {
+    "filename": "text-in",
+    "args": [
+      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "text-in-wrong-arg",
+    "args": [
+      "--in=text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "text-in-json-out",
+    "args": [
+      "-v --out=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "json-in-text-out",
+    "args": [
+      "-v --out=text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 1648044939, \"nanos\": 152000000 } }\""
+    ]
+  },
+  {
     "filename": "missing-curl-no-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
@@ -129,6 +198,14 @@
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 123231648044939, nanos: 152000000 }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "far-future-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \"includeReason\": true, \"date\": { \"seconds\": 123231648044939, \"nanos\": 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
   },

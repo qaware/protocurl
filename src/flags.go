@@ -2,6 +2,24 @@ package main
 
 import "fmt"
 
+type InTextType string
+
+const (
+	IText = "text"
+	IJson = "json"
+)
+
+type OutTextType string
+
+const (
+	OText       = "text"
+	OJsonDense  = "json"
+	OJsonPretty = "json:pretty"
+)
+
+var tmpInTextType string
+var tmpOutTextType string
+
 func intialiseFlags() {
 	var flags = rootCmd.Flags()
 
@@ -22,6 +40,13 @@ func intialiseFlags() {
 	flags.StringVarP(&CurrentConfig.ResponseType, "response-type", "o", "",
 		"Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse")
 	AssertSuccess(rootCmd.MarkFlagRequired("response-type"))
+
+	flags.StringVar(&tmpInTextType, "in", "text",
+		"Specifies, in which format the input -d should be interpreted in. 'text' uses the Protobuf text format and 'json' uses JSON.")
+
+	flags.StringVar(&tmpOutTextType, "out", "text",
+		"Produces the output in the specified format. 'text' produces Protobuf text format. 'json' produces dense JSON and "+
+			"'json:pretty' produces pretty-printed JSON.")
 
 	flags.StringVarP(&CurrentConfig.Url, "url", "u", "",
 		"Mandatory: The url to send the request to")
@@ -64,6 +89,25 @@ func intialiseFlags() {
 }
 
 func propagateFlags() {
+
+	if tmpInTextType == IText {
+		CurrentConfig.InTextType = IText
+	} else if tmpInTextType == IJson {
+		CurrentConfig.InTextType = IJson
+	} else {
+		PanicWithMessage(fmt.Sprintf("Unknown input format %s. Expected %s or %s for --in", tmpInTextType, IText, IJson))
+	}
+
+	if tmpOutTextType == OText {
+		CurrentConfig.OutTextType = OText
+	} else if tmpOutTextType == OJsonDense {
+		CurrentConfig.OutTextType = OJsonDense
+	} else if tmpOutTextType == OJsonPretty {
+		CurrentConfig.OutTextType = OJsonPretty
+	} else {
+		PanicWithMessage(fmt.Sprintf("Unknown output format %s. Expected %s, %s or %s for --out", tmpOutTextType, OText, OJsonDense, OJsonPretty))
+	}
+
 	if CurrentConfig.Verbose {
 		CurrentConfig.DisplayBinaryAndHttp = true
 	}

@@ -1,0 +1,5 @@
+######### STDOUT #########
+######### STDERR #########
+Unknown input format json:pretty. Expected text or json for --in
+panic: Unknown input format json:pretty. Expected text or json for --in
+
