@@ -17,6 +17,12 @@ const (
 	OJsonPretty = "json:pretty"
 )
 
+var TextTypeDisplayName = map[string]string{
+	IText:       "Text",
+	IJson:       "JSON",
+	OJsonPretty: "JSON",
+}
+
 var tmpInTextType string
 var tmpOutTextType string
 

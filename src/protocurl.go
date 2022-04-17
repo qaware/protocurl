@@ -98,12 +98,19 @@ func runProtocurlWorkflow() {
 }
 
 func encodeToBinary(requestType string, text string, registry *protoregistry.Files) []byte {
-	requestBinary, _ := protoTextToMsgAndBinary(requestType, text, registry)
+	requestBinary, _ := textToMsgAndBinary(requestType, text, registry)
 
-	reconstructedRequestText, _ := protoBinaryToMsgAndText(requestType, requestBinary, registry)
+	reconstructedRequestText, _ := protoBinaryToMsgAndText(
+		requestType,
+		requestBinary,
+		OutTextType(CurrentConfig.InTextType),
+		registry,
+	)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
+		fmt.Printf("%s Request %s     %s %s\n%s\n",
+			VISUAL_SEPARATOR, TextTypeDisplayName[string(CurrentConfig.InTextType)], VISUAL_SEPARATOR,
+			SEND, reconstructedRequestText)
 	}
 
 	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
@@ -144,10 +151,11 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
 	}
 
-	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, registry)
+	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, CurrentConfig.OutTextType, registry)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Response Text    %s %s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV)
+		fmt.Printf("%s Response %s    %s %s\n",
+			VISUAL_SEPARATOR, TextTypeDisplayName[string(CurrentConfig.OutTextType)], VISUAL_SEPARATOR, RECV)
 	}
 	fmt.Printf("%s\n", responseText)
 }
