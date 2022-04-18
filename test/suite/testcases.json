@@ -288,7 +288,7 @@
   {
     "filename": "echo-filled",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -296,7 +296,7 @@
   {
     "filename": "echo-empty",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -304,7 +304,7 @@
   {
     "filename": "echo-empty-with-curl-args",
     "args": [
-      "-f happyday.proto -C \"-v --ipv4\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -C \"-v --ipv4\" -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -312,7 +312,7 @@
   {
     "filename": "echo-full",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true date: { seconds: 1648044939 nanos: 152000000 },",
       "double: 0.12346789 float: 0.123, int32: 123123123 int64: 123123123123123 \\\n",
       "fooEnum: BAZ string: \\\"some string here\\\" bytes: \\\"\\\\000\\\\001\\\\002\\\\377\\\\376\\\\375\\\" misc: {},",
@@ -322,9 +322,20 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "echo-full-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
+      "-d \"{\\\"includeReason\\\": true,",
+      "\\\"double\\\": 0.12346789, \\\"float\\\": 0.123, \\\"int32\\\": 123123123, \\\"int64\\\": \\\"123123123123123\\\",\\\n",
+      "\\\"fooEnum\\\": \\\"BAZ\\\", \\\"string\\\": \\\"some string here\\\", \\\"bytes\\\": \\\"AAEC//79\\\", \\\"misc\\\": [{}, \\\n",
+      "{ \\\"weatherOfPastFewDays\\\": [\\\"1\\\", \\\"2\\\"], \\\"fooEnum\\\": \\\"FAZ\\\" }, \\\n",
+      "{ \\\"fooString\\\": \\\"abc\\\" } ] \\\n}\""
+    ]
+  },
+  {
     "filename": "echo-quiet",
     "args": [
-      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
       "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
     ],
