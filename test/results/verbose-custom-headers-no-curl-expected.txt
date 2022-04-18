@@ -1,6 +1,4 @@
 ######### STDOUT #########
 Inferred input text type as text.
 ######### STDERR #########
-Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["x-abc: def"]
-panic: Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["x-abc: def"]
-
+Error: Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["x-abc: def"]

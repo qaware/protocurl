@@ -1,5 +1,3 @@
 ######### STDOUT #########
 ######### STDERR #########
-Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
-panic: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
-
+Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found

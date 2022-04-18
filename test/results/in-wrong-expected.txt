@@ -1,5 +1,3 @@
 ######### STDOUT #########
 ######### STDERR #########
-Unknown input format bad. Expected text or json for --in
-panic: Unknown input format bad. Expected text or json for --in
-
+Error: Unknown input format bad. Expected text or json for --in

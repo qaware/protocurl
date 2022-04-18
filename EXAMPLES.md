@@ -85,8 +85,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
 will produce no output and only show this error:
 
 ```
-Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
-panic: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found... stacktrace here ...
+Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
 ```
 
 Use `-v` for verbose output:
@@ -347,7 +346,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Mon, 18 Apr 2022 00:57:45 GMT
+Date: Mon, 18 Apr 2022 14:58:02 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

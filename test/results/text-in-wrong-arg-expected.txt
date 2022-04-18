@@ -1,5 +1,3 @@
 ######### STDOUT #########
 ######### STDERR #########
-Specified input format json is different from inferred format text. Please check your arguments.
-panic: Specified input format json is different from inferred format text. Please check your arguments.
-
+Error: Specified input format json is different from inferred format text. Please check your arguments.

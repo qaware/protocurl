@@ -41,6 +41,11 @@ var DefaultHeaders = []string{"Content-Type: " + DefaultContentType} // first el
 var CurrentConfig = Config{}
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			PrintError(fmt.Errorf("%v", err))
+		}
+	}()
 	PrintError(rootCmd.Execute())
 }
 
@@ -48,18 +53,6 @@ func init() {
 	setAndShowVersion()
 	intialiseFlags()
 }
-
-/*
-NOTE REGARDING DISTRIBUTION
-
-It's not an issue to ensure that the user has the exact same protobuf version as the Go Protobuf SDK.
-We can simply use the protoc in the users context. Since protobuf relies on backwards compatability
-we only need ot check in CI, that the protoCURL CLI (with its implicit Protobuf Go SDK version)
-is compatible with all existing protoc binaries when processing .proto files.
-
-Recommendation: Use your own integrated protoc compiler (bundled) and provide option --protoc-path
-for the users to override it.
-*/
 
 var rootCmd = &cobra.Command{
 	Short: "protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats.",
