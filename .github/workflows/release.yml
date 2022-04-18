@@ -254,3 +254,11 @@ jobs:
             # echo "Promoting: $VVERSION -> $RELEASE_VVERSION"
             echo "release_vversion=$RELEASE_VVERSION" >> $GITHUB_ENV
           fi
+
+      # - name: Invoke workflow with inputs
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   if: env.promote == 'true'
+      #   with:
+      #     workflow: Release
+      #     token: ${{secrets.GITHUB_TOKEN}}
+      #     inputs: '{ "version": "${{ env.release_vversion }}" }'
