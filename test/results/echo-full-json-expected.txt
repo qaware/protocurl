@@ -1,6 +1,6 @@
 ######### STDOUT #########
 =========================== Request JSON     =========================== >>>
-{"includeReason":true,"double":0.12346789,"int32":123123123,"int64":"123123123123123","string":"some string here","bytes":"AAEC//79","fooEnum":"BAZ","misc":[{},{"weatherOfPastFewDays":["1","2"],"fooEnum":"FAZ"},{"fooString":"abc"}],"float":0.123}
+{"includeReason":true,"double":0.12346789,"int32":123123123,"int64":"123123123123123","string":"some string here","bytes":"AAEC//79","fooEnum":"BAZ","misc":[{}, {"weatherOfPastFewDays":["1","2"],"fooEnum":"FAZ"}, {"fooString":"abc"}],"float":0.123}
 =========================== Response JSON    =========================== <<<
-{"includeReason":true,"double":0.12346789,"int32":123123123,"int64":"123123123123123","string":"some string here","bytes":"AAEC//79","fooEnum":"BAZ","misc":[{},{"weatherOfPastFewDays":["1","2"],"fooEnum":"FAZ"},{"fooString":"abc"}],"float":0.123}
+{"includeReason":true,"double":0.12346789,"int32":123123123,"int64":"123123123123123","string":"some string here","bytes":"AAEC//79","fooEnum":"BAZ","misc":[{}, {"weatherOfPastFewDays":["1","2"],"fooEnum":"FAZ"}, {"fooString":"abc"}],"float":0.123}
 ######### STDERR #########

@@ -62,7 +62,7 @@ for the users to override it.
 */
 
 var rootCmd = &cobra.Command{
-	Short: "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
+	Short: "protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats.",
 	Use: "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text\n\n" +
 		"It uses '" + CurlExecutableName + "' from PATH. If none was found, it will fall back to an internal non-configurable http request.\n" +
 		"It uses a bundled '" + ProtocExecutableName + "' (by default) which is used to parse the .proto files.\n" +

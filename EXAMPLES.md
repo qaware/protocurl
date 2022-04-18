@@ -46,7 +46,22 @@ date: {
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
+protoCURL also handles JSON:
+
+```
+$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify \
+  -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
+
+=========================== Request JSON     =========================== >>>
+{"date":"2022-03-23T14:15:39Z"}
+=========================== Response JSON    =========================== <<<
+{"formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
+```
+
 Use `-q` to show the text format output only.
+
 ```
 $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
    -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
@@ -59,13 +74,16 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this request against a non-existing endpoint
+
 ```
 $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
    -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
    -u http://localhost:8080/does-not-exist \
    -d ""
 ```
+
 will produce no output and only show this error:
+
 ```
 Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
 panic: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found... stacktrace here ...
@@ -329,7 +347,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Mon, 18 Apr 2022 00:09:20 GMT
+Date: Mon, 18 Apr 2022 00:57:45 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
