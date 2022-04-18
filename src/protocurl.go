@@ -46,7 +46,7 @@ func main() {
 			PrintError(fmt.Errorf("%v", err))
 		}
 	}()
-	PrintError(rootCmd.Execute())
+	PanicOnError(rootCmd.Execute())
 }
 
 func init() {
