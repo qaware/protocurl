@@ -8,6 +8,78 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "wednesday-is-not-a-happy-day-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{\\\"includeReason\\\":true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "in-wrong",
+    "args": ["--in=bad -f f -i i -o o -u u -d \"\""]
+  },
+  {
+    "filename": "out-wrong",
+    "args": ["--out=bad -f f -i i -o o -u u -d \"\""]
+  },
+  {
+    "filename": "json-in",
+    "args": [
+      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ]
+  },
+  {
+    "filename": "json-in-proper-proto-names",
+    "args": [
+      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"NonCamel_case_FieldName\\\": \\\"text\\\", \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ]
+  },
+  {
+    "filename": "json-out-pretty",
+    "args": [
+      "--out=json:pretty -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ]
+  },
+  {
+    "filename": "json-in-wrong-arg",
+    "args": [
+      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ]
+  },
+  {
+    "filename": "text-in",
+    "args": [
+      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "text-in-wrong-arg",
+    "args": [
+      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "text-in-json-output",
+    "args": [
+      "-v --out=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "json-in-text-output",
+    "args": [
+      "-v --out=text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ]
+  },
+  {
     "filename": "missing-curl-no-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
@@ -133,6 +205,14 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "far-future-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"9999-12-31T23:59:59Z\\\"}\""
+    ],
+    "runAgainWithArg": "-v"
+  },
+  {
     "filename": "empty-day-epoch-time-thursday",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
@@ -208,7 +288,7 @@
   {
     "filename": "echo-filled",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -216,7 +296,7 @@
   {
     "filename": "echo-empty",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -224,7 +304,7 @@
   {
     "filename": "echo-empty-with-curl-args",
     "args": [
-      "-f happyday.proto -C \"-v --ipv4\" -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -C \"-v --ipv4\" -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -232,7 +312,7 @@
   {
     "filename": "echo-full",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true date: { seconds: 1648044939 nanos: 152000000 },",
       "double: 0.12346789 float: 0.123, int32: 123123123 int64: 123123123123123 \\\n",
       "fooEnum: BAZ string: \\\"some string here\\\" bytes: \\\"\\\\000\\\\001\\\\002\\\\377\\\\376\\\\375\\\" misc: {},",
@@ -242,9 +322,20 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "echo-full-json",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
+      "-d \"{\\\"includeReason\\\": true,",
+      "\\\"double\\\": 0.12346789, \\\"float\\\": 0.123, \\\"int32\\\": 123123123, \\\"int64\\\": \\\"123123123123123\\\",\\\n",
+      "\\\"fooEnum\\\": \\\"BAZ\\\", \\\"string\\\": \\\"some string here\\\", \\\"bytes\\\": \\\"AAEC//79\\\", \\\"misc\\\": [{}, \\\n",
+      "{ \\\"weatherOfPastFewDays\\\": [\\\"1\\\", \\\"2\\\"], \\\"fooEnum\\\": \\\"FAZ\\\" }, \\\n",
+      "{ \\\"fooString\\\": \\\"abc\\\" } ] \\\n}\""
+    ]
+  },
+  {
     "filename": "echo-quiet",
     "args": [
-      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/echo ",
+      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayRequest -u http://localhost:8080/echo ",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 },",
       "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
     ],
@@ -268,38 +359,28 @@
   },
   {
     "filename": "missing-args",
-    "args": [
-      ""
-    ],
+    "args": [""],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "missing-args-partial",
-    "args": [
-      "-f abc -i i"
-    ],
+    "args": ["-f abc -i i"],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "help",
-    "args": [
-      "-h"
-    ],
+    "args": ["-h"],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "help-missing-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
-    "args": [
-      "-h -v"
-    ],
+    "args": ["-h -v"],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "version",
-    "args": [
-      "--version"
-    ],
+    "args": ["--version"],
     "runAgainWithArg": "--no-curl"
   }
 ]

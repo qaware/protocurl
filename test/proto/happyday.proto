@@ -17,6 +17,7 @@ message HappyDayRequest {
   Foo fooEnum = 8;
   repeated MiscInfo misc = 9;
   float float = 10;
+  string NonCamel_case_FieldName = 11;
 }
 
 message HappyDayResponse {

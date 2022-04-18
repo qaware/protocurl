@@ -1,0 +1,5 @@
+######### STDOUT #########
+######### STDERR #########
+Unknown output format bad. Expected text, json or json:pretty for --out
+panic: Unknown output format bad. Expected text, json or json:pretty for --out
+

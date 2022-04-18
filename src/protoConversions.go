@@ -1,11 +1,13 @@
 package main
 
 import (
+	"strings"
+
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/dynamicpb"
-	"strings"
 )
 
 /*
@@ -31,11 +33,27 @@ var textFormatOptions = prototext.MarshalOptions{
 	Indent:    "  ",
 }
 
-func protoTextToMsgAndBinary(messageType string, text string, registry *protoregistry.Files) ([]byte, *dynamicpb.Message) {
+var jsonDenseformatOptions = protojson.MarshalOptions{
+	UseProtoNames: true,
+}
+
+var jsonPrettyformatOptions = protojson.MarshalOptions{
+	UseProtoNames: true,
+	Multiline:     true,
+	Indent:        "  ",
+}
+
+func textToMsgAndBinary(messageType string, text string, registry *protoregistry.Files) ([]byte, *dynamicpb.Message) {
 	messageDescriptor := resolveMessageByName(messageType, registry)
 	msg := dynamicpb.NewMessage(*messageDescriptor)
 
-	err := prototext.Unmarshal([]byte(text), msg)
+	var err error
+	switch CurrentConfig.InTextType {
+	case IText:
+		err = prototext.Unmarshal([]byte(text), msg)
+	case IJson:
+		err = protojson.Unmarshal([]byte(text), msg)
+	}
 	PanicOnError(err)
 
 	binary, err := binaryMarshalOptions.Marshal(msg)
@@ -44,15 +62,24 @@ func protoTextToMsgAndBinary(messageType string, text string, registry *protoreg
 	return binary, msg
 }
 
-func protoBinaryToMsgAndText(messageType string, binary []byte, registry *protoregistry.Files) (string, *dynamicpb.Message) {
+func protoBinaryToMsgAndText(messageType string, binary []byte, outFormat OutTextType, registry *protoregistry.Files) (string, *dynamicpb.Message) {
 	messageDescriptor := resolveMessageByName(messageType, registry)
 	msg := dynamicpb.NewMessage(*messageDescriptor)
 
 	err := proto.Unmarshal(binary, msg)
 	PanicOnError(err)
 
-	textBytes, err := textFormatOptions.Marshal(msg)
+	var textBytes = []byte{}
+	switch outFormat {
+	case OText:
+		textBytes, err = textFormatOptions.Marshal(msg)
+	case OJsonDense:
+		textBytes, err = jsonDenseformatOptions.Marshal(msg)
+	case OJsonPretty:
+		textBytes, err = jsonPrettyformatOptions.Marshal(msg)
+	}
 	PanicOnError(err)
+
 	text := string(textBytes)
 	text = strings.TrimSuffix(text, "\n")
 

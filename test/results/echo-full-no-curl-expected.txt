@@ -22,5 +22,25 @@ misc: {
 }
 float: 0.123
 =========================== Response Text    =========================== <<<
-
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+double: 0.12346789
+int32: 123123123
+int64: 123123123123123
+string: "some string here"
+bytes: "\x00\x01\x02\xff\xfe\xfd"
+fooEnum: BAZ
+misc: {}
+misc: {
+  weatherOfPastFewDays: "1"
+  weatherOfPastFewDays: "2"
+  fooEnum: FAZ
+}
+misc: {
+  fooString: "abc"
+}
+float: 0.123
 ######### STDERR #########

@@ -103,6 +103,10 @@ normaliseOutput() {
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
   sed -i "s/:  /: /g" "$1"
+  # The same happens for the comma separators in JSON.
+  sed -i 's/, "/,"/g' "$1"
+  sed -i 's/,  "/,"/g' "$1"
+  sed -i 's/,   "/,"/g' "$1"
 
   # remove lines with random tamporary folder names
   sed -i "s|/tmp/protocurl-temp.*|<tmp>|g" "$1"

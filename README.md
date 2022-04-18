@@ -4,7 +4,7 @@
 [![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/qaware/protocurl?label=Release&logo=GitHub&sort=semver)](https://github.com/qaware/protocurl/releases)
 [![DockerHub Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&sort=semver)](https://hub.docker.com/r/qaware/protocurl/tags)
 
-Like cURL, but for Protobuf: Command-line tool for interacting with Protobuf over REST-ful HTTP endpoints
+protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats
 
 ## Installation
 
@@ -27,6 +27,13 @@ Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`
 
 See [usage notes](doc/generated.usage.txt) and [EXAMPLES.md](EXAMPLES.md).
 
+## Protobuf JSON Format
+
+protoCURL supports the [Protobuf JSON Format](https://developers.google.com/protocol-buffers/docs/proto3#json). Note, that the JSON format is not a straightforward 1:1 mapping as
+it is in the case of the Protobuf Text Format (described below). For instance, the [JSON mapping
+for timestamp.proto](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto) uses a human-readable string representation,
+whereas the payload itself and the text format use a representation with seconds and nanoseconds.
+
 ## Protobuf Text Format
 
 Aside from JSON, Protobuf also natively supports a text format. This is the only format, which `protoc` natively
@@ -48,7 +55,7 @@ import "google/protobuf/timestamp.proto";
 message HappyDayRequest {
   google.protobuf.Timestamp date = 1;
   bool includeReason = 2;
-  
+
   double myDouble = 3;
   int64 myInt64 = 5;
   repeated string myString = 6;
@@ -82,15 +89,15 @@ date: { seconds: 123, nanos: 321 }
 
 In summary:
 
-* No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
-* fields are comma separated and described via `<fieldname>: <value>`´.
-  * Strictly speaking, the commas are optional and whitespace is sufficient
-* repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
+- No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
+- fields are comma separated and described via `<fieldname>: <value>`´.
+  - Strictly speaking, the commas are optional and whitespace is sufficient
+- repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
   consecutively.
-* nested messages are described with `{ ... }` opening a new context and describing their fields recursively
-* scalar values are describes similar to JSON. Single and double quotes are both possible for strings.
-* enum values are referenced by their name
-* built-in messages (such
+- nested messages are described with `{ ... }` opening a new context and describing their fields recursively
+- scalar values are describes similar to JSON. Single and double quotes are both possible for strings.
+- enum values are referenced by their name
+- built-in messages (such
   as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
   are described just like user-defined custom messages via `{ ... }` and their message fields
 
@@ -106,8 +113,8 @@ How to make a release: [RELEASE.md](RELEASE.md)
 
 #### Setup
 
-* As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
-* One also needs to download the protoc binaries for the local development via `release/0-get-protoc-binaries.sh`.
+- As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
+- One also needs to download the protoc binaries for the local development via `release/0-get-protoc-binaries.sh`.
 
 For development the [local.Dockerfile](src/local.Dockerfile) is used. To build the image simply
 run `source test/suite/setup.sh` and then `buildProtocurl`
@@ -135,22 +142,21 @@ See [issues](https://github.com/qaware/protocurl/issues).
 
 ## FAQ
 
-* **How is protocurl different from grpccurl?** [grpccurl](https://github.com/fullstorydev/grpcurl) only works with gRPC
+- **How is protocurl different from grpccurl?** [grpccurl](https://github.com/fullstorydev/grpcurl) only works with gRPC
   services with corresponding endpoints. However, classic REST HTTP endpoints with binary Protobuf payloads are only
   possible with `protocurl`.
-* **Why is the use of a runtime curl recommended with protocurl?** curl is a simple, flexible and mature command line
+- **Why is the use of a runtime curl recommended with protocurl?** curl is a simple, flexible and mature command line
   tool to interact with HTTP endpoints. In principle, we could simply use the HTTP implementation provided by the host
   programming language (Go) - and this is what we do if no curl was found in the PATH. However, as more people use
   protocurl, they will request for more features - leading to a feature creep in such a 'simple' tool as protocurl. We
   would like to avoid implementing the plentiful features which are necessary for a proper HTTP CLI tool, because HTTP
   can be complex. Since is essentially what curl already does, we recommend using curl and all advanced features are
   only possible with curl.
-* **What are some nice features of protocurl?**
-  * The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
+- **What are some nice features of protocurl?**
+  - The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
     based on their effect on the behavior/output. Furthermore, there are also a few cross-platform native CI tests
     running on Windows and MacOS runners.
-  * The build and release process is optimised for minimal maintenance efforts. During release build, the latest
+  - The build and release process is optimised for minimal maintenance efforts. During release build, the latest
     versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
-  * The documentation and examples are generated via scripts and enable one to update the examples automatically rather
+  - The documentation and examples are generated via scripts and enable one to update the examples automatically rather
     than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
-  

@@ -1,4 +1,5 @@
 ######### STDOUT #########
+Inferred input text type as text.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
@@ -9,6 +10,8 @@ Invoked with following default & parsed arguments:
   "ResponseType": "happyday.HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true",
+  "InTextType": "text",
+  "OutTextType": "text",
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"

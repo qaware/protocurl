@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoregistry"
 )
@@ -17,6 +18,8 @@ type Config struct {
 	ResponseType         string
 	Url                  string
 	DataText             string
+	InTextType           InTextType
+	OutTextType          OutTextType
 	DisplayBinaryAndHttp bool
 	RequestHeaders       []string
 	CustomCurlPath       string
@@ -59,7 +62,7 @@ for the users to override it.
 */
 
 var rootCmd = &cobra.Command{
-	Short: "Send and receive Protobuf messages over HTTP via `curl` and interact with it using human-readable text formats.",
+	Short: "protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats.",
 	Use: "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text\n\n" +
 		"It uses '" + CurlExecutableName + "' from PATH. If none was found, it will fall back to an internal non-configurable http request.\n" +
 		"It uses a bundled '" + ProtocExecutableName + "' (by default) which is used to parse the .proto files.\n" +
@@ -95,12 +98,19 @@ func runProtocurlWorkflow() {
 }
 
 func encodeToBinary(requestType string, text string, registry *protoregistry.Files) []byte {
-	requestBinary, _ := protoTextToMsgAndBinary(requestType, text, registry)
+	requestBinary, _ := textToMsgAndBinary(requestType, text, registry)
 
-	reconstructedRequestText, _ := protoBinaryToMsgAndText(requestType, requestBinary, registry)
+	reconstructedRequestText, _ := protoBinaryToMsgAndText(
+		requestType,
+		requestBinary,
+		OutTextType(CurrentConfig.InTextType),
+		registry,
+	)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Request Text     %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, reconstructedRequestText)
+		fmt.Printf("%s Request %s     %s %s\n%s\n",
+			VISUAL_SEPARATOR, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
+			SEND, reconstructedRequestText)
 	}
 
 	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
@@ -141,10 +151,11 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
 	}
 
-	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, registry)
+	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, CurrentConfig.OutTextType, registry)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Response Text    %s %s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV)
+		fmt.Printf("%s Response %s    %s %s\n",
+			VISUAL_SEPARATOR, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
 	}
 	fmt.Printf("%s\n", responseText)
 }
