@@ -2,6 +2,9 @@
 
 source release/source.sh
 
+customNormaliseOutput() { true; }
+export -f customNormaliseOutput
+
 PROTOCURL_IMAGE=""
 buildProtocurl() {
   if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
@@ -19,9 +22,6 @@ buildProtocurl() {
       docker build -q -t $PROTOCURL_IMAGE -f src/local.Dockerfile \
         --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH . &&
       echo "Done."
-
-    customNormaliseOutput() { true; }
-    export -f customNormaliseOutput
   fi
 }
 export -f buildProtocurl
@@ -92,13 +92,10 @@ tearDown() {
 }
 export -f tearDown
 
-export NORMALISED_ASPECTS="date, go traceback, text format indentation"
+export NORMALISED_ASPECTS="date, text format indentation, tmp-filenames, newlines"
 normaliseOutput() {
   # normalise line endings
   sed -i 's/^M$//g' "$1"
-
-  # deletes all lines starting at a go traceback
-  sed -i '/goroutine 1.*/,$d' "$1"
 
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.
@@ -115,3 +112,10 @@ normaliseOutput() {
   customNormaliseOutput "$1"
 }
 export -f normaliseOutput
+
+meaningfulDiff() {
+  normaliseOutput "$1"
+  normaliseOutput "$2"
+  diff -I 'Date: .*' --strip-trailing-cr "$1" "$2"
+}
+export -f meaningfulDiff

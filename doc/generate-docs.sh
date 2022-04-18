@@ -117,7 +117,7 @@ normaliseOutput .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out
 EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="$(cat .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out)"
 rm -rf .EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out
 escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2"
-EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="${ESCAPED}... stacktrace here ..."
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="${ESCAPED}"
 
 # EXAMPLE_4 ============================
 EXAMPLE_4="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\

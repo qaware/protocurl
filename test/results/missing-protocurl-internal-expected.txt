@@ -26,16 +26,9 @@ Invoked with following default & parsed arguments:
   "CustomProtocPath": ""
 }
 ######### STDERR #########
-Cannot find 'protocurl-internal' directory.
+Error: Cannot find 'protocurl-internal' directory.
 Please ensure that you correctly extracted the full protocurl archive.
 I was expecting to find a directory 'protocurl-internal' side by side
 to the bin directory containing the protocurl executable.
 The executable was found at /protocurl/bin/protocurl
 Error: lstat /protocurl/protocurl-internal: no such file or directory
-panic: Cannot find 'protocurl-internal' directory.
-Please ensure that you correctly extracted the full protocurl archive.
-I was expecting to find a directory 'protocurl-internal' side by side
-to the bin directory containing the protocurl executable.
-The executable was found at /protocurl/bin/protocurl
-Error: lstat /protocurl/protocurl-internal: no such file or directory
-

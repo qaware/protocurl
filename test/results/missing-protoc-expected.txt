@@ -26,8 +26,5 @@ Invoked with following default & parsed arguments:
   "CustomProtocPath": ""
 }
 ######### STDERR #########
-Could not find bundled executable protoc 
+Error: Could not find bundled executable protoc 
 Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
-panic: Could not find bundled executable protoc 
-Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
-

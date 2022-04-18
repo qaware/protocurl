@@ -29,30 +29,28 @@ testSingleRequest() {
     OUT="test/results/$FILENAME-out.txt"
     OUT_ERR="test/results/$FILENAME-out-err-tmp.txt"
     touch "$EXPECTED"
-    normaliseOutput "$EXPECTED"
     rm -f "$OUT" || true
     rm -f "$OUT_ERR" || true
-    echo "######### STDOUT #########" > "$OUT"
+    echo "######### STDOUT #########" >"$OUT"
 
     set +e
 
     if [[ "$BEFORE_TEST_BASH" == "" ]]; then
-      eval "$RUN_CLIENT --name $FILENAME $PROTOCURL_IMAGE $ARGS" 2> "$OUT_ERR" >> "$OUT"
+      eval "$RUN_CLIENT --name $FILENAME $PROTOCURL_IMAGE $ARGS" 2>"$OUT_ERR" >>"$OUT"
     else
-      ARGS="$(echo "$ARGS" | sed 's/"/\\"/g' )" # escape before usage inside quoted context
-      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME $PROTOCURL_IMAGE -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2> "$OUT_ERR" >> "$OUT"
+      ARGS="$(echo "$ARGS" | sed 's/"/\\"/g')" # escape before usage inside quoted context
+      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME $PROTOCURL_IMAGE -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2>"$OUT_ERR" >>"$OUT"
     fi
-    echo "######### STDERR #########" >> "$OUT"
-    cat "$OUT_ERR" >> "$OUT"
-    normaliseOutput "$OUT"
+    echo "######### STDERR #########" >>"$OUT"
+    cat "$OUT_ERR" >>"$OUT"
 
-    diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" >/dev/null
+    meaningfulDiff "$EXPECTED" "$OUT" >/dev/null
 
     if [[ "$?" != 0 ]]; then
       export TESTS_SUCCESS="false"
       echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
       echo "=== Found difference between expected and actual output (ignoring $NORMALISED_ASPECTS) ==="
-      diff -I 'Date: .*' --strip-trailing-cr "$EXPECTED" "$OUT" | sed 's/^/  /'
+      meaningfulDiff "$EXPECTED" "$OUT" | sed 's/^/  /'
       echo "The actual output was saved into $OUT for inspection."
     else
       echo "✨✨✨ SUCCESS ✨✨✨ - $FILENAME"
