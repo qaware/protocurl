@@ -27,7 +27,7 @@ jobs:
           FORCE="${{ github.event.inputs.force }}"
           AUTO_PROMOTE="${{ github.event.inputs.auto-promote }}"
           echo "Inputs: version: $VERSION, force: $FORCE, auto-promote: $AUTO_PROMOTE"
-          git fetch --tags origin
+          git fetch origin --tags
           [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
           set -x
           git tag $GIT_ARG "v${{ github.event.inputs.version }}"
@@ -35,116 +35,116 @@ jobs:
           set +x
           source release/source.sh
 
-      - name: Install Go and Goreleaser
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y jq zip unzip curl
+      # - name: Install Go and Goreleaser
+      #   run: |
+      #     sudo apt-get -q update
+      #     sudo apt-get -q install -y jq zip unzip curl
 
-          source release/source.sh
+      #     source release/source.sh
 
-          wget -q "$GO_DOWNLOAD_URL"
-          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          export PATH="$PATH:/usr/local/go/bin"
+      #     wget -q "$GO_DOWNLOAD_URL"
+      #     sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
+      #     export PATH="$PATH:/usr/local/go/bin"
 
-          wget -q "$GORELEASER_DOWNLOAD_URL"
-          sudo dpkg -i goreleaser*.deb
+      #     wget -q "$GORELEASER_DOWNLOAD_URL"
+      #     sudo dpkg -i goreleaser*.deb
 
-          rm -f *.deb *.gz
+      #     rm -f *.deb *.gz
 
-      - name: Protoc
-        run: |
-          ./release/0-get-protoc-binaries.sh
+      # - name: Protoc
+      #   run: |
+      #     ./release/0-get-protoc-binaries.sh
 
-      - name: Delete GitHub Release (if force)
-        if: github.event.inputs.force == 'force-reuse-tag'
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          echo "Deleting existing release, if it exists"
-          gh release delete -y "v${{ github.event.inputs.version }}" || true
+      # - name: Delete GitHub Release (if force)
+      #   if: github.event.inputs.force == 'force-reuse-tag'
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   run: |
+      #     echo "Deleting existing release, if it exists"
+      #     gh release delete -y "v${{ github.event.inputs.version }}" || true
 
-      - name: Build Archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          export PATH=$PATH:/usr/local/go/bin
-          export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
-          ./release/1-build-go-archive.sh
+      # - name: Build Archive
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     export PATH=$PATH:/usr/local/go/bin
+      #     export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
+      #     ./release/1-build-go-archive.sh
 
-      - name: DockerHub Login
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # - name: DockerHub Login
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Setup QEMU for docker buildx
-        uses: docker/setup-qemu-action@v1
+      # - name: Setup QEMU for docker buildx
+      #   uses: docker/setup-qemu-action@v1
 
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # - name: Setup Docker Buildx
+      #   uses: docker/setup-buildx-action@v1
 
-      - name: Check DockerHub image does not already exist (except if force or snapshot)
-        run: |
-          source release/source.sh
-          if [[ "${{ github.event.inputs.force }}" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
-            echo "No check needed."
-            exit 0
-          fi
-          URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
-          JSON="$(curl -s "$URL")"
-          if [[ "$JSON" == *"\"creator\""* ]]; then
-            echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
-            echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
-            exit 1
-          fi
-          echo "OK. Building and pushing the docker image would not overwrite an existing tag."
+      # - name: Check DockerHub image does not already exist (except if force or snapshot)
+      #   run: |
+      #     source release/source.sh
+      #     if [[ "${{ github.event.inputs.force }}" == "force-reuse-tag" || "$SNAPSHOT" == "true" ]]; then
+      #       echo "No check needed."
+      #       exit 0
+      #     fi
+      #     URL="https://hub.docker.com/v2/repositories/qaware/protocurl/tags/${{ github.event.inputs.version }}"
+      #     JSON="$(curl -s "$URL")"
+      #     if [[ "$JSON" == *"\"creator\""* ]]; then
+      #       echo "ERROR: qaware/protocurl:${{ github.event.inputs.version }} already exists on DockerHub!"
+      #       echo "If you know what you are doing and this is intentional, then you may set force -> 'force-reuse-tag'."
+      #       exit 1
+      #     fi
+      #     echo "OK. Building and pushing the docker image would not overwrite an existing tag."
 
-      - name: Decide if qaware/protocurl:latest should be published
-        run: |
-          # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
-          echo "publish_latest=false" >> $GITHUB_ENV
-          source release/source.sh
-          if [[ "$SNAPSHOT" == "false" ]]; then
-            TAG=qaware/protocurl:latest
-            echo "$TAG will be set"
-            echo "publish_latest=true" >> $GITHUB_ENV
-          fi
+      # - name: Decide if qaware/protocurl:latest should be published
+      #   run: |
+      #     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      #     echo "publish_latest=false" >> $GITHUB_ENV
+      #     source release/source.sh
+      #     if [[ "$SNAPSHOT" == "false" ]]; then
+      #       TAG=qaware/protocurl:latest
+      #       echo "$TAG will be set"
+      #       echo "publish_latest=true" >> $GITHUB_ENV
+      #     fi
 
-      - name: DockerHub Build and Release (with latest)
-        uses: docker/build-push-action@v2
-        if: env.publish_latest == 'true'
-        with:
-          platforms: linux/amd64,linux/i386,linux/arm64
-          build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
-          file: release/Dockerfile
-          push: true
-          context: .
+      # - name: DockerHub Build and Release (with latest)
+      #   uses: docker/build-push-action@v2
+      #   if: env.publish_latest == 'true'
+      #   with:
+      #     platforms: linux/amd64,linux/i386,linux/arm64
+      #     build-args: VERSION=${{ github.event.inputs.version }}
+      #     tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
+      #     file: release/Dockerfile
+      #     push: true
+      #     context: .
 
-      - name: DockerHub Build and Release (without latest)
-        uses: docker/build-push-action@v2
-        if: env.publish_latest == 'false'
-        with:
-          platforms: linux/amd64,linux/i386,linux/arm64
-          build-args: VERSION=${{ github.event.inputs.version }}
-          tags: qaware/protocurl:${{ github.event.inputs.version }}
-          file: release/Dockerfile
-          push: true
-          context: .
+      # - name: DockerHub Build and Release (without latest)
+      #   uses: docker/build-push-action@v2
+      #   if: env.publish_latest == 'false'
+      #   with:
+      #     platforms: linux/amd64,linux/i386,linux/arm64
+      #     build-args: VERSION=${{ github.event.inputs.version }}
+      #     tags: qaware/protocurl:${{ github.event.inputs.version }}
+      #     file: release/Dockerfile
+      #     push: true
+      #     context: .
 
-      - name: Test Release
-        run: |
-          git fetch --tags origin
-          export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
-          ./test/suite/test.sh "$PWD"
+      # - name: Test Release
+      #   run: |
+      #     git fetch --tags origin
+      #     export PROTOCURL_RELEASE_VERSION="${{ github.event.inputs.version }}"
+      #     ./test/suite/test.sh "$PWD"
 
-      - name: Security Scan
-        uses: azure/container-scan@v0
-        continue-on-error: true
-        with:
-          image-name: qaware/protocurl:${{ github.event.inputs.version }}
-          severity-threshold: high
-          run-quality-checks: true
+      # - name: Security Scan
+      #   uses: azure/container-scan@v0
+      #   continue-on-error: true
+      #   with:
+      #     image-name: qaware/protocurl:${{ github.event.inputs.version }}
+      #     severity-threshold: high
+      #     run-quality-checks: true
 
   post-release-test-windows:
     runs-on: windows-latest
@@ -152,86 +152,86 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Choco Install github client
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install gh -y --limit-output
+      # - name: Choco Install github client
+      #   uses: crazy-max/ghaction-chocolatey@v1
+      #   with:
+      #     args: install gh -y --limit-output
 
-      - name: Choco Install curl
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install curl -y --limit-output
+      # - name: Choco Install curl
+      #   uses: crazy-max/ghaction-chocolatey@v1
+      #   with:
+      #     args: install curl -y --limit-output
 
-      - name: Download release
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          $ErrorActionPreference = "Stop"
-          Write-Output "Downloading release from Github ..."
-          gh release download v${{ github.event.inputs.version }} --pattern '*windows*amd64*.zip'
-          Write-Output "working dir after download"
-          ls
-          Write-Output "Attempting to extract"
-          Expand-Archive *.zip -DestinationPath my-protocurl
-          Write-Output "After extract"
-          ls my-protocurl
+      # - name: Download release
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   run: |
+      #     $ErrorActionPreference = "Stop"
+      #     Write-Output "Downloading release from Github ..."
+      #     gh release download v${{ github.event.inputs.version }} --pattern '*windows*amd64*.zip'
+      #     Write-Output "working dir after download"
+      #     ls
+      #     Write-Output "Attempting to extract"
+      #     Expand-Archive *.zip -DestinationPath my-protocurl
+      #     Write-Output "After extract"
+      #     ls my-protocurl
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "17.7.2"
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "17.7.2"
 
-      - name: Start test server
-        run: |
-          $ErrorActionPreference = "Stop"
-          cd test
-          & ".\servers\native-start-server.ps1"
+      # - name: Start test server
+      #   run: |
+      #     $ErrorActionPreference = "Stop"
+      #     cd test
+      #     & ".\servers\native-start-server.ps1"
 
-      - name: Test extracted release and global installation
-        run: |
-          $ErrorActionPreference = "Stop"
-          & ".\test\suite\native-tests.ps1" "./my-protocurl" ".exe"
+      # - name: Test extracted release and global installation
+      #   run: |
+      #     $ErrorActionPreference = "Stop"
+      #     & ".\test\suite\native-tests.ps1" "./my-protocurl" ".exe"
 
   post-release-test-mac:
     runs-on: macos-latest
     needs: [release]
     steps:
       - uses: actions/checkout@v3
-      - name: Setup
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh > install-brew.sh
-          bash install-brew.sh
-          brew install powershell
+      # - name: Setup
+      #   run: |
+      #     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh > install-brew.sh
+      #     bash install-brew.sh
+      #     brew install powershell
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "17.7.2"
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "17.7.2"
 
-      - name: Download release
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          echo "Downloading release from Github ..."
-          ARCH="$(uname -m |
-            sed "s/x86_64/amd64/g" |
-            sed "s/x86_32/386/g" |
-            sed "s/aarch_64/arm64/g")"
-          echo "arch: $ARCH"
-          gh release download v${{ github.event.inputs.version }} --pattern "*darwin*$ARCH*.zip"
-          echo "working dir after download"
-          ls
-          echo "Attempting to extract"
-          unzip *.zip -d my-protocurl
-          echo "After extract"
-          ls my-protocurl
+      # - name: Download release
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   run: |
+      #     echo "Downloading release from Github ..."
+      #     ARCH="$(uname -m |
+      #       sed "s/x86_64/amd64/g" |
+      #       sed "s/x86_32/386/g" |
+      #       sed "s/aarch_64/arm64/g")"
+      #     echo "arch: $ARCH"
+      #     gh release download v${{ github.event.inputs.version }} --pattern "*darwin*$ARCH*.zip"
+      #     echo "working dir after download"
+      #     ls
+      #     echo "Attempting to extract"
+      #     unzip *.zip -d my-protocurl
+      #     echo "After extract"
+      #     ls my-protocurl
 
-      - name: Start test server
-        run: |
-          cd test
-          pwsh servers/native-start-server.ps1
+      # - name: Start test server
+      #   run: |
+      #     cd test
+      #     pwsh servers/native-start-server.ps1
 
-      - name: Test extracted release and global installation
-        run: |
-          pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
+      # - name: Test extracted release and global installation
+      #   run: |
+      #     pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
 
   release-success:
     runs-on: ubuntu-latest
@@ -240,6 +240,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Decide Auto-Promote
         run: |
+          git fetch origin --tags
           source release/source.sh
           echo "Successfully created release v${{ github.event.inputs.version }}."
 
