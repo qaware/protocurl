@@ -16,8 +16,8 @@ if [[ "$VVERSION" == "" ]]; then
   if [[ "$GIT_TAG" != "" ]]; then
     export VVERSION="$GIT_TAG"
   else
-    PREVIOUS_TAG="$(git for-each-ref --sort='-version:refname' --count 1 --format '%(refname:short)' refs/tags)"
-    export VVERSION="$PREVIOUS_TAG-dev"
+    LATEST_TAG="$(git for-each-ref --sort='-version:refname' --count 1 --format '%(refname:short)' refs/tags)"
+    export VVERSION="$LATEST_TAG-dev"
   fi
 fi
 

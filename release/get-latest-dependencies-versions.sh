@@ -28,12 +28,10 @@ retrieveLatestVersion() {
   LATEST_VERSION="${LATEST_VERSION#"refs/tags/"}"
 }
 
-
 # retrieve version: Google Protobuf
 retrieveLatestVersion "protocolbuffers/protobuf" "v3[.][0-9]+[.][0-9]+"
 export PROTO_VERSION="${LATEST_VERSION#"v"}"
 echo "Established Protobuf version $PROTO_VERSION"
-
 
 # retrieve version: go
 retrieveLatestVersion "golang/go" "go1[.][0-9]+[.][0-9]+"
@@ -41,13 +39,15 @@ GO_VERSION="${LATEST_VERSION#"go"}"
 GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
 echo "Established Go version: $GO_VERSION"
 
-
 # retrieve version: goreleaser
 retrieveLatestVersion "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+"
 export GORELEASER_VERSION="$LATEST_VERSION"
 echo "Established Goreleaser version: $GORELEASER_VERSION"
 
-
+# retrieve version: protocurl
+retrieveLatestVersion "qaware/protocurl" "v[0-9]+[.][0-9]+[.][0-9]+"
+export PROTOCURL_RELEASED_VVERSION="$LATEST_VERSION"
+echo "Established latest released protoCURL version: $PROTOCURL_RELEASED_VVERSION"
 
 # compute download urls
 ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/")"

@@ -69,6 +69,7 @@ jobs:
         run: |
           export PATH=$PATH:/usr/local/go/bin
           export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
+          export GORELEASER_PREVIOUS_TAG="$PROTOCURL_RELEASED_VVERSION"
           ./release/1-build-go-archive.sh
 
       - name: DockerHub Login
