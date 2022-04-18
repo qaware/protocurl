@@ -4,8 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)'
+        description: "Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)"
         required: true
+      auto-promote:
+        description: "Auto-promote the release-candiate to a proper release (e.g. 1.2.3-rc -> 1.2.3). Any non-empty value is interpreted as 'true'."
+        required: false
+        default: ""
       force:
         description: "Enter 'force-reuse-tag', if you want to change an existing git tag. CAUTION!"
         required: false
@@ -21,8 +25,9 @@ jobs:
         run: |
           VERSION="${{ github.event.inputs.version }}"
           FORCE="${{ github.event.inputs.force }}"
-          echo "Input version: $VERSION, force: $FORCE"
-          git fetch --tags origin
+          AUTO_PROMOTE="${{ github.event.inputs.auto-promote }}"
+          echo "Inputs: version: $VERSION, force: $FORCE, auto-promote: $AUTO_PROMOTE"
+          git fetch origin --tags
           [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
           set -x
           git tag $GIT_ARG "v${{ github.event.inputs.version }}"
@@ -34,16 +39,16 @@ jobs:
         run: |
           sudo apt-get -q update
           sudo apt-get -q install -y jq zip unzip curl
-          
+
           source release/source.sh
-          
+
           wget -q "$GO_DOWNLOAD_URL"
           sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
           export PATH="$PATH:/usr/local/go/bin"
-          
+
           wget -q "$GORELEASER_DOWNLOAD_URL"
           sudo dpkg -i goreleaser*.deb
-          
+
           rm -f *.deb *.gz
 
       - name: Protoc
@@ -141,10 +146,9 @@ jobs:
           severity-threshold: high
           run-quality-checks: true
 
-
   post-release-test-windows:
     runs-on: windows-latest
-    needs: [ release ]
+    needs: [release]
     steps:
       - uses: actions/checkout@v3
 
@@ -174,7 +178,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '17.7.2'
+          node-version: "17.7.2"
 
       - name: Start test server
         run: |
@@ -189,7 +193,7 @@ jobs:
 
   post-release-test-mac:
     runs-on: macos-latest
-    needs: [ release ]
+    needs: [release]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -200,7 +204,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '17.7.2'
+          node-version: "17.7.2"
 
       - name: Download release
         env:
@@ -228,3 +232,25 @@ jobs:
       - name: Test extracted release and global installation
         run: |
           pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
+
+  release-success:
+    runs-on: ubuntu-latest
+    needs: [post-release-test-mac, post-release-test-windows]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Decide Auto-Promote
+        run: |
+          git fetch origin --tags
+          source release/source.sh
+          echo "Successfully created release v${{ github.event.inputs.version }}."
+
+          echo "promote=false" >> $GITHUB_ENV
+          if [[ "$SNAPSHOT" == "true" && "${{ github.event.inputs.auto-promote }}" != "" ]]; then
+            echo "Auto promotion logic is not available currently."
+            # echo "===== AUTO-PROMOTING Release Candidate ====="
+            echo "promote=true" >> $GITHUB_ENV
+            # Remove suffix after and including -
+            RELEASE_VVERSION="${VVERSION%%-*}"
+            # echo "Promoting: $VVERSION -> $RELEASE_VVERSION"
+            echo "release_vversion=$RELEASE_VVERSION" >> $GITHUB_ENV
+          fi
