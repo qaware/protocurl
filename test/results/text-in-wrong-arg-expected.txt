@@ -1,11 +1,5 @@
 ######### STDOUT #########
-=========================== Request Text     =========================== >>>
-date: {
-  seconds: 1648044939
-  nanos: 152000000
-}
-includeReason: true
-=========================== Response Text    =========================== <<<
-reason: "Tough luck on Wednesday... 😕"
-formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ######### STDERR #########
+Specified input format json is different from inferred format text. Please check your arguments.
+panic: Specified input format json is different from inferred format text. Please check your arguments.
+

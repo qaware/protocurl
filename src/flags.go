@@ -65,7 +65,7 @@ func intialiseFlags() {
 	flags.StringVar(&tmpOutTextType, "out", "",
 		"Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and "+
 			"'json:pretty' produces pretty-printed JSON. "+
-			"The produced JSON always uses the original Protobuf field names instead of lowelCamelCasing them.")
+			"The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.")
 
 	flags.StringVarP(&CurrentConfig.Url, "url", "u", "",
 		"Mandatory: The url to send the request to")
