@@ -87,7 +87,7 @@ date: { seconds: 123, nanos: 321 }
 In summary:
 
 - No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
-- fields are comma separated and described via `<fieldname>: <value>`´.
+- fields are comma separated and described via `<fieldname>: <value>`.
   - Strictly speaking, the commas are optional and whitespace is sufficient
 - repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
   consecutively.
