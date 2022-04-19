@@ -167,8 +167,8 @@ How to make a release: [RELEASE.md](RELEASE.md)
 - As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
 - One also needs to download the protoc binaries for the local development via `release/10-get-protoc-binaries.sh`.
 
-For development the [local.Dockerfile](src/local.Dockerfile) is used. To build the image simply
-run `source test/suite/setup.sh` and then `buildProtocurl`
+For development the generated-local.Dockerfile (via [generate-local.Dockerfile.sh](dev/generate-local.Dockerfile.sh)) is used.
+To build the image simply run `source test/suite/setup.sh` and then `buildProtocurl`
 
 #### Test Server
 

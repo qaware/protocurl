@@ -1,0 +1,8 @@
+# add basic utilities into the local development image for tests 
+COPY --from=builder /bin/bash /bin/bash
+COPY --from=builder /bin/mkdir /bin/mkdir
+COPY --from=builder /bin/cp /bin/cp
+COPY --from=builder /bin/mv /bin/mv
+COPY --from=builder /bin/rm /bin/rm
+COPY --from=builder /bin/chmod /bin/chmod
+COPY --from=builder /bin/sed /bin/sed
