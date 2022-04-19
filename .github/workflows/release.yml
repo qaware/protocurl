@@ -7,7 +7,7 @@ on:
         description: "Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)"
         required: true
       auto-promote:
-        description: "Auto-promote the release-candiate to a proper release (e.g. 1.2.3-rc -> 1.2.3). Any non-empty value is interpreted as 'true'."
+        description: "Auto-promote the release-candidate to a proper release (e.g. 1.2.3-rc -> 1.2.3). Any non-empty value is interpreted as 'true'."
         required: false
         default: ""
       force:
@@ -32,12 +32,13 @@ jobs:
           echo "Inputs: version: $VERSION, force: $FORCE, auto-promote: $AUTO_PROMOTE"
           git fetch origin --tags
           [[ "$FORCE" == "force-reuse-tag" ]] && GIT_ARG="--force" || GIT_ARG=""
+          source release/source.sh
+          echo "GORELEASER_PREVIOUS_TAG=$PROTOCURL_RELEASED_VVERSION" >> $GITHUB_ENV
           set -x
           git tag $GIT_ARG "v${{ github.event.inputs.version }}"
           git push --tags $GIT_ARG
           set +x
           source release/source.sh
-          echo "GORELEASER_PREVIOUS_TAG=$PROTOCURL_RELEASED_VVERSION" >> $GITHUB_ENV
 
       - name: Install Go and Goreleaser
         run: |
