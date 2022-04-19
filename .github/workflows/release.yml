@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Clone all history to ensure goreleaser can create proper changelog.
+          fetch-depth: 0
 
       - name: Set Version
         run: |
@@ -146,6 +149,7 @@ jobs:
           severity-threshold: high
           run-quality-checks: true
 
+
   post-release-test-windows:
     runs-on: windows-latest
     needs: [release]
@@ -191,6 +195,7 @@ jobs:
           $ErrorActionPreference = "Stop"
           & ".\test\suite\native-tests.ps1" "./my-protocurl" ".exe"
 
+
   post-release-test-mac:
     runs-on: macos-latest
     needs: [release]
@@ -232,6 +237,7 @@ jobs:
       - name: Test extracted release and global installation
         run: |
           pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
+
 
   release-success:
     runs-on: ubuntu-latest
