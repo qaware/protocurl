@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Clone all history to ensure goreleaser can create proper changelog.
+          fetch-depth: 0
 
       - name: Set Version
         run: |
@@ -69,7 +72,6 @@ jobs:
         run: |
           export PATH=$PATH:/usr/local/go/bin
           export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
-          export GORELEASER_PREVIOUS_TAG="$PROTOCURL_RELEASED_VVERSION"
           ./release/1-build-go-archive.sh
 
       - name: DockerHub Login
