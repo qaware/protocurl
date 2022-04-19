@@ -2,7 +2,6 @@
 set -e
 
 source release/source.sh
-export GORELEASER_PREVIOUS_TAG="$PROTOCURL_RELEASED_VVERSION"
 
 cp template.goreleaser.yaml .goreleaser.yaml
 sed -i "s/__PROTO_VERSION__/$PROTO_VERSION/g" .goreleaser.yaml

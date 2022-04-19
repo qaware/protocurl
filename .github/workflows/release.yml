@@ -37,6 +37,7 @@ jobs:
           git push --tags $GIT_ARG
           set +x
           source release/source.sh
+          echo "GORELEASER_PREVIOUS_TAG=$PROTOCURL_RELEASED_VVERSION" >> $GITHUB_ENV
 
       - name: Install Go and Goreleaser
         run: |
@@ -72,6 +73,7 @@ jobs:
         run: |
           export PATH=$PATH:/usr/local/go/bin
           export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
+          export GORELEASER_PREVIOUS_TAG="${{ env.GORELEASER_PREVIOUS_TAG }}"
           ./release/1-build-go-archive.sh
 
       - name: DockerHub Login
@@ -152,7 +154,7 @@ jobs:
 
   post-release-test-windows:
     runs-on: windows-latest
-    needs: [release]
+    needs: [ release ]
     steps:
       - uses: actions/checkout@v3
 
@@ -198,7 +200,7 @@ jobs:
 
   post-release-test-mac:
     runs-on: macos-latest
-    needs: [release]
+    needs: [ release ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -241,7 +243,7 @@ jobs:
 
   release-success:
     runs-on: ubuntu-latest
-    needs: [post-release-test-mac, post-release-test-windows]
+    needs: [ post-release-test-mac, post-release-test-windows ]
     steps:
       - uses: actions/checkout@v3
       - name: Decide Auto-Promote
