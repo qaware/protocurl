@@ -15,14 +15,14 @@ If you want to edit this, then change doc/template.README.md instead.
 [![DockerHub Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&sort=semver)](https://hub.docker.com/r/qaware/protocurl/tags)
 
 protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using
-human-readable text formats
+human-readable text formats.
 
-## Installation
+## Install
 
 `protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
 configurable http requests. Otherwise `protocurl` will use a simple non-configurable fallback http implementation.
 
-#### Native Binary
+#### Native CLI
 
 1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
 2. Extract the archive into a folder, e.g. `/usr/local/protocurl`.
@@ -36,14 +36,44 @@ Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`
 
 ## Quick Start
 
-After installing/docker,
-<steps to create a request>
-<one line per argument>
-<example output>.
+After installing `protocurl` a request is as simple as:
 
-<!-- todo. -->
+```bash
+protocurl -I test/proto -f happyday.proto \
+  -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify -d "includeReason: true"
+```
 
-See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for examples.
+where
+
+* `-I test/proto` points to the directory of protobuf files of your service
+    * with docker one needs to instead mount the directory to `/proto` via `-v $PWD/test/proto:/proto`
+* `-f happyday.proto` is the path and name to the file containing the request and response message definitions
+* `-i happyday.HappyDayRequest` and `-o happyday.HappyDayResponse` are Protobuf package paths to the message types
+* `http://localhost:8080/happy-day/verify` is the url to the HTTP REST endpoint accepting and returning binary protobuf
+  payloads
+    * with docker one may additionally need `--network host`
+* `-d '{ includeReason: true }'` is the protobuf payload in Protobuf [Text](#Protobuf Text Format)
+  or [JSON](#Protobuf JSON Format) Format
+
+Then protocurl will
+
+* encode the textual Protobuf message to a binary request payload
+* send the binary request to the HTTP REST endpoint and receive the binary response payload
+* decode the binary response payload back to text and display it
+
+and produce the following output:
+
+```
+=========================== Request Text     =========================== >>>
+includeReason: true
+=========================== Response Text    =========================== <<<
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+```
+
+See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for more information.
 
 ## Usage
 
@@ -157,7 +187,7 @@ In summary:
 
 - No encapsulating `{ ... }` are used for the top level message (in contrast to JSON).
 - fields are comma separated and described via `<fieldname>: <value>`.
-  - Strictly speaking, the commas are optional and whitespace is sufficient
+    - Strictly speaking, the commas are optional and whitespace is sufficient
 - repeated fields are simply repeated multiple times (instead of using an array) and they do not need to appear
   consecutively.
 - nested messages are described with `{ ... }` opening a new context and describing their fields recursively
@@ -219,10 +249,11 @@ See [issues](https://github.com/qaware/protocurl/issues).
   can be complex. Since is essentially what curl already does, we recommend using curl and all advanced features are
   only possible with curl.
 - **What are some nice features of protocurl?**
-  - The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are tested
-    based on their effect on the behavior/output. Furthermore, there are also a few cross-platform native CI tests
-    running on Windows and MacOS runners.
-  - The build and release process is optimised for minimal maintenance efforts. During release build, the latest
-    versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
-  - The documentation and examples are generated via scripts and enable one to update the examples automatically rather
-    than manually. The consistency of the outputs of the code with the checked in documentation is further tested in CI.
+    - The implementation is well tested with end-2-end approval tests (see [TESTS.md](TESTS.md)). All features are
+      tested based on their effect on the behavior/output. Furthermore, there are also a few cross-platform native CI
+      tests running on Windows and MacOS runners.
+    - The build and release process is optimised for minimal maintenance efforts. During release build, the latest
+      versions of many dependencies are taken automatically (by looking up the release tags via the GitHub API).
+    - The documentation and examples are generated via scripts and enable one to update the examples automatically
+      rather than manually. The consistency of the outputs of the code with the checked in documentation is further
+      tested in CI.
