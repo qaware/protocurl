@@ -159,12 +159,8 @@ echo "Generating README..."
 
 README_TEMPLATE="$(cat doc/template.README.md)"
 
-escapeString "$USAGE"
-USAGE_ESC="$ESCAPED"
-
 # replacements ============================
 echo "$README_TEMPLATE" |
-  sed "s%___USAGE___%$USAGE_ESC%" |
   sed "s%___EXAMPLE_1_OUT___%$EXAMPLE_1_OUT%" >README.md
 
 normaliseOutput README.md

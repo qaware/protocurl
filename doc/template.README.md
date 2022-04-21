@@ -72,11 +72,7 @@ See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for more information.
 
 ## Usage
 
-```
-___USAGE___
-```
-
-When you want to link to the usage only, use this: [doc/generated.usage.txt](doc/generated.usage.txt)
+See [usage notes](doc/generated.usage.txt).
 
 ## Protobuf JSON Format
 
