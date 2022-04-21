@@ -31,15 +31,20 @@ echo "Generate EXAMPLE.md..."
 EXAMPLES_TEMPLATE="$(cat doc/template.EXAMPLES.md)"
 
 # EXAMPLE 1 ============================
+EXAMPLE_1_OUT="$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
+                 -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+                 -u http://localhost:8080/happy-day/verify \
+                 -d "includeReason: true")"
+
 EXAMPLE_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
    -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
    -u http://localhost:8080/happy-day/verify \\
    -d \"includeReason: true\"
 
-$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-  -u http://localhost:8080/happy-day/verify \
-  -d "includeReason: true")"
+$EXAMPLE_1_OUT"
+
+escapeString "$EXAMPLE_1_OUT"
+EXAMPLE_1_OUT="$ESCAPED"
 
 escapeString "$EXAMPLE_1"
 EXAMPLE_1="$ESCAPED"
@@ -145,6 +150,20 @@ echo "$EXAMPLES_TEMPLATE" |
   sed "s%___EXAMPLE_4___%$EXAMPLE_4%" >EXAMPLES.md
 
 normaliseOutput EXAMPLES.md
+
+echo "Done."
+
+# ====================================================================================
+# Generate Readme
+echo "Generating README..."
+
+README_TEMPLATE="$(cat doc/template.README.md)"
+
+# replacements ============================
+echo "$README_TEMPLATE" |
+  sed "s%___EXAMPLE_1_OUT___%$EXAMPLE_1_OUT%" >README.md
+
+normaliseOutput README.md
 
 echo "Done."
 
