@@ -53,7 +53,7 @@ where
 * `http://localhost:8080/happy-day/verify` is the url to the HTTP REST endpoint accepting and returning binary protobuf
   payloads
     * with docker one may additionally need `--network host`
-* `-d '{ includeReason: true }'` is the protobuf payload in Protobuf [Text](#protobuf-text-format)
+* `-d "includeReason: true"` is the protobuf payload in Protobuf [Text](#protobuf-text-format)
   or [JSON](#protobuf-json-format) Format
 
 Then protocurl will
