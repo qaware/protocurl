@@ -224,6 +224,8 @@ file: {
   }
   syntax: "proto3"
 }
+Looking up message with full name: happyday.HappyDayRequest
+Looking up message with full name: happyday.HappyDayRequest
 =========================== Request Text     =========================== >>>
 date: {
   seconds: 1642044939
@@ -239,7 +241,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Sun, 17 Apr 2022 23:33:20 GMT
+Date: Fri, 22 Apr 2022 00:03:41 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |
@@ -247,6 +249,7 @@ Keep-Alive: timeout=5
 00000020  1a 1d 54 68 75 2c 20 31  33 20 4a 61 6e 20 32 30  |..Thu, 13 Jan 20|
 00000030  32 32 20 30 33 3a 33 35  3a 33 39 20 47 4d 54 22  |22 03:35:39 GMT"|
 00000040  00                                                |.|
+Looking up message with full name: happyday.HappyDayResponse
 =========================== Response Text    =========================== <<<
 isHappyDay: true
 reason: "Thursday is a Happy Day! ⭐"

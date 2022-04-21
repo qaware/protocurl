@@ -38,6 +38,8 @@ var tmpInTextType string
 var tmpOutTextType string
 var tmpDataTextInferredType InTextType
 
+const inferredMessagePathPrefix = ".."
+
 func intialiseFlags() {
 	var flags = rootCmd.Flags()
 

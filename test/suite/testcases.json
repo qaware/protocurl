@@ -8,6 +8,66 @@
     "runAgainWithArg": "--no-curl"
   },
   {
+    "filename": "unknown-message-package-path-error",
+    "args": [
+      "-f happyday.proto -i package.DoesNotExist -o package.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "message-package-path-resolved-to-non-message-error",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && mv /copy/proto/nameClashTest.proto.inactive /copy/proto/nameClashTest.proto",
+    "args": [
+      "-I /copy/proto -f nameClashTest.proto -i otherPackage.ThisIsAnEnum -o otherPackage.HappyDayRequest -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "inferred-message-package-path",
+    "args": [
+      "-v -f happyday.proto -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "inferred-message-package-path-nested",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && echo 'message Outer { message MyNestedMessage { bool includeReason = 2; } repeated MyNestedMessage inlineNestedMessage = 12; }' >> /copy/proto/happyday.proto",
+    "args": [
+      "-I /copy/proto -f happyday.proto -i ..MyNestedMessage -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "inferred-proto-file",
+    "args": [
+      "-F -i package.HappyDayRequest -o package.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "inferred-proto-file-message-package-path",
+    "args": [
+      "-F -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "inferred-message-package-path-name-clash-ambiguous-error",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && mv /copy/proto/nameClashTest.proto.inactive /copy/proto/nameClashTest.proto",
+    "args": [
+      "-I /copy/proto -F -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
+    "filename": "inferred-message-package-path-name-clash-explicit-path",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && mv /copy/proto/nameClashTest.proto.inactive /copy/proto/nameClashTest.proto",
+    "args": [
+      "-I /copy/proto -F -i package.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "wednesday-is-not-a-happy-day-json",
     "args": [
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",

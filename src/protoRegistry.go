@@ -4,17 +4,18 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
-	"io/ioutil"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 )
 
 /*
@@ -91,8 +92,86 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 }
 
 func resolveMessageByName(messageType string, registry *protoregistry.Files) *protoreflect.MessageDescriptor {
-	descriptor, err := registry.FindDescriptorByName(protoreflect.FullName(messageType))
-	requestDescriptor := descriptor.(protoreflect.MessageDescriptor)
-	EnsureMessageDescriptorIsResolved(requestDescriptor, messageType, err)
+	var descriptor protoreflect.Descriptor
+	if strings.HasPrefix(messageType, inferredMessagePathPrefix) {
+		descriptor = findUniqueMessageByBaseName(registry, strings.TrimPrefix(messageType, inferredMessagePathPrefix))
+	} else {
+		descriptor = findUniqueMessageByFullName(registry, messageType)
+	}
+
+	requestDescriptor, ok := descriptor.(protoreflect.MessageDescriptor)
+	if !ok {
+		EnsureMessageDescriptorIsResolved(messageType, fmt.Errorf("Could not convert descriptor to protoreflect.MessageDescriptor:\n%s", descriptor))
+	}
+
 	return &requestDescriptor
+}
+
+func findUniqueMessageByBaseName(registry *protoregistry.Files, searchedMessageName string) protoreflect.Descriptor {
+	if CurrentConfig.Verbose {
+		fmt.Printf("Searching for message with base name: %s\n", searchedMessageName)
+	}
+
+	var resolvedMessageDescriptors []protoreflect.MessageDescriptor
+
+	registry.RangeFiles(func(fileDesc protoreflect.FileDescriptor) bool {
+		collectRecursivelyFromMessages(
+			fileDesc.Messages(), searchedMessageName, &resolvedMessageDescriptors)
+
+		return true // continue to search the next file
+	})
+
+	var resolvedFullNames []string
+	for _, msgDesc := range resolvedMessageDescriptors {
+		resolvedFullNames = append(resolvedFullNames, string(msgDesc.FullName()))
+	}
+
+	if CurrentConfig.Verbose {
+		fmt.Printf("Resolved message package-paths for name %s: %v\n", searchedMessageName, resolvedFullNames)
+	}
+
+	ensureResolvedMessagesAreUnique(&resolvedFullNames, searchedMessageName)
+
+	return resolvedMessageDescriptors[0]
+}
+
+func collectRecursivelyFromMessages(
+	messages protoreflect.MessageDescriptors,
+	searchedMessageName string,
+	resolvedArray *[]protoreflect.MessageDescriptor,
+) {
+	for i := 0; i < messages.Len(); i++ {
+		collectRecursivelyAndAppendMessageDescriptorIfNameMatches(
+			messages.Get(i), searchedMessageName, resolvedArray)
+	}
+}
+
+func collectRecursivelyAndAppendMessageDescriptorIfNameMatches(message protoreflect.MessageDescriptor, searchedMessageName string, resolvedArray *[]protoreflect.MessageDescriptor) {
+	// inspect message itself
+	currentMessageName := message.FullName().Name()
+	if string(currentMessageName) == searchedMessageName {
+		*resolvedArray = append(*resolvedArray, message)
+	}
+
+	// inspect nested messagesrecursively
+	collectRecursivelyFromMessages(message.Messages(), searchedMessageName, resolvedArray)
+}
+
+func findUniqueMessageByFullName(registry *protoregistry.Files, messageType string) protoreflect.Descriptor {
+	if CurrentConfig.Verbose {
+		fmt.Printf("Looking up message with full name: %s\n", messageType)
+	}
+	descriptor, err := registry.FindDescriptorByName(protoreflect.FullName(messageType))
+	EnsureMessageDescriptorIsResolved(messageType, err)
+	return descriptor
+}
+
+func ensureResolvedMessagesAreUnique(resolvedFullNames *[]string, searchedMessageName string) {
+	switch len(*resolvedFullNames) {
+	case 0:
+		PanicWithMessage("No message found with base name: " + searchedMessageName)
+	case 1: /* do-nothing */
+	default:
+		PanicWithMessage(fmt.Sprintf("Message with base name is not unique. Found %d messages with package paths: %v", len(*resolvedFullNames), resolvedFullNames))
+	}
 }
