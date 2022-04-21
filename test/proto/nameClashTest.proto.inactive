@@ -1,0 +1,9 @@
+syntax = "proto3";
+package otherPackage;
+message HappyDayRequest {
+  bool thisMessageWillCauseNameClash = 1;
+}
+enum ThisIsAnEnum {
+  A = 0;
+  B = 1;
+}

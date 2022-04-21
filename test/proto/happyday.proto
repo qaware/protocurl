@@ -8,7 +8,7 @@ message HappyDayRequest {
   google.protobuf.Timestamp date = 1;
   bool includeReason = 2;
 
-  /* use all data-types for testing here */
+  /* use various data-types for testing here */
   double double = 3;
   int32 int32 = 4;
   int64 int64 = 5;

@@ -224,6 +224,8 @@ file: {
   }
   syntax: "proto3"
 }
+Looking up message with full name: happyday.HappyDayRequest
+Looking up message with full name: happyday.HappyDayRequest
 =========================== Request JSON     =========================== >>>
 {"date":"9999-12-31T23:59:59Z","includeReason":true}
 =========================== Request Binary   =========================== >>>
@@ -247,7 +249,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Mon, 18 Apr 2022 01:04:40 GMT
+Date: Fri, 22 Apr 2022 00:03:51 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 63
@@ -256,6 +258,7 @@ Content-Length: 63
 00000010  48 61 70 70 79 20 44 61  79 21 20 e2 ad 90 1a 1d  |Happy Day! .....|
 00000020  46 72 69 2c 20 33 31 20  44 65 63 20 39 39 39 39  |Fri, 31 Dec 9999|
 00000030  20 32 33 3a 35 39 3a 35  39 20 47 4d 54 22 00     | 23:59:59 GMT".|
+Looking up message with full name: happyday.HappyDayResponse
 =========================== Response JSON    =========================== <<<
 {"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}
 ######### STDERR #########
