@@ -48,46 +48,7 @@ See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for examples.
 ## Usage
 
 ```
-protocurl <version>, build <hash>, https://github.com/qaware/protocurl
-
-protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats.
-
-Usage:
-  protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
-
-It uses 'curl' from PATH. If none was found, it will fall back to an internal non-configurable http request.
-It uses a bundled 'protoc' (by default) which is used to parse the .proto files.
-The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via 'protoc'.
-If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.
-The Header 'Content-Type: application/x-protobuf' is set as a request header by default.
-When converting between binary and text, the encoding UTF-8 is always used.
-
-Bug reports: https://github.com/qaware/protocurl/issues
-
-Examples:
-  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://example.com/api -d "myField: true, otherField: 1337"
-
-Flags:
-      --curl                      Forces the use of curl executable found in PATH. If none was found, then exits with an error.
-  -C, --curl-args string          Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.
-      --curl-path string          Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.
-  -d, --data-text string          Mandatory: The payload data in Protobuf text format or JSON. It is inferred from the input as JSON if the first token is a '{'. The format can be set explicitly via --in. See https://github.com/qaware/protocurl
-  -D, --display-binary-and-http   Displays the binary request and response as well as the non-binary response headers.
-  -h, --help                      help for protocurl
-      --in string                 Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON.
-      --no-curl                   Forces the use of the built-in internal http request instead of curl.
-      --out string                Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.
-  -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
-  -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
-      --protoc                    Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.
-      --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH. Also activates --protoc.
-  -H, --request-header string     Adds the string header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.
-  -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
-  -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse
-  -q, --show-output-only          Suppresses all output except response Protobuf as text. Overrides and deactivates -v and -D. Errors are still printed to stderr.
-  -u, --url string                Mandatory: The url to send the request to
-  -v, --verbose                   Prints version and enables verbose output. Also activates -D.
-      --version                   version for protocurl
+___USAGE___
 ```
 
 When you want to link to the usage only, use this: [doc/generated.usage.txt](doc/generated.usage.txt)

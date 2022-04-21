@@ -25,6 +25,24 @@ echo "$USAGE" >doc/generated.usage.txt
 echo "Done."
 
 # ====================================================================================
+# Generate Readme
+echo "Generating README..."
+
+README_TEMPLATE="$(cat doc/template.README.md)"
+
+escapeString "$USAGE"
+USAGE_ESC="$ESCAPED"
+
+# replacements ============================
+echo "$README_TEMPLATE" |
+  sed "s%___USAGE___%$USAGE_ESC%" |
+  sed "s%___TODO___%$TODO%" >README.md
+
+normaliseOutput README.md
+
+echo "Done."
+
+# ====================================================================================
 # Generate Example Commands
 echo "Generate EXAMPLE.md..."
 
