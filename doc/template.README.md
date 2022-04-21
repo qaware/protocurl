@@ -65,12 +65,7 @@ Then protocurl will
 and produce the following output:
 
 ```
-=========================== Request Text     =========================== >>>
-includeReason: true
-=========================== Response Text    =========================== <<<
-isHappyDay: true
-reason: "Thursday is a Happy Day! ⭐"
-formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+___EXAMPLE_1_OUT___
 ```
 
 See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for more information.
