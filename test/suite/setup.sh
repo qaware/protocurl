@@ -20,7 +20,8 @@ buildProtocurl() {
     export PROTOCURL_IMAGE="protocurl:latest"
     echo "Building $PROTOCURL_IMAGE ..." &&
       docker build -q -t $PROTOCURL_IMAGE -f src/local.Dockerfile \
-        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH . &&
+        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH \
+        --build-arg GO_DOWNLOAD_URL_ARCH_TEMPLATE=$GO_DOWNLOAD_URL_ARCH_TEMPLATE . &&
       echo "Done."
   fi
 }
@@ -96,6 +97,9 @@ export NORMALISED_ASPECTS="date, text format indentation, tmp-filenames, newline
 normaliseOutput() {
   # normalise line endings
   sed -i 's/^M$//g' "$1"
+
+  # replace UTF-8 non-breaking spaces (C2 A0) sometimes produced by protoc
+  sed -i 's/\xC2\xA0/ /g' "$1"
 
   # test text format is sometimes unstable and serialises to "<field>: <value>" or "<field>:  <value>" randomly
   # But this difference does not actually matter, hence we normalise this away.

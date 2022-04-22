@@ -1,5 +1,5 @@
 ######### STDOUT #########
 ######### STDERR #########
-proto: syntax error (line 1:1): invalid field name: {
-panic: proto: syntax error (line 1:1): invalid field name: {
+proto: syntax error (line 1:1): invalid field name: {
+panic: proto: syntax error (line 1:1): invalid field name: {
 

@@ -3,11 +3,14 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"google.golang.org/protobuf/encoding/prototext"
@@ -17,6 +20,8 @@ import (
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
+
+const protoFileExtension = ".proto"
 
 /*
 Given a directory of .proto files, we use `protoc` to convert these to
@@ -35,6 +40,7 @@ See:
 // Read the given proto file as a FileDescriptorSet so that we work with it within Go's SDK.
 // protoc --include_imports -o/out.bin -I /proto new-file.proto
 func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
+
 	protocPath, isBundled := findProtocExecutable()
 
 	tmpDir, errTmp := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
@@ -42,18 +48,20 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	inputFileBinPath := filepath.Join(tmpDir, "inputfile.bin")
-	protoDir := CurrentConfig.ProtoFilesDir
 
 	googleProtobufInclude := getGoogleProtobufIncludePath(isBundled)
+
+	protoFiles := collectRelevantProtoFiles()
+	protoFilesArgs := prependProtoDirToFiles(protoFiles)
 
 	protocArgs := []string{
 		protocPath,
 		"--include_imports",
 		"-o", inputFileBinPath,
 		"-I", googleProtobufInclude,
-		"-I", protoDir,
-		filepath.Join(protoDir, CurrentConfig.ProtoInputFilePath),
+		"-I", CurrentConfig.ProtoFilesDir,
 	}
+	protocArgs = append(protocArgs, protoFilesArgs...)
 
 	protocErr := bytes.NewBuffer([]byte{})
 
@@ -91,6 +99,53 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	return protoRegistryFiles
 }
 
+func collectRelevantProtoFiles() []string {
+	if CurrentConfig.InferProtoFiles {
+		if CurrentConfig.Verbose {
+			fmt.Printf("Converting all files in %s to a FileDescriptorSet.\n", CurrentConfig.ProtoFilesDir)
+		}
+		return listAllProtoFilesInDirectory(CurrentConfig.ProtoFilesDir)
+	} else {
+		if CurrentConfig.Verbose {
+			fmt.Printf("Converting file %s in %s to a FileDescriptorSet.\n",
+				CurrentConfig.ProtoInputFilePath, CurrentConfig.ProtoFilesDir)
+		}
+		return []string{CurrentConfig.ProtoInputFilePath}
+	}
+}
+
+func listAllProtoFilesInDirectory(baseDir string) (filePaths []string) {
+
+	var walker fs.WalkDirFunc = func(longerFilePath string, info fs.DirEntry, err error) error {
+		if err != nil {
+			// todo. How to test this case by creating a faulty state filesystem?
+			PrintError(errors.New("Encountered an error while walking through " + baseDir + ". " + err.Error()))
+			return nil // continue nonetheless
+		}
+
+		if strings.HasSuffix(longerFilePath, protoFileExtension) {
+			filePathFromBasedir := strings.TrimPrefix(longerFilePath, baseDir+string(filepath.Separator))
+			if CurrentConfig.Verbose {
+				fmt.Printf("Found .proto: %s\n", filePathFromBasedir)
+			}
+			filePaths = append(filePaths, filePathFromBasedir)
+		}
+
+		return nil // no error. continue
+	}
+
+	filepath.WalkDir(baseDir, walker)
+
+	return
+}
+
+func prependProtoDirToFiles(protoFiles []string) (protoFilesArgs []string) {
+	for i := range protoFiles {
+		protoFilesArgs = append(protoFilesArgs, filepath.Join(CurrentConfig.ProtoFilesDir, protoFiles[i]))
+	}
+	return
+}
+
 func resolveMessageByName(messageType string, registry *protoregistry.Files) *protoreflect.MessageDescriptor {
 	var descriptor protoreflect.Descriptor
 	if strings.HasPrefix(messageType, inferredMessagePathPrefix) {
@@ -125,6 +180,7 @@ func findUniqueMessageByBaseName(registry *protoregistry.Files, searchedMessageN
 	for _, msgDesc := range resolvedMessageDescriptors {
 		resolvedFullNames = append(resolvedFullNames, string(msgDesc.FullName()))
 	}
+	sort.Strings(resolvedFullNames) // deterministic ooutput for testing
 
 	if CurrentConfig.Verbose {
 		fmt.Printf("Resolved message package-paths for name %s: %v\n", searchedMessageName, resolvedFullNames)
@@ -172,6 +228,6 @@ func ensureResolvedMessagesAreUnique(resolvedFullNames *[]string, searchedMessag
 		PanicWithMessage("No message found with base name: " + searchedMessageName)
 	case 1: /* do-nothing */
 	default:
-		PanicWithMessage(fmt.Sprintf("Message with base name is not unique. Found %d messages with package paths: %v", len(*resolvedFullNames), resolvedFullNames))
+		PanicWithMessage(fmt.Sprintf("Message with base name is not unique. Found %d messages with package paths: %v", len(*resolvedFullNames), *resolvedFullNames))
 	}
 }

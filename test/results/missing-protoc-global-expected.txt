@@ -23,7 +23,8 @@ Invoked with following default & parsed arguments:
   "ForceNoCurl": false,
   "ForceCurl": false,
   "GlobalProtoc": true,
-  "CustomProtocPath": ""
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
 }
 GlobalProtoc is set, hence bundled protoc will be ignored.
 ######### STDERR #########

@@ -23,7 +23,8 @@ Invoked with following default & parsed arguments:
   "ForceNoCurl": false,
   "ForceCurl": false,
   "GlobalProtoc": false,
-  "CustomProtocPath": ""
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
 }
 ######### STDERR #########
 Error: Cannot find 'protocurl-internal' directory.

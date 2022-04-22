@@ -1,11 +1,8 @@
 ######### STDOUT #########
 =========================== Request Text     =========================== >>>
-date: {
-  seconds: 1648044939
-  nanos: 152000000
-}
 includeReason: true
 =========================== Response Text    =========================== <<<
-reason: "Tough luck on Wednesday... 😕"
-formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ######### STDERR #########

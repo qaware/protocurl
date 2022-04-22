@@ -1,6 +1,6 @@
 ######### STDOUT #########
 ######### STDERR #########
-Error: required flag(s) "data-text","proto-file","request-type","response-type","url" not set
+Error: required flag(s) "data-text","request-type","response-type","url" not set
 Usage:
   protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text
 
@@ -24,6 +24,7 @@ Flags:
   -D, --display-binary-and-http   Displays the binary request and response as well as the non-binary response headers.
   -h, --help                      help for protocurl
       --in string                 Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON.
+  -F, --infer-files               Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.
       --no-curl                   Forces the use of the built-in internal http request instead of curl.
       --out string                Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.
   -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
@@ -38,4 +39,4 @@ Flags:
   -v, --verbose                   Prints version and enables verbose output. Also activates -D.
       --version                   version for protocurl
 
-Error: required flag(s) "data-text","proto-file","request-type","response-type","url" not set
+Error: required flag(s) "data-text","request-type","response-type","url" not set

@@ -2,8 +2,15 @@ syntax = "proto3";
 package otherPackage;
 message HappyDayRequest {
   bool thisMessageWillCauseNameClash = 1;
+  bool includeReason = 2;
 }
 enum ThisIsAnEnum {
   A = 0;
   B = 1;
+}
+message OtherResponse {
+  bool isHappyDay = 1;
+  string reason = 2;
+  string formattedDate = 3;
+  string err = 4;
 }

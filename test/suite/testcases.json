@@ -10,7 +10,7 @@
   {
     "filename": "unknown-message-package-path-error",
     "args": [
-      "-f happyday.proto -i package.DoesNotExist -o package.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-f happyday.proto -i happyday.DoesNotExist -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
@@ -40,9 +40,10 @@
   {
     "filename": "inferred-proto-file",
     "args": [
-      "-F -i package.HappyDayRequest -o package.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
-    ]
+    ],
+    "runAgainWithArg": "-F"
   },
   {
     "filename": "inferred-proto-file-message-package-path",
@@ -60,12 +61,32 @@
     ]
   },
   {
+    "filename": "message-package-path-nested-subdir",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && cd /copy/proto && mkdir -p subdir && mv nameClashTest.proto.inactive subdir/nameClashTest.proto && sed -i 's/otherPackage/subdir.otherPackage/g' subdir/nameClashTest.proto && cd /protocurl",
+    "args": [
+      "-I /copy/proto -F -i subdir.otherPackage.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "inferred-message-package-path-nested-subdir",
+    "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && cd /copy/proto && rm -f happyday.proto && mkdir -p subdir && mv nameClashTest.proto.inactive subdir/nameClashTest.proto && sed -i 's/otherPackage/subdir.otherPackage/g' subdir/nameClashTest.proto && cd /protocurl",
+    "args": [
+      "-I /copy/proto -F -i ..HappyDayRequest -o ..OtherResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
     "filename": "inferred-message-package-path-name-clash-explicit-path",
     "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && mv /copy/proto/nameClashTest.proto.inactive /copy/proto/nameClashTest.proto",
     "args": [
-      "-I /copy/proto -F -i package.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-v -I /copy/proto -F -i happyday.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
+  },
+  {
+    "filename": "infer-files-provide-file-wrong-args",
+    "args": ["-F -f f -i i -o o -u u -d \"\""]
   },
   {
     "filename": "wednesday-is-not-a-happy-day-json",

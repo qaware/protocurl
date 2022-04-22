@@ -51,7 +51,9 @@ func intialiseFlags() {
 
 	flags.StringVarP(&CurrentConfig.ProtoInputFilePath, "proto-file", "f", "",
 		"Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).")
-	AssertSuccess(rootCmd.MarkFlagRequired("proto-file"))
+
+	flags.BoolVarP(&CurrentConfig.InferProtoFiles, "infer-files", "F", false,
+		"Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.")
 
 	flags.StringVarP(&CurrentConfig.RequestType, "request-type", "i", "",
 		"Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest")
@@ -168,6 +170,17 @@ func propagateFlags() {
 
 	if CurrentConfig.ForceCurl && CurrentConfig.ForceNoCurl {
 		PanicWithMessage("Both --curl and --no-curl are active.\nI cannot use and not use curl.\nPlease check the supplied and implied arguments via -v.")
+	}
+
+	if CurrentConfig.InferProtoFiles && CurrentConfig.ProtoInputFilePath != "" {
+		PanicWithMessage("Both -F is set and -f <file> is provided. Please provide only one of these.")
+	}
+
+	if CurrentConfig.ProtoInputFilePath == "" {
+		CurrentConfig.InferProtoFiles = true
+		if CurrentConfig.Verbose {
+			fmt.Printf("Infering proto files (-F), since -f <file> was not provided.\n")
+		}
 	}
 
 	if CurrentConfig.ForceNoCurl && len(CurrentConfig.RequestHeaders) != 0 {

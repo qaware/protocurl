@@ -23,10 +23,12 @@ Invoked with following default & parsed arguments:
   "ForceNoCurl": false,
   "ForceCurl": false,
   "GlobalProtoc": false,
-  "CustomProtocPath": ""
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
 }
 Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
 Using google protobuf include: /protocurl/protocurl-internal/include
+Converting file happyday.proto in /proto to a FileDescriptorSet.
 ######### STDERR #########
 Error: Failed to convert input .proto to FileDescriptorSet. Error: exit status 1
 protoc stderr:
