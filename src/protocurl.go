@@ -30,6 +30,7 @@ type Config struct {
 	ForceCurl            bool
 	GlobalProtoc         bool
 	CustomProtocPath     string
+	InferProtoFiles      bool
 }
 
 var commit string

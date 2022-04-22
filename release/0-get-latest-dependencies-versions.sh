@@ -53,5 +53,6 @@ echo "Established latest released protoCURL version: $PROTOCURL_RELEASED_VVERSIO
 ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/")"
 
 export GO_DOWNLOAD_URL="https://go.dev/dl/go${GO_VERSION}.linux-$ARCH.tar.gz"
+export GO_DOWNLOAD_URL_ARCH_TEMPLATE="https://go.dev/dl/go${GO_VERSION}.linux-__ARCH__.tar.gz" # used in Dockerfile
 
 export GORELEASER_DOWNLOAD_URL="https://github.com/goreleaser/goreleaser/releases/download/${GORELEASER_VERSION}/goreleaser_${GORELEASER_VERSION#"v"}_${ARCH}.deb"

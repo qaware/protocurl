@@ -130,10 +130,12 @@ Invoked with following default & parsed arguments:
   "ForceNoCurl": false,
   "ForceCurl": false,
   "GlobalProtoc": false,
-  "CustomProtocPath": ""
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
 }
 Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
 Using google protobuf include: /protocurl/protocurl-internal/include
+Converting file happyday.proto in /proto to a FileDescriptorSet.
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -331,6 +333,8 @@ file: {
   }
   syntax: "proto3"
 }
+Looking up message with full name: happyday.HappyDayRequest
+Looking up message with full name: happyday.HappyDayRequest
 =========================== Request Text     =========================== >>>
 date: {
   seconds: 1648044939
@@ -356,7 +360,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Thu, 21 Apr 2022 12:42:08 GMT
+Date: Sat, 23 Apr 2022 00:52:04 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
@@ -364,6 +368,7 @@ Content-Length: 35
 00000000  08 00 1a 1d 57 65 64 2c  20 32 33 20 4d 61 72 20  |....Wed, 23 Mar |
 00000010  32 30 32 32 20 31 34 3a  31 35 3a 33 39 20 47 4d  |2022 14:15:39 GM|
 00000020  54 22 00                                          |T".|
+Looking up message with full name: happyday.HappyDayResponse
 =========================== Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```

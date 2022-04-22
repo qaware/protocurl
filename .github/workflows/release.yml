@@ -47,9 +47,7 @@ jobs:
 
           source release/source.sh
 
-          wget -q "$GO_DOWNLOAD_URL"
-          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz
-          export PATH="$PATH:/usr/local/go/bin"
+          sudo ./release/20-install-go.sh "$GO_DOWNLOAD_URL" this-is-not-my-development-computer
 
           wget -q "$GORELEASER_DOWNLOAD_URL"
           sudo dpkg -i goreleaser*.deb
@@ -58,7 +56,7 @@ jobs:
 
       - name: Protoc
         run: |
-          ./release/0-get-protoc-binaries.sh
+          ./release/10-get-protoc-binaries.sh
 
       - name: Delete GitHub Release (if force)
         if: github.event.inputs.force == 'force-reuse-tag'
@@ -75,7 +73,7 @@ jobs:
           export PATH=$PATH:/usr/local/go/bin
           export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
           export GORELEASER_PREVIOUS_TAG="${{ env.GORELEASER_PREVIOUS_TAG }}"
-          ./release/1-build-go-archive.sh
+          ./release/30-build-go-archive.sh
 
       - name: DockerHub Login
         uses: docker/login-action@v1
@@ -152,10 +150,9 @@ jobs:
           severity-threshold: high
           run-quality-checks: true
 
-
   post-release-test-windows:
     runs-on: windows-latest
-    needs: [ release ]
+    needs: [release]
     steps:
       - uses: actions/checkout@v3
 
@@ -198,10 +195,9 @@ jobs:
           $ErrorActionPreference = "Stop"
           & ".\test\suite\native-tests.ps1" "./my-protocurl" ".exe"
 
-
   post-release-test-mac:
     runs-on: macos-latest
-    needs: [ release ]
+    needs: [release]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -241,10 +237,9 @@ jobs:
         run: |
           pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
 
-
   release-success:
     runs-on: ubuntu-latest
-    needs: [ post-release-test-mac, post-release-test-windows ]
+    needs: [post-release-test-mac, post-release-test-windows]
     steps:
       - uses: actions/checkout@v3
       - name: Decide Auto-Promote

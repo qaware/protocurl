@@ -9,7 +9,6 @@ on:
       - main
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
 
@@ -21,7 +20,7 @@ jobs:
           sudo apt-get -q update
           sudo apt-get -q install -y jq zip unzip curl
           git fetch --tags origin
-          ./release/0-get-protoc-binaries.sh
+          ./release/10-get-protoc-binaries.sh
 
       - name: Tests
         run: |
@@ -30,11 +29,11 @@ jobs:
       - name: Check Docs
         run: |
           ./doc/generate-docs.sh "$PWD"
-          
+
           # "Only a single line diff in EXMAPLES.md is allowed due to non-constant HTTP Date Header."
           EXPECTED_DIFF="$(echo -e "1\t1\tEXAMPLES.md")"
           # We need to use tabs here, as otherwise the test below would fail.
-          
+
           if [ "$(git diff --numstat 2>/dev/null)" == "$EXPECTED_DIFF" ]; then
             echo "Docs are up to date."
           else

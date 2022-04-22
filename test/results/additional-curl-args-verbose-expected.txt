@@ -23,10 +23,12 @@ Invoked with following default & parsed arguments:
   "ForceNoCurl": false,
   "ForceCurl": true,
   "GlobalProtoc": false,
-  "CustomProtocPath": ""
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
 }
 Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
 Using google protobuf include: /protocurl/protocurl-internal/include
+Converting file happyday.proto in /proto to a FileDescriptorSet.
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -270,7 +272,7 @@ Total curl args:
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Fri, 22 Apr 2022 00:03:47 GMT
+< Date: Sat, 23 Apr 2022 00:07:26 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -281,7 +283,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 22 Apr 2022 00:03:47 GMT
+Date: Sat, 23 Apr 2022 00:07:26 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

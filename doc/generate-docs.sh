@@ -32,9 +32,9 @@ EXAMPLES_TEMPLATE="$(cat doc/template.EXAMPLES.md)"
 
 # EXAMPLE 1 ============================
 EXAMPLE_1_OUT="$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-                 -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
-                 -u http://localhost:8080/happy-day/verify \
-                 -d "includeReason: true")"
+  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify \
+  -d "includeReason: true")"
 
 EXAMPLE_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
    -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
@@ -155,7 +155,7 @@ echo "Done."
 
 # ====================================================================================
 # Generate Readme
-echo "Generating README..."
+echo "Generating README.md..."
 
 README_TEMPLATE="$(cat doc/template.README.md)"
 
