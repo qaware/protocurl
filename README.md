@@ -48,7 +48,7 @@ where
 * `-I test/proto` points to the directory of protobuf files of your service
     * with docker one needs to instead mount the directory to `/proto` via `-v $PWD/test/proto:/proto`
 * `-i ..HappyDayRequest` and `-o ..HappyDayResponse` are Protobuf message types. The `..` makes protocurl infer their full package paths.
-* `http://localhost:8080/happy-day/verify` is the url to the HTTP REST endpoint accepting and returning binary protobuf
+* `-u http://localhost:8080/happy-day/verify` is the url to the HTTP REST endpoint accepting and returning binary protobuf
   payloads
     * with docker one may additionally need `--network host`
 * `-d "includeReason: true"` is the protobuf payload in Protobuf [Text](#protobuf-text-format)
