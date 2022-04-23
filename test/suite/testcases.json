@@ -15,6 +15,13 @@
     ]
   },
   {
+    "filename": "unknown-base-message-name-error",
+    "args": [
+      "-f happyday.proto -i ..DoesNotExist -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ]
+  },
+  {
     "filename": "message-package-path-resolved-to-non-message-error",
     "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && mv /copy/proto/nameClashTest.proto.inactive /copy/proto/nameClashTest.proto",
     "args": [
@@ -91,7 +98,7 @@
   {
     "filename": "wednesday-is-not-a-happy-day-json",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{\\\"includeReason\\\":true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -107,56 +114,56 @@
   {
     "filename": "json-in",
     "args": [
-      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ]
   },
   {
     "filename": "json-in-proper-proto-names",
     "args": [
-      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"NonCamel_case_FieldName\\\": \\\"text\\\", \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ]
   },
   {
     "filename": "json-out-pretty",
     "args": [
-      "--out=json:pretty -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--out=json:pretty -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ]
   },
   {
     "filename": "json-in-wrong-arg",
     "args": [
-      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--in text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ]
   },
   {
     "filename": "text-in",
     "args": [
-      "--in text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--in text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "text-in-wrong-arg",
     "args": [
-      "--in=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "text-in-json-output",
     "args": [
-      "-v --out=json -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-v --out=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "json-in-text-output",
     "args": [
-      "-v --out=text -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-v --out=text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ]
   },
@@ -164,7 +171,7 @@
     "filename": "missing-curl-no-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
-      "--no-curl -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "--no-curl -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
@@ -172,14 +179,14 @@
     "filename": "missing-curl-header-args-not-possible",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
-      "-H \"x-abc: def\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-H \"x-abc: def\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "other-days-are-happy-days",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -225,7 +232,7 @@
   {
     "filename": "verbose-custom-headers",
     "args": [
-      "-v -H \"x-abc: def\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-v -H \"x-abc: def\" -H \"x-ghi: jkl\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -234,14 +241,14 @@
     "filename": "verbose-missing-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
-      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "quiet-with-content",
     "args": [
-      "-q -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-q -v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -249,7 +256,7 @@
   {
     "filename": "display-binary-and-headers",
     "args": [
-      "-D -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-D -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -257,7 +264,7 @@
   {
     "filename": "additional-curl-args",
     "args": [
-      "-D -C \"-A my-user-agent\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-D -C \"-A my-user-agent\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -265,14 +272,14 @@
   {
     "filename": "additional-curl-args-verbose",
     "args": [
-      "-D -v -C \"-v --ipv4 -A my-user-agent\" -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-D -v -C \"-v --ipv4 -A my-user-agent\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ]
   },
   {
     "filename": "no-reason",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--curl"
@@ -280,7 +287,7 @@
   {
     "filename": "far-future",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 123231648044939, nanos: 152000000 }\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -288,7 +295,7 @@
   {
     "filename": "far-future-json",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"9999-12-31T23:59:59Z\\\"}\""
     ],
     "runAgainWithArg": "-v"
@@ -296,7 +303,7 @@
   {
     "filename": "empty-day-epoch-time-thursday",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -305,7 +312,7 @@
     "filename": "empty-day-epoch-time-thursday-missing-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -314,7 +321,7 @@
     "filename": "moved-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl-bak",
     "args": [
-      "--curl-path /usr/bin/curl-bak -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "--curl-path /usr/bin/curl-bak -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -323,7 +330,7 @@
     "filename": "global-protoc",
     "beforeTestBash": "mv /protocurl/protocurl-internal/bin/protoc /usr/bin/protoc && chmod +X /usr/bin/protoc",
     "args": [
-      "--protoc -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "--protoc -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
@@ -331,7 +338,7 @@
     "filename": "missing-protocurl-internal",
     "beforeTestBash": "mv /protocurl/protocurl-internal /moved",
     "args": [
-      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
@@ -339,7 +346,7 @@
     "filename": "global-protoc-and-lib",
     "beforeTestBash": "mv /protocurl/protocurl-internal/bin/protoc /usr/bin/protoc-bak && chmod +X /usr/bin/protoc-bak && mv /protocurl/protocurl-internal/include /usr/bin/include",
     "args": [
-      "--protoc-path /usr/bin/protoc-bak -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "--protoc-path /usr/bin/protoc-bak -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
@@ -347,7 +354,7 @@
     "filename": "moved-lib",
     "beforeTestBash": "mv /protocurl/protocurl-internal/include /usr/bin/include",
     "args": [
-      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
@@ -355,14 +362,14 @@
     "filename": "missing-protoc",
     "beforeTestBash": "mv /protocurl/protocurl-internal/bin /usr/bin/protoc-bak",
     "args": [
-      "-v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
   {
     "filename": "missing-protoc-global",
     "args": [
-      "-v --protoc -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify ",
+      "-v --protoc -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
     ]
   },
@@ -425,7 +432,7 @@
   {
     "filename": "failure-simple",
     "args": [
-      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
     ],
     "runAgainWithArg": "--no-curl"
@@ -433,7 +440,7 @@
   {
     "filename": "failure-simple-quiet",
     "args": [
-      "-q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/does-not-exist ",
+      "-q -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/does-not-exist ",
       "-d \"\""
     ],
     "runAgainWithArg": "--no-curl"

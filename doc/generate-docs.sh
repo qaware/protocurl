@@ -32,12 +32,12 @@ EXAMPLES_TEMPLATE="$(cat doc/template.EXAMPLES.md)"
 
 # EXAMPLE 1 ============================
 EXAMPLE_1_OUT="$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "includeReason: true")"
 
-EXAMPLE_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+EXAMPLE_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+   -i ..HappyDayRequest -o ..HappyDayResponse \\
    -u http://localhost:8080/happy-day/verify \\
    -d \"includeReason: true\"
 
@@ -50,7 +50,7 @@ escapeString "$EXAMPLE_1"
 EXAMPLE_1="$ESCAPED"
 
 # EXAMPLE 2 ============================
-EXAMPLE_2="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
+EXAMPLE_2="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
   -u http://localhost:8080/happy-day/verify -d \"\"
 
@@ -62,13 +62,13 @@ escapeString "$EXAMPLE_2"
 EXAMPLE_2="$ESCAPED"
 
 # EXAMPLE_3 ============================
-EXAMPLE_3="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+EXAMPLE_3="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+  -i ..HappyDayRequest -o ..HappyDayResponse \\
   -u http://localhost:8080/happy-day/verify \\
   -d \"date: { seconds: 1648044939}\"
 
 $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}")"
 
@@ -76,21 +76,35 @@ escapeString "$EXAMPLE_3"
 EXAMPLE_3="$ESCAPED"
 
 # EXAMPLE_JSON ============================
-EXAMPLE_JSON="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+EXAMPLE_JSON="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+  -i ..HappyDayRequest -o ..HappyDayResponse \\
   -u http://localhost:8080/happy-day/verify \\
   -d \"{ \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\"
 
 $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }")"
 
 escapeString "$EXAMPLE_JSON"
 EXAMPLE_JSON="$ESCAPED"
 
+# EXAMPLE_JSON ============================
+EXAMPLE_JSON_PRETTY="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+  -i ..HappyDayRequest -o ..HappyDayResponse \\
+  -u http://localhost:8080/happy-day/verify --out=json:pretty \\
+  -d \"{ \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\"
+
+$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify --out=json:pretty \
+  -d "{ \"date\": \"2022-03-23T14:15:39Z\" }")"
+
+escapeString "$EXAMPLE_JSON_PRETTY"
+EXAMPLE_JSON_PRETTY="$ESCAPED"
+
 # EXAMPLE OUTPUT ONLY =============================
-EXAMPLE_OUTPUT_ONLY="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
+EXAMPLE_OUTPUT_ONLY="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
    -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
    -u http://localhost:8080/happy-day/verify \\
    -d \"includeReason: true\"
@@ -104,8 +118,8 @@ escapeString "$EXAMPLE_OUTPUT_ONLY"
 EXAMPLE_OUTPUT_ONLY="$ESCAPED"
 
 # EXAMPLE OUTPUT ONLY WITH ERROR =============================
-EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+   -q -i ..HappyDayRequest -o ..HappyDayResponse \\
    -u http://localhost:8080/does-not-exist \\
    -d \"\""
 
@@ -113,7 +127,7 @@ escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1"
 EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="$ESCAPED"
 
 docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -q -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/does-not-exist \
   -d "" 2>.EXAMPLE_OUTPUT_ONLY_WITH_ERR_2.out || true
 
@@ -125,13 +139,13 @@ escapeString "$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2"
 EXAMPLE_OUTPUT_ONLY_WITH_ERR_2="${ESCAPED}"
 
 # EXAMPLE_4 ============================
-EXAMPLE_4="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host protocurl \\
-  -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \\
+EXAMPLE_4="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+  -v -i ..HappyDayRequest -o ..HappyDayResponse \\
   -u http://localhost:8080/happy-day/verify \\
   -d \"date: { seconds: 1648044939}\"
 
 $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
-  -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+  -v -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}")"
 
@@ -144,6 +158,7 @@ echo "$EXAMPLES_TEMPLATE" |
   sed "s%___EXAMPLE_2___%$EXAMPLE_2%" |
   sed "s%___EXAMPLE_3___%$EXAMPLE_3%" |
   sed "s%___EXAMPLE_JSON___%$EXAMPLE_JSON%" |
+  sed "s%___EXAMPLE_JSON_PRETTY___%$EXAMPLE_JSON_PRETTY%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY___%$EXAMPLE_OUTPUT_ONLY%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_1___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2%" |

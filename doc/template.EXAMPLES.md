@@ -10,31 +10,43 @@ If you want to edit this, then change doc/template.EXAMPLES.md instead.
 
 # Examples
 
-After starting the local test server via `docker-compose -f test/servers/compose.yml up --build server`, you can send
-the following list of requests via protoCURL.
+After starting the local test server via `source test/suite/setup.sh && startServer`, you can send
+the following list of requests via protoCURL. The [test/proto/happyday.proto](test/proto/happyday.proto) is used for these examples.
 
 Each request needs to mount the directory of proto files into the containers `/proto` path to ensure, that they are
 visible inside the docker container.
+
+All of these commands work with the native CLI as well as docker. For the native CLI, one can simply use `protocurl -I $PWD/test/proto` instead of `docker run -v $PWD/test/proto:/proto --network host protocurl`
+
+**Basic Example**
 
 ```bash
 ___EXAMPLE_1___
 ```
 
+**Explict full message package paths and explicit proto file**
 ```bash
 ___EXAMPLE_2___
 ```
 
+**Using imported and nested messages such as well-known Google Protobuf types**
 ```bash
 ___EXAMPLE_3___
 ```
 
-protoCURL also handles JSON:
+**JSON**
 
 ```bash
 ___EXAMPLE_JSON___
 ```
 
-Use `-q` to show the text format output only.
+**JSON with pretty-printing**
+
+```bash
+___EXAMPLE_JSON_PRETTY___
+```
+
+**Show response output only via -q**
 
 ```bash
 ___EXAMPLE_OUTPUT_ONLY___
@@ -52,7 +64,7 @@ will produce no output and only show this error:
 ___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___
 ```
 
-Use `-v` for verbose output:
+**Verbose via -v**
 
 ```bash
 ___EXAMPLE_4___

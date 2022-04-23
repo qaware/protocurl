@@ -57,7 +57,7 @@ func init() {
 
 var rootCmd = &cobra.Command{
 	Short: "protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using human-readable text formats.",
-	Use: "protocurl [flags] -f proto-file -i request-type -o response-type -u url -d request-text\n\n" +
+	Use: "protocurl [flags] -I proto-dir -i request-type -o response-type -u url -d request-text\n\n" +
 		"It uses '" + CurlExecutableName + "' from PATH. If none was found, it will fall back to an internal non-configurable http request.\n" +
 		"It uses a bundled '" + ProtocExecutableName + "' (by default) which is used to parse the .proto files.\n" +
 		"The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via '" + ProtocExecutableName + "'.\n" +
@@ -65,7 +65,7 @@ var rootCmd = &cobra.Command{
 		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default.\n" +
 		"When converting between binary and text, the encoding UTF-8 is always used.\n\n" +
 		"Bug reports: " + BugReportsLink,
-	Example:               "  protocurl -I my-protos -f messages.proto -i package.path.Req -o package.path.Resp -u http://example.com/api -d \"myField: true, otherField: 1337\"",
+	Example:               "  protocurl -I my-protos -i package.path.Req -o package.path.Resp -u http://example.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {

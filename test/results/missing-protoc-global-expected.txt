@@ -1,13 +1,14 @@
 ######### STDOUT #########
 Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
-  "ProtoInputFilePath": "happyday.proto",
-  "RequestType": "happyday.HappyDayRequest",
-  "ResponseType": "happyday.HappyDayResponse",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true",
   "InTextType": "text",
@@ -24,7 +25,7 @@ Invoked with following default & parsed arguments:
   "ForceCurl": false,
   "GlobalProtoc": true,
   "CustomProtocPath": "",
-  "InferProtoFiles": false
+  "InferProtoFiles": true
 }
 GlobalProtoc is set, hence bundled protoc will be ignored.
 ######### STDERR #########

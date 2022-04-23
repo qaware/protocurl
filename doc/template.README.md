@@ -32,15 +32,14 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 
 #### Docker
 
-Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See [examples](EXAMPLES.md) below.
+Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See [Quick Start](#quick-start) for how to use.
 
 ## Quick Start
 
 After installing `protocurl` a request is as simple as:
 
 ```bash
-protocurl -I test/proto -f happyday.proto \
-  -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+protocurl -I test/proto -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify -d "includeReason: true"
 ```
 
@@ -48,8 +47,7 @@ where
 
 * `-I test/proto` points to the directory of protobuf files of your service
     * with docker one needs to instead mount the directory to `/proto` via `-v $PWD/test/proto:/proto`
-* `-f happyday.proto` is the path and name to the file containing the request and response message definitions
-* `-i happyday.HappyDayRequest` and `-o happyday.HappyDayResponse` are Protobuf package paths to the message types
+* `-i ..HappyDayRequest` and `-o ..HappyDayResponse` are Protobuf message types. The `..` makes protocurl infer their full package paths.
 * `http://localhost:8080/happy-day/verify` is the url to the HTTP REST endpoint accepting and returning binary protobuf
   payloads
     * with docker one may additionally need `--network host`
@@ -59,7 +57,7 @@ where
 Then protocurl will
 
 * encode the textual Protobuf message to a binary request payload
-* send the binary request to the HTTP REST endpoint and receive the binary response payload
+* send the binary request to the HTTP REST endpoint (via `curl`, if possible) and receive the binary response payload
 * decode the binary response payload back to text and display it
 
 and produce the following output:
@@ -70,9 +68,9 @@ ___EXAMPLE_1_OUT___
 
 See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for more information.
 
-## Usage
+## Usage and Example
 
-See [usage notes](doc/generated.usage.txt).
+See [usage notes](doc/generated.usage.txt) and [EXAMPLES.md](EXAMPLES.md).
 
 ## Protobuf JSON Format
 

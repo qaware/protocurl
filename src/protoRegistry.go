@@ -156,7 +156,7 @@ func resolveMessageByName(messageType string, registry *protoregistry.Files) *pr
 
 	requestDescriptor, ok := descriptor.(protoreflect.MessageDescriptor)
 	if !ok {
-		EnsureMessageDescriptorIsResolved(messageType, fmt.Errorf("Could not convert descriptor to protoreflect.MessageDescriptor:\n%s", descriptor))
+		EnsureMessageDescriptorIsResolved(messageType, fmt.Errorf("could not convert descriptor to protoreflect.MessageDescriptor:\n%s", descriptor))
 	}
 
 	return &requestDescriptor
@@ -225,9 +225,10 @@ func findUniqueMessageByFullName(registry *protoregistry.Files, messageType stri
 func ensureResolvedMessagesAreUnique(resolvedFullNames *[]string, searchedMessageName string) {
 	switch len(*resolvedFullNames) {
 	case 0:
-		PanicWithMessage("No message found with base name: " + searchedMessageName)
+		PanicWithMessage("No message found with base name: " + searchedMessageName + ". Check the folder of proto files (-I) and verbose (-v).")
 	case 1: /* do-nothing */
 	default:
-		PanicWithMessage(fmt.Sprintf("Message with base name is not unique. Found %d messages with package paths: %v", len(*resolvedFullNames), *resolvedFullNames))
+		PanicWithMessage(fmt.Sprintf("Message with base name is not unique. Found %d messages with package paths: %v\n"+
+			"Try -v verbose or specify the file explicitly via -f <path-to-proto-file>.", len(*resolvedFullNames), *resolvedFullNames))
 	}
 }
