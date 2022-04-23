@@ -1,4 +1,5 @@
 ######### STDOUT #########
 Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
 ######### STDERR #########
-Error: Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["x-abc: def"]
+Error: Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["x-abc: def" "x-ghi: jkl"]

@@ -10,15 +10,19 @@ If you want to edit this, then change doc/template.EXAMPLES.md instead.
 
 # Examples
 
-After starting the local test server via `docker-compose -f test/servers/compose.yml up --build server`, you can send
-the following list of requests via protoCURL.
+After starting the local test server via `source test/suite/setup.sh && startServer`, you can send
+the following list of requests via protoCURL. The [test/proto/happyday.proto](test/proto/happyday.proto) is used for these examples.
 
 Each request needs to mount the directory of proto files into the containers `/proto` path to ensure, that they are
 visible inside the docker container.
 
+All of these commands work with the native CLI as well as docker. For the native CLI, one can simply use `protocurl -I $PWD/test/proto` instead of `docker run -v $PWD/test/proto:/proto --network host protocurl`
+
+**Basic Example**
+
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+   -i ..HappyDayRequest -o ..HappyDayResponse \
    -u http://localhost:8080/happy-day/verify \
    -d "includeReason: true"
 
@@ -30,8 +34,9 @@ reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
+**Explict full message package paths and explicit proto file**
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
   -u http://localhost:8080/happy-day/verify -d ""
 
@@ -42,9 +47,10 @@ isHappyDay: true
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
+**Using imported and nested messages such as well-known Google Protobuf types**
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
@@ -56,11 +62,11 @@ date: {
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
-protoCURL also handles JSON:
+**JSON**
 
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-  -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
 
@@ -70,10 +76,26 @@ $ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
 {"formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
 ```
 
-Use `-q` to show the text format output only.
+**JSON with pretty-printing**
 
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify --out=json:pretty \
+  -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
+
+=========================== Request JSON     =========================== >>>
+{"date":"2022-03-23T14:15:39Z"}
+=========================== Response JSON    =========================== <<<
+{
+  "formattedDate": "Wed, 23 Mar 2022 14:15:39 GMT"
+}
+```
+
+**Show response output only via -q**
+
+```bash
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
    -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
    -u http://localhost:8080/happy-day/verify \
    -d "includeReason: true"
@@ -86,8 +108,8 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 With `-q` all errors are written to stderr making it ideal for piping in scripts. Hence this request against a non-existing endpoint
 
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-   -q -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+   -q -i ..HappyDayRequest -o ..HappyDayResponse \
    -u http://localhost:8080/does-not-exist \
    -d ""
 ```
@@ -98,23 +120,24 @@ will produce no output and only show this error:
 Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
 ```
 
-Use `-v` for verbose output:
+**Verbose via -v**
 
 ```bash
-$ docker run -v "$PWD/test/proto:/proto" --network host protocurl \
-  -v -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -v -i ..HappyDayRequest -o ..HappyDayResponse \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
 Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
-  "ProtoInputFilePath": "happyday.proto",
-  "RequestType": "happyday.HappyDayRequest",
-  "ResponseType": "happyday.HappyDayResponse",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "date: { seconds: 1648044939}",
   "InTextType": "text",
@@ -131,11 +154,12 @@ Invoked with following default & parsed arguments:
   "ForceCurl": false,
   "GlobalProtoc": false,
   "CustomProtocPath": "",
-  "InferProtoFiles": false
+  "InferProtoFiles": true
 }
 Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
 Using google protobuf include: /protocurl/protocurl-internal/include
-Converting file happyday.proto in /proto to a FileDescriptorSet.
+Converting all files in /proto to a FileDescriptorSet.
+Found .proto: happyday.proto
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -333,8 +357,10 @@ file: {
   }
   syntax: "proto3"
 }
-Looking up message with full name: happyday.HappyDayRequest
-Looking up message with full name: happyday.HappyDayRequest
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 =========================== Request Text     =========================== >>>
 date: {
   seconds: 1648044939
@@ -360,7 +386,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 23 Apr 2022 00:52:04 GMT
+Date: Sat, 23 Apr 2022 16:43:47 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
@@ -368,7 +394,8 @@ Content-Length: 35
 00000000  08 00 1a 1d 57 65 64 2c  20 32 33 20 4d 61 72 20  |....Wed, 23 Mar |
 00000010  32 30 32 32 20 31 34 3a  31 35 3a 33 39 20 47 4d  |2022 14:15:39 GM|
 00000020  54 22 00                                          |T".|
-Looking up message with full name: happyday.HappyDayResponse
+Searching for message with base name: HappyDayResponse
+Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
 =========================== Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```

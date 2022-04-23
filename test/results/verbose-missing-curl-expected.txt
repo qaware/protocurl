@@ -1,13 +1,14 @@
 ######### STDOUT #########
 Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
 protocurl <version>, build <hash>, https://github.com/qaware/protocurl
 Adding default header argument to request headers : [Content-Type: application/x-protobuf]
 Invoked with following default & parsed arguments:
 {
   "ProtoFilesDir": "/proto",
-  "ProtoInputFilePath": "happyday.proto",
-  "RequestType": "happyday.HappyDayRequest",
-  "ResponseType": "happyday.HappyDayResponse",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "InTextType": "text",
@@ -24,11 +25,12 @@ Invoked with following default & parsed arguments:
   "ForceCurl": false,
   "GlobalProtoc": false,
   "CustomProtocPath": "",
-  "InferProtoFiles": false
+  "InferProtoFiles": true
 }
 Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
 Using google protobuf include: /protocurl/protocurl-internal/include
-Converting file happyday.proto in /proto to a FileDescriptorSet.
+Converting all files in /proto to a FileDescriptorSet.
+Found .proto: happyday.proto
 =========================== .proto descriptor ===========================
 file: {
   name: "google/protobuf/timestamp.proto"
@@ -226,8 +228,10 @@ file: {
   }
   syntax: "proto3"
 }
-Looking up message with full name: happyday.HappyDayRequest
-Looking up message with full name: happyday.HappyDayRequest
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 =========================== Request Text     =========================== >>>
 date: {
   seconds: 1642044939
@@ -243,7 +247,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Sat, 23 Apr 2022 00:07:22 GMT
+Date: Sat, 23 Apr 2022 16:37:04 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |
@@ -251,7 +255,8 @@ Keep-Alive: timeout=5
 00000020  1a 1d 54 68 75 2c 20 31  33 20 4a 61 6e 20 32 30  |..Thu, 13 Jan 20|
 00000030  32 32 20 30 33 3a 33 35  3a 33 39 20 47 4d 54 22  |22 03:35:39 GMT"|
 00000040  00                                                |.|
-Looking up message with full name: happyday.HappyDayResponse
+Searching for message with base name: HappyDayResponse
+Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
 =========================== Response Text    =========================== <<<
 isHappyDay: true
 reason: "Thursday is a Happy Day! ⭐"
