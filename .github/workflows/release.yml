@@ -252,19 +252,21 @@ jobs:
 
           echo "promote=false" >> $GITHUB_ENV
           if [[ "$SNAPSHOT" == "true" && "${{ github.event.inputs.auto-promote }}" != "" ]]; then
-            echo "Auto promotion logic is not available currently."
-            # echo "===== AUTO-PROMOTING Release Candidate ====="
+            echo "===== AUTO-PROMOTING Release Candidate ====="
             echo "promote=true" >> $GITHUB_ENV
-            # Remove suffix after and including -
+            # Remove suffix after and including -. Remove prefix v.
             RELEASE_VVERSION="${VVERSION%%-*}"
-            # echo "Promoting: $VVERSION -> $RELEASE_VVERSION"
-            echo "release_vversion=$RELEASE_VVERSION" >> $GITHUB_ENV
+            RELEASE_VERSION="${RELEASE_VVERSION#"v"}"
+            echo "Promoting: $VERSION -> $RELEASE_VERSION"
+            echo "release_version=$RELEASE_VERSION" >> $GITHUB_ENV
+          else
+            echo "Not auto-promoting."
           fi
 
-      # - name: Invoke workflow with inputs
-      #   uses: benc-uk/workflow-dispatch@v1
-      #   if: env.promote == 'true'
-      #   with:
-      #     workflow: Release
-      #     token: ${{secrets.GITHUB_TOKEN}}
-      #     inputs: '{ "version": "${{ env.release_vversion }}" }'
+      - name: Auto-Promote Release Candidate
+        if: env.promote == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_PROMOTE_GITHUB_TOKEN }}
+        run: |
+          INPUTS='{ "version": "${{ env.release_version }}" }'
+          echo "$INPUTS" | gh workflow run Release --ref "v${{ github.event.inputs.version }}" --json
