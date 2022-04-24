@@ -167,19 +167,8 @@ How to make a release: [RELEASE.md](RELEASE.md)
 - As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
 - One also needs to download the protoc binaries for the local development via `release/10-get-protoc-binaries.sh`.
 
-For development the generated-local.Dockerfile (via [generate-local.Dockerfile.sh](dev/generate-local.Dockerfile.sh)) is used.
+For development the `generated-local.Dockerfile` (via [generate-local.Dockerfile.sh](dev/generate-local.Dockerfile.sh)) is used.
 To build the image simply run `source test/suite/setup.sh` and then `buildProtocurl`
-
-#### Test Server
-
-When new dependencies are needed for the test server, the following command enables one to start a shell in the test
-server.
-
-```
-docker run -v "$PWD/test/servers:/servers" -it nodeserver:v1 /bin/bash
-```
-
-Now it's possible to add new dependencies via `npm install <new-package>`
 
 #### Updating Docs after changes
 

@@ -18,11 +18,10 @@ buildProtocurl() {
     export -f customNormaliseOutput
   else
     export PROTOCURL_IMAGE="protocurl:latest"
-    ARCH_UNAME_M="$(uname -m)"
     ./dev/generate-local.Dockerfile.sh
     echo "Building $PROTOCURL_IMAGE ..." &&
       docker build -q -t $PROTOCURL_IMAGE -f dev/generated.local.Dockerfile \
-        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH --build-arg ARCH_UNAME_M=$ARCH_UNAME_M \
+        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH \
         --build-arg GO_DOWNLOAD_URL_ARCH_TEMPLATE=$GO_DOWNLOAD_URL_ARCH_TEMPLATE . &&
       echo "Done."
   fi
