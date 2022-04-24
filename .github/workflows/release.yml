@@ -40,6 +40,10 @@ jobs:
           set +x
           source release/source.sh
 
+      - name: Protoc
+        run: |
+          ./release/10-get-protoc-binaries.sh
+
       - name: Install Go and Goreleaser
         run: |
           sudo apt-get -q update
@@ -53,10 +57,6 @@ jobs:
           sudo dpkg -i goreleaser*.deb
 
           rm -f *.deb *.gz
-
-      - name: Protoc
-        run: |
-          ./release/10-get-protoc-binaries.sh
 
       - name: Delete GitHub Release (if force)
         if: github.event.inputs.force == 'force-reuse-tag'
@@ -103,8 +103,10 @@ jobs:
           fi
           echo "OK. Building and pushing the docker image would not overwrite an existing tag."
 
-      - name: Decide if qaware/protocurl:latest should be published
+      - name: Prepare and Decide if qaware/protocurl:latest should be published
         run: |
+          ./release/40-generate-Dockerfile.sh
+
           # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
           echo "publish_latest=false" >> $GITHUB_ENV
           source release/source.sh
@@ -118,10 +120,10 @@ jobs:
         uses: docker/build-push-action@v2
         if: env.publish_latest == 'true'
         with:
-          platforms: linux/amd64,linux/i386,linux/arm64
+          platforms: linux/amd64,linux/arm64
           build-args: VERSION=${{ github.event.inputs.version }}
           tags: qaware/protocurl:${{ github.event.inputs.version }}, qaware/protocurl:latest
-          file: release/Dockerfile
+          file: release/generated.Dockerfile
           push: true
           context: .
 
@@ -129,10 +131,10 @@ jobs:
         uses: docker/build-push-action@v2
         if: env.publish_latest == 'false'
         with:
-          platforms: linux/amd64,linux/i386,linux/arm64
+          platforms: linux/amd64,linux/arm64
           build-args: VERSION=${{ github.event.inputs.version }}
           tags: qaware/protocurl:${{ github.event.inputs.version }}
-          file: release/Dockerfile
+          file: release/generated.Dockerfile
           push: true
           context: .
 

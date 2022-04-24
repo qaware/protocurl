@@ -19,4 +19,3 @@ goreleaser release --rm-dist
 # set -x; for file in dist/*.zip; do mv "$file" "${file/-next/}"; done # DEV
 
 set +x
-

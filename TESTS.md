@@ -57,6 +57,17 @@ twice with `--no-curl` to check, that the output is (mostly) the same regardless
 **Examples for the inputs, outputs and arguments can hence be found in the test/results directory as well as
 test/suite/testcases.json.**
 
+#### Adapting test server
+
+When new dependencies are needed for the test server, the following command enables one to start a shell in the test
+server.
+
+```
+docker run -v "$PWD/test/servers:/servers" -it nodeserver:v1 /bin/bash
+```
+
+Now it's possible to add new dependencies via `npm install <new-package>`
+
 ### Adding new tests
 
 To add a test, simply add a new entry into `test/suite/testcases.json` and run the tests. The tests will generate an
