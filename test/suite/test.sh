@@ -4,7 +4,15 @@ set -e
 
 WORKING_DIR="$1"
 
-export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
+export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host \
+  -v /bin/bash:/bin/bash:ro \
+  -v /bin/mkdir:/bin/mkdir:ro \
+  -v /bin/cp:/bin/cp:ro \
+  -v /bin/mv:/bin/mv:ro \
+  -v /bin/rm:/bin/rm:ro \
+  -v /bin/sed:/bin/sed:ro \
+  -v /bin/chmod:/bin/chmod:ro"
+# We also mount the utilities into the distroless container to make them useable in the tests
 
 export SHOW_LOGS="docker logs"
 
