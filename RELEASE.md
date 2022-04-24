@@ -32,6 +32,8 @@ The release process works like this:
   doker images
 * [Docker Buildx](https://docs.docker.com/engine/reference/commandline/buildx/) is used to build multi-architecture
   images and push them to [qaware/protocurl](https://hub.docker.com/r/qaware/protocurl)
+  * their Dockerfile is generated via [release/generate-Dockerfile.sh](release/generate-Dockerfile.sh)
+  * There is a hack, when copying the proper lib files via multi-stage builds and build args into the [distroless cc](https://github.com/GoogleContainerTools/distroless/tree/main/cc) image.
 * Native tests for multiple platforms are run. If these tests fail then the release candidate needs to be fixed.
   * This should only happen for release candidates - as proper releases should only be created once a release candidate
     passes all tests.
