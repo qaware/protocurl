@@ -1,0 +1,19 @@
+# Documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gomod"
+    directory: "/src"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/test/servers"
+    schedule:
+      interval: "weekly"
