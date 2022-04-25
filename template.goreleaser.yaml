@@ -1,7 +1,7 @@
 # Documentation at https://goreleaser.com
 
 # This file is a template and expressions such as __PROTOC_VERSION__ are replaced
-# with envrionment variables such as $PROTOC_VERSION before usage.
+# with environment variables such as $PROTOC_VERSION before usage.
 
 # https://goreleaser.com/customization/build/
 builds:
@@ -23,6 +23,7 @@ builds:
 archives:
   - format: zip
     files:
+      # NOTE: These files are listed again in the packages below. Keep them synced!
       # binary is added implicitly
       - README.md
       - LICENSE.md
@@ -33,6 +34,56 @@ archives:
       - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: 'protocurl-internal/include/google/protobuf'
         strip_parent: true
+
+# Linux packages
+nfpms:
+  - package_name: protocurl
+    description: |-
+      protoCURL is cURL for Protobuf:
+      The command-line tool for interacting with Protobuf over
+      HTTP REST endpoints using human-readable text formats.
+
+    homepage: https://github.com/qaware/protocurl
+    license: MIT
+    maintainer: GollyTicker <golly.ticker@gmail.com>
+    priority: extra
+
+    formats:
+      - apk
+      - deb
+    dependencies:
+      - curl
+    suggests:
+      - curl
+
+    overrides:
+      # protoc is compiled against glibc whereas alpine uses musl.
+      # See: https://stackoverflow.com/a/64447927
+      apk:
+        dependencies:
+          - curl
+          - gcompat
+
+    # adds the ./bin/protocurl
+    bindir: /opt/protocurl
+
+    # GoReleaser will automatically add the binaries.
+    contents:
+      - src: /opt/protocurl/bin/protocurl
+        dst: /usr/bin/protocurl
+        type: "symlink"
+
+      # NOTE: These files are listed again in the archives above. Keep them synced!
+      # binary is added implicitly
+      - src: README.md
+        dst: /opt/protocurl/README.md
+      - src: LICENSE.md
+        dst: /opt/protocurl/LICENSE.md
+      # copy protoc binaries and their .proto files previously downloaded
+      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
+        dst: '/opt/protocurl/protocurl-internal/bin'
+      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+        dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
 
 release:
   # If set to auto, will mark the release as not ready for production

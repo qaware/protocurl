@@ -149,7 +149,7 @@ jobs:
 
   post-release-test-windows:
     runs-on: windows-latest
-    needs: [release]
+    needs: [ release ]
     steps:
       - uses: actions/checkout@v3
 
@@ -190,11 +190,11 @@ jobs:
       - name: Test extracted release and global installation
         run: |
           $ErrorActionPreference = "Stop"
-          & ".\test\suite\native-tests.ps1" "./my-protocurl" ".exe"
+          & ".\test\suite\native-tests.ps1" "my-protocurl" ".exe" "localDirTests"
 
   post-release-test-mac:
     runs-on: macos-latest
-    needs: [release]
+    needs: [ release ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -216,9 +216,9 @@ jobs:
             sed "s/x86_64/amd64/g" |
             sed "s/x86_32/386/g" |
             sed "s/aarch_64/arm64/g")"
-          echo "arch: $ARCH"
+          echo "Arch: $ARCH"
           gh release download v${{ github.event.inputs.version }} --pattern "*darwin*$ARCH*.zip"
-          echo "working dir after download"
+          echo "Working dir after Download"
           ls
           echo "Attempting to extract"
           unzip *.zip -d my-protocurl
@@ -232,4 +232,36 @@ jobs:
 
       - name: Test extracted release and global installation
         run: |
-          pwsh test/suite/native-tests.ps1 "./my-protocurl" ""
+          pwsh test/suite/native-tests.ps1 "my-protocurl" "" "localDirTests"
+
+  post-release-test-linux:
+    runs-on: ubuntu-latest
+    needs: [ release ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "17.7.2"
+
+      - name: Start test server
+        run: |
+          cd test
+          pwsh servers/native-start-server.ps1
+
+      - name: "Run tests for linux package formats: deb, apk"
+        run: |
+          ARCH="$(uname -m |
+            sed "s/x86_64/amd64/g" |
+            sed "s/x86_32/386/g" |
+            sed "s/aarch_64/arm64/g")"
+          URL_NO_EXT="https://github.com/qaware/protocurl/releases/download/v${{github.event.inputs.version}}/protocurl_${{github.event.inputs.version}}_linux_${ARCH}"
+          
+          docker run --network host -v $PWD/test:/home/test alpine:latest sh -c \
+            "cd home; apk add --no-cache bash && bash ./test/suite/linux/install-test-remove.sh alpine .apk $URL_NO_EXT"
+          
+          docker run --network host -v $PWD/test:/home/test debian:stable-slim bash -c \
+            "cd home; ./test/suite/linux/install-test-remove.sh debian .deb $URL_NO_EXT"
+          

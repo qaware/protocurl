@@ -25,9 +25,9 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 #### Native CLI
 
 1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
-2. Extract the archive into a folder, e.g. `/usr/local/protocurl`.
-3. Add symlink to the binary in the folder. e.g. `ln -s /usr/local/protocurl/bin/protocurl /usr/local/bin/protocurl`
-   Or add the binary folder `/usr/local/protocurl/bin` to your system-wide path.
+2. Extract the archive into a folder, e.g. `/opt/protocurl`.
+3. Add symlink to the binary in the folder. e.g. `ln -s /opt/protocurl/bin/protocurl /usr/bin/protocurl`
+   Or add the binary folder `/opt/protocurl/bin` to your system-wide path.
 4. Test that it works via `protocurl -h`
 
 #### Docker
