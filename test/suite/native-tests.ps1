@@ -4,8 +4,14 @@ $ErrorActionPreference = "Stop"
 
 $pc = $args[0]
 $ExeExt = $args[1]
+$testFromLocalDirInstallation = $args[2]
 
-Write-Output "========= Running native tests ========="
+function AbortIfCommandFailed
+{
+    if ($LASTEXITCODE -ne 0) {
+        throw "Exit code is $LASTEXITCODE"
+    }
+}
 
 function Run-Tests
 {
@@ -17,11 +23,13 @@ function Run-Tests
 
     Write-Output "=== Executable is runnable ==="
     &"$ProtocurlExec" -h
+    AbortIfCommandFailed
 
     Write-Output "=== Base scenario runs. protoc$ExeExt is found and used. protocurl-internal is found and used ==="
     &"$ProtocurlExec" -I test/proto `
     -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse `
     -u http://localhost:8080/happy-day/verify -d "includeReason: true"
+    AbortIfCommandFailed
 
     Write-Output "=== Using custom protoc and proto lib and global curl ==="
     if (Test-Path my-protoc) {
@@ -37,18 +45,23 @@ function Run-Tests
     --protoc-path my-protoc/my-bin/protoc -I my-protoc/my-protos `
     -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse `
     -u http://localhost:8080/happy-day/verify -d "includeReason: true"
+    AbortIfCommandFailed
 }
 
-Run-Tests("./$pc/bin/protocurl$ExeExt")
+Write-Output "========= Running native tests ========="
 
-Write-Output "Installing protocurl into PATH and re-executing..."
+if ($testFromLocalDirInstallation -eq "localDirTests") {
+    Run-Tests("./$pc/bin/protocurl$ExeExt")
 
-$EnvPathSeparator = "$( [IO.Path]::PathSeparator )"
-# ; on windows, : on unix
+    Write-Output "Installing protocurl into PATH and re-executing..."
 
-$Env:PATH += "$EnvPathSeparator$PWD/$pc/bin"
+    $EnvPathSeparator = "$( [IO.Path]::PathSeparator )"
+    # ; on windows, : on unix
 
-Write-Output "Path after installation: $Env:PATH"
+    $Env:PATH += "$EnvPathSeparator$PWD/$pc/bin"
+
+    Write-Output "Path after installation: $Env:PATH"
+}
 
 Run-Tests("protocurl")
 

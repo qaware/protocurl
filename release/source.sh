@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# PRECONDITION: git fetch origin --tags
+
 source ./release/0-get-latest-dependencies-versions.sh
 
 # should be one of 386, amd64 and arm64
