@@ -56,11 +56,11 @@ func intialiseFlags() {
 		"Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.")
 
 	flags.StringVarP(&CurrentConfig.RequestType, "request-type", "i", "",
-		"Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest")
+		"Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest")
 	AssertSuccess(rootCmd.MarkFlagRequired("request-type"))
 
 	flags.StringVarP(&CurrentConfig.ResponseType, "response-type", "o", "",
-		"Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse")
+		"Mandatory: The Protobuf response type. See -i <request-type>")
 	AssertSuccess(rootCmd.MarkFlagRequired("response-type"))
 
 	flags.StringVar(&tmpInTextType, "in", "",

@@ -32,8 +32,8 @@ Flags:
       --protoc                    Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.
       --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH. Also activates --protoc.
   -H, --request-header string     Adds the string header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.
-  -i, --request-type string       Mandatory: Package path of the Protobuf request type. E.g. mypackage.MyRequest
-  -o, --response-type string      Mandatory: Package path of the Protobuf response type. E.g. mypackage.MyResponse
+  -i, --request-type string       Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest
+  -o, --response-type string      Mandatory: The Protobuf response type. See -i <request-type>
   -q, --show-output-only          Suppresses all output except response Protobuf as text. Overrides and deactivates -v and -D. Errors are still printed to stderr.
   -u, --url string                Mandatory: The url to send the request to
   -v, --verbose                   Prints version and enables verbose output. Also activates -D.
