@@ -22,17 +22,34 @@ human-readable text formats.
 `protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
 configurable http requests. Otherwise `protocurl` will use a simple non-configurable fallback http implementation.
 
-#### Native CLI
+### Native CLI
+
+**Archive**
 
 1. Download the latest release archive for your platform from https://github.com/qaware/protocurl/releases
 2. Extract the archive into a folder, e.g. `/opt/protocurl`.
 3. Add symlink to the binary in the folder. e.g. `ln -s /opt/protocurl/bin/protocurl /usr/bin/protocurl`
    Or add the binary folder `/opt/protocurl/bin` to your system-wide path.
-4. Test that it works via `protocurl -h`
+4. Test it via `protocurl -h`
 
-#### Docker
+**Debian .deb package**
 
-Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See [Quick Start](#quick-start) for how to use.
+1. Download the latest release `.deb` for your architecture from https://github.com/qaware/protocurl/releases
+2. Install dependency curl: `sudo apt install curl`
+3. Install `sudo dpkg -i <downloaded-release>.deb`
+4. Test it via `protocurl -h`
+
+**Alpine .apt package**
+
+1. Download the latest release `.apk` for your architecture from https://github.com/qaware/protocurl/releases
+2. Install dependencies curl and gcompat: `sudo apk add curl gcompat`
+3. Install `sudo apk add --alow-untrusted <downloaded-release>.apk`
+4. Test it via `protocurl -h`
+
+### Docker
+
+Simply run `docker run -v "/path/to/proto/files:/proto" qaware/protocurl <args>`. See [Quick Start](#quick-start) for
+how to use.
 
 ## Quick Start
 
