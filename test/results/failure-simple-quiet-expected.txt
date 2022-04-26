@@ -1,3 +1,4 @@
 ######### STDOUT #########
 ######### STDERR #########
 Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
+######### EXIT 1 #########

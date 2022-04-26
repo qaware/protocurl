@@ -5,3 +5,4 @@ Did you correctly -I (include) your proto files directory?
 Did you correctly specify the full message package-path to your Protobuf message type?
 Try again with -v (verbose).
 Underlying error: proto: not found
+######### EXIT 1 #########

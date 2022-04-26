@@ -4,3 +4,4 @@
 =========================== Response JSON    =========================== <<<
 {"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}
 ######### STDERR #########
+######### EXIT 0 #########

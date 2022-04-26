@@ -40,17 +40,22 @@ testSingleRequest() {
     rm -f "$OUT" || true
     rm -f "$OUT_ERR" || true
     echo "######### STDOUT #########" >"$OUT"
+    EXIT_CODE="?"
 
     set +e
 
     if [[ "$BEFORE_TEST_BASH" == "" ]]; then
       eval "$RUN_CLIENT --name $FILENAME $PROTOCURL_IMAGE $ARGS" 2>"$OUT_ERR" >>"$OUT"
+      EXIT_CODE="$?"
     else
       ARGS="$(echo "$ARGS" | sed 's/"/\\"/g')" # escape before usage inside quoted context
       eval "$RUN_CLIENT --entrypoint bash --name $FILENAME $PROTOCURL_IMAGE -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2>"$OUT_ERR" >>"$OUT"
+      EXIT_CODE="$?"
     fi
     echo "######### STDERR #########" >>"$OUT"
     cat "$OUT_ERR" >>"$OUT"
+
+    echo "######### EXIT $EXIT_CODE #########" >>"$OUT"
 
     meaningfulDiff "$EXPECTED" "$OUT" >/dev/null
 

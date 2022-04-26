@@ -12,3 +12,4 @@ date: {
 }
 includeReason: true
 ######### STDERR #########
+######### EXIT 0 #########

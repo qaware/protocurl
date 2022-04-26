@@ -255,7 +255,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 23 Apr 2022 16:36:57 GMT
+Date: Tue, 26 Apr 2022 22:33:35 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 68
@@ -271,3 +271,4 @@ Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResp
 reason: "Tough luck on Wednesday... 😕"
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ######### STDERR #########
+######### EXIT 0 #########

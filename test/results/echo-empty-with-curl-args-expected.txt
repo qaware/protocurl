@@ -16,7 +16,7 @@ includeReason: true
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Mon, 18 Apr 2022 00:33:15 GMT
+< Date: Tue, 26 Apr 2022 22:35:42 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 2
@@ -27,3 +27,4 @@ includeReason: true
 =========================== Response Text    =========================== <<<
 includeReason: true
 ######### STDERR #########
+######### EXIT 0 #########
