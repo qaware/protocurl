@@ -1,3 +1,4 @@
 ######### STDOUT #########
 protocurl version <version>, build <hash>, https://github.com/qaware/protocurl
 ######### STDERR #########
+######### EXIT 0 #########

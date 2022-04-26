@@ -12,7 +12,12 @@ goreleaser check
 
 echo "Using GORELEASER_CURRENT_TAG=$GORELEASER_CURRENT_TAG, GORELEASER_PREVIOUS_TAG=$GORELEASER_PREVIOUS_TAG"
 
-goreleaser release --rm-dist
+GORELEASER_ARGS=""
+if [[ "$SNAPSHOT" == "true" ]]; then
+  GORELEASER_ARGS="--skip-announce"
+fi
+
+goreleaser release --rm-dist $GORELEASER_ARGS
 
 # Alternate commands when testing release process locally
 # goreleaser release --snapshot --rm-dist # DEV

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoregistry"
@@ -45,6 +46,7 @@ func main() {
 	defer func() {
 		if err := recover(); err != nil {
 			PrintError(fmt.Errorf("%v", err))
+			os.Exit(1)
 		}
 	}()
 	PanicOnError(rootCmd.Execute())

@@ -41,3 +41,4 @@ Flags:
   -v, --verbose                   Prints version and enables verbose output. Also activates -D.
       --version                   version for protocurl
 ######### STDERR #########
+######### EXIT 0 #########

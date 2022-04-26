@@ -40,3 +40,4 @@ happyday.proto:5:1: Import "google/protobuf/timestamp.proto" was not found or ha
 happyday.proto:8:3: "google.protobuf.Timestamp" is not defined.
 
 Underlying error: exit status 1
+######### EXIT 1 #########

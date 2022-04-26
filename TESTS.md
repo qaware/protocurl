@@ -1,8 +1,13 @@
 # Tests
 
-There are two tests. The docker-containerized tests and multi-platform native tests (running on windows, macos, etc.).
+There are three types of tests. The docker-containerized tests, multi-platform native archive tests (running on windows,
+macos, etc.)
+and multi-platform native package tests.
+
 The containerized tests do much of the heavy lifting in ensuring correctness - whereas the native tests ensure that the
 basic functionality work multi-platform and contains regression tests for OS-specific behavior.
+
+The native tests extract the release archive and the release packages (e.g. .deb, .apk) and run basic tests.
 
 ## Containerized Tests
 
@@ -90,7 +95,9 @@ jobs are named `post-release-test-<OS>`. After setting up the machine, they star
 via [test/servers/native-start-server.ps1](test/servers/native-start-server.ps1) and run the tests.
 
 The output is not tested rigorously like the containerized tests. Only the successful exit is tested implicitly as the
-Powershell is set to stop on the first error via `$ErrorActionPreference = "Stop"`.
+Powershell is set to stop on the first error via `$ErrorActionPreference = "Stop"` and `$LASTEXITCODE`.
+
+On linux the release packages are tested inside a container.
 
 ## Example Containerized Tests
 

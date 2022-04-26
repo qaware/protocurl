@@ -10,7 +10,7 @@ includeReason: true
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sun, 17 Apr 2022 23:33:23 GMT
+Date: Tue, 26 Apr 2022 22:34:21 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65
@@ -25,3 +25,4 @@ isHappyDay: true
 reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 13 Jan 2022 03:35:39 GMT"
 ######### STDERR #########
+######### EXIT 0 #########
