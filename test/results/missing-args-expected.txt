@@ -40,3 +40,4 @@ Flags:
       --version                   version for protocurl
 
 Error: required flag(s) "data-text","request-type","response-type","url" not set
+######### EXIT 1 #########

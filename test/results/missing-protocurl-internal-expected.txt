@@ -34,3 +34,4 @@ I was expecting to find a directory 'protocurl-internal' side by side
 to the bin directory containing the protocurl executable.
 The executable was found at /protocurl/bin/protocurl
 Error: lstat /protocurl/protocurl-internal: no such file or directory
+######### EXIT 1 #########

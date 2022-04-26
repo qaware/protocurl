@@ -58,7 +58,7 @@ With `-q` all errors are written to stderr making it ideal for piping in scripts
 ___EXAMPLE_OUTPUT_ONLY_WITH_ERR_1___
 ```
 
-will produce no output and only show this error:
+will produce no output, exit with a non-zero exitcode and only show this error:
 
 ```bash
 ___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___

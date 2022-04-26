@@ -30,3 +30,4 @@ Invoked with following default & parsed arguments:
 ######### STDERR #########
 Error: Could not find bundled executable protoc 
 Error: stat /protocurl/protocurl-internal/bin/protoc: no such file or directory
+######### EXIT 1 #########

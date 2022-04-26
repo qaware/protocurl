@@ -2,3 +2,4 @@
 ######### STDERR #########
 Error: Message with base name is not unique. Found 2 messages with package paths: [happyday.HappyDayRequest otherPackage.HappyDayRequest]
 Try -v verbose or specify the file explicitly via -f <path-to-proto-file>.
+######### EXIT 1 #########

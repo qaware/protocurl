@@ -31,3 +31,4 @@ GlobalProtoc is set, hence bundled protoc will be ignored.
 ######### STDERR #########
 Error: I could not find a 'protoc' executable. Please check your PATH.
 Underlying error: exec: "protoc": executable file not found in $PATH
+######### EXIT 1 #########

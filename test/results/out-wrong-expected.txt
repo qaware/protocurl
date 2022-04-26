@@ -1,3 +1,4 @@
 ######### STDOUT #########
 ######### STDERR #########
 Error: Unknown output format bad. Expected text, json or json:pretty for --out
+######### EXIT 1 #########

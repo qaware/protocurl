@@ -114,7 +114,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
    -d ""
 ```
 
-will produce no output and only show this error:
+will produce no output, exit with a non-zero exitcode and only show this error:
 
 ```bash
 Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
@@ -386,7 +386,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 23 Apr 2022 16:43:47 GMT
+Date: Tue, 26 Apr 2022 22:44:45 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
