@@ -43,7 +43,7 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 
 1. Download the latest release `.apk` for your architecture from https://github.com/qaware/protocurl/releases
 2. Install dependencies curl and gcompat: `sudo apk add curl gcompat`
-3. Install `sudo apk add --alow-untrusted <downloaded-release>.apk`
+3. Install `sudo apk add --allow-untrusted <downloaded-release>.apk`
 4. Test it via `protocurl -h`
 
 ### Docker
