@@ -11,8 +11,8 @@ If you want to edit this, then change doc/template.README.md instead.
 # protoCURL
 
 [![Tests Status](https://github.com/qaware/protocurl/actions/workflows/test.yml/badge.svg)](https://github.com/qaware/protocurl/actions/workflows/test.yml)
-[![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/qaware/protocurl?label=Release&logo=GitHub&sort=semver)](https://github.com/qaware/protocurl/releases)
-[![DockerHub Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&sort=semver)](https://hub.docker.com/r/qaware/protocurl/tags)
+[![GitHub Release (latest SemVer)](https://img.shields.io/github/v/release/qaware/protocurl?label=Release&logoColor=white&logo=GitHub&sort=semver)](https://github.com/qaware/protocurl/releases)
+[![DockerHub Version (latest semver)](https://img.shields.io/docker/v/qaware/protocurl?label=Docker&logo=Docker&logoColor=white&sort=semver)](https://hub.docker.com/r/qaware/protocurl/tags)
 
 protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using
 human-readable text formats.
