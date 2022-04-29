@@ -104,9 +104,10 @@ Aside from JSON, Protobuf primarily and natively supports a text format which re
 wire-format. For instance, repeated fields are condensed into an array in the JSON format - whereas they are simply '
 repeated' without an array type in the text format.
 
-This text format's syntax
-is [barely documented](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format),
-so this section will shortly describe how to write Protobuf messages in the text format.
+This text format's syntax is
+[hardly documented](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format)
+([protobuf issue](https://github.com/protocolbuffers/protobuf/issues/8636)), so this section will shortly describe how
+to write Protobuf messages in the text format.
 
 Given the following .proto file
 
