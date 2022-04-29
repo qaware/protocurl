@@ -39,7 +39,7 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 3. Install `sudo dpkg -i <downloaded-release>.deb`
 4. Test it via `protocurl -h`
 
-**Alpine .apt package**
+**Alpine .apk package**
 
 1. Download the latest release `.apk` for your architecture from https://github.com/qaware/protocurl/releases
 2. Install dependencies curl and gcompat: `sudo apk add curl gcompat`
