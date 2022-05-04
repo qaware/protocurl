@@ -153,11 +153,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Choco Install github client
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install gh -y --limit-output
-
       - name: Choco Install curl
         uses: crazy-max/ghaction-chocolatey@v1
         with:
@@ -198,10 +193,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh > install-brew.sh
-          bash install-brew.sh
-          brew install powershell
+        run: "brew install powershell"
 
       - uses: actions/setup-node@v3
         with:
