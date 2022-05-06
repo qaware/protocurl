@@ -80,7 +80,7 @@ jobs:
         uses: docker/setup-qemu-action@v1
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Check DockerHub image does not already exist (except if force or snapshot)
         run: |
