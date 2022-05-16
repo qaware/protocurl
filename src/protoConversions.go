@@ -72,7 +72,7 @@ func protoBinaryToMsgAndText(messageType string, binary []byte, outFormat OutTex
 	var textBytes = []byte{}
 	switch outFormat {
 	case OText:
-		textBytes, err = textFormatOptions.Marshal(msg)
+		textBytes, err = formatUnknownFieldsIfApplicable(textFormatOptions).Marshal(msg)
 	case OJsonDense:
 		textBytes, err = jsonDenseformatOptions.Marshal(msg)
 	case OJsonPretty:
@@ -84,4 +84,10 @@ func protoBinaryToMsgAndText(messageType string, binary []byte, outFormat OutTex
 	text = strings.TrimSuffix(text, "\n")
 
 	return text, msg
+}
+
+func formatUnknownFieldsIfApplicable(opts prototext.MarshalOptions) prototext.MarshalOptions {
+	newOpts := opts // shallow copy
+	newOpts.EmitUnknown = true
+	return newOpts
 }

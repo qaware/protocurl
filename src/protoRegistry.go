@@ -19,9 +19,12 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 const protoFileExtension = ".proto"
+
+const WellKnownEmptyMessageType = "google.protobuf.Empty"
 
 /*
 Given a directory of .proto files, we use `protoc` to convert these to
@@ -96,7 +99,18 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 	protoRegistryFiles, err := protodesc.NewFiles(&protoFileDescriptorSet)
 	PanicOnError(err)
 
+	if CurrentConfig.DecodeRawResponse {
+		if CurrentConfig.Verbose {
+			fmt.Printf("Adding %s to proto registry to ensure it can be used for decoding raw Protobuf.\n", WellKnownEmptyMessageType)
+		}
+		_ = protoRegistryFiles.RegisterFile(wellKnownEmptyMessageProtoFileDescriptorForRawFormat())
+	}
+
 	return protoRegistryFiles
+}
+
+func wellKnownEmptyMessageProtoFileDescriptorForRawFormat() protoreflect.FileDescriptor {
+	return emptypb.File_google_protobuf_empty_proto
 }
 
 func collectRelevantProtoFiles() []string {

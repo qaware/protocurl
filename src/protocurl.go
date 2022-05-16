@@ -10,7 +10,7 @@ import (
 )
 
 const GithubRepositoryLink = "https://github.com/qaware/protocurl"
-const BugReportsLink = "https://github.com/qaware/protocurl/issues"
+const EnhancementsAndBugsLink = "https://github.com/qaware/protocurl/issues"
 
 type Config struct {
 	ProtoFilesDir        string
@@ -21,6 +21,7 @@ type Config struct {
 	DataText             string
 	InTextType           InTextType
 	OutTextType          OutTextType
+	DecodeRawResponse    bool
 	DisplayBinaryAndHttp bool
 	RequestHeaders       []string
 	CustomCurlPath       string
@@ -65,8 +66,9 @@ var rootCmd = &cobra.Command{
 		"The bundle also includes the google protobuf .proto files necessary to create FileDescriptorSet payloads via '" + ProtocExecutableName + "'.\n" +
 		"If the bundled '" + ProtocExecutableName + "' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.\n" +
 		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default.\n" +
-		"When converting between binary and text, the encoding UTF-8 is always used.\n\n" +
-		"Bug reports: " + BugReportsLink,
+		"When converting between binary and text, the encoding UTF-8 is always used.\n" +
+		"When the correct response type is unknown or being debugged, omitting -o <response-type> will attempt to show the response in raw format.\n\n" +
+		"Enhancements and bugs: " + EnhancementsAndBugsLink,
 	Example:               "  protocurl -I my-protos -i package.path.Req -o package.path.Resp -u http://example.com/api -d \"myField: true, otherField: 1337\"",
 	Args:                  cobra.OnlyValidArgs,
 	DisableFlagsInUseLine: true,
@@ -147,13 +149,26 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
 	}
 
-	responseText, _ := protoBinaryToMsgAndText(CurrentConfig.ResponseType, responseBinary, CurrentConfig.OutTextType, registry)
+	responseMessageType := properResponseTypeIfProvidedOrEmptyType()
+
+	responseText, _ := protoBinaryToMsgAndText(responseMessageType, responseBinary, CurrentConfig.OutTextType, registry)
 
 	if !CurrentConfig.ShowOutputOnly {
 		fmt.Printf("%s Response %s    %s %s\n",
 			VISUAL_SEPARATOR, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
 	}
 	fmt.Printf("%s\n", responseText)
+}
+
+func properResponseTypeIfProvidedOrEmptyType() string {
+	if CurrentConfig.ResponseType != "" {
+		return CurrentConfig.ResponseType
+	} else {
+		if CurrentConfig.Verbose {
+			fmt.Printf("Decoding response against %s as no response type was provided.\n", WellKnownEmptyMessageType)
+		}
+		return WellKnownEmptyMessageType
+	}
 }
 
 func addDefaultHeaderArgument() {

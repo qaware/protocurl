@@ -3,6 +3,11 @@ set -e
 
 WORKING_DIR="$1"
 
+if [[ "$WORKING_DIR" == "" ]]; then
+  echo "Please provide the working directory as a a docker-mount friendly path."
+  exit 1
+fi
+
 source test/suite/setup.sh
 
 ESCAPED="failed to substitute"
@@ -117,6 +122,20 @@ $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
 escapeString "$EXAMPLE_OUTPUT_ONLY"
 EXAMPLE_OUTPUT_ONLY="$ESCAPED"
 
+# EXAMPLE_RAW_FORMAT =============================
+EXAMPLE_RAW_FORMAT="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+   -q -f happyday.proto -i happyday.HappyDayRequest \\
+   -u http://localhost:8080/happy-day/verify \\
+   -d \"includeReason: true\"
+
+$(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
+  -q -f happyday.proto -i happyday.HappyDayRequest \
+  -u http://localhost:8080/happy-day/verify \
+  -d "includeReason: true")"
+
+escapeString "$EXAMPLE_RAW_FORMAT"
+EXAMPLE_RAW_FORMAT="$ESCAPED"
+
 # EXAMPLE OUTPUT ONLY WITH ERROR =============================
 EXAMPLE_OUTPUT_ONLY_WITH_ERR_1="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
    -q -i ..HappyDayRequest -o ..HappyDayResponse \\
@@ -157,6 +176,7 @@ echo "$EXAMPLES_TEMPLATE" |
   sed "s%___EXAMPLE_1___%$EXAMPLE_1%" |
   sed "s%___EXAMPLE_2___%$EXAMPLE_2%" |
   sed "s%___EXAMPLE_3___%$EXAMPLE_3%" |
+  sed "s%___EXAMPLE_RAW_FORMAT__%$EXAMPLE_RAW_FORMAT%" |
   sed "s%___EXAMPLE_JSON___%$EXAMPLE_JSON%" |
   sed "s%___EXAMPLE_JSON_PRETTY___%$EXAMPLE_JSON_PRETTY%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY___%$EXAMPLE_OUTPUT_ONLY%" |

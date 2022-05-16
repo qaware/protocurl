@@ -25,14 +25,29 @@ ___EXAMPLE_1___
 ```
 
 **Explict full message package paths and explicit proto file**
+
 ```bash
 ___EXAMPLE_2___
 ```
 
 **Using imported and nested messages such as well-known Google Protobuf types**
+
 ```bash
 ___EXAMPLE_3___
 ```
+
+**Omitting -o \<response-type> shows raw format**
+
+```bash
+___EXAMPLE_RAW_FORMAT__
+```
+
+When the response type is unknown or one wants to debug and see what is all in the response,
+then this format shows the values for the given field numbers (instead of their field names).
+
+However, since
+[Protobuf is not self-describing](https://developers.google.com/protocol-buffers/docs/techniques#self-description)
+the types cannot be correctly inferred and may be incorrect.
 
 **JSON**
 
