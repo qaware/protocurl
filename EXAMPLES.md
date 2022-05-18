@@ -35,6 +35,7 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 **Explict full message package paths and explicit proto file**
+
 ```bash
 $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
@@ -48,6 +49,7 @@ formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
 
 **Using imported and nested messages such as well-known Google Protobuf types**
+
 ```bash
 $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -i ..HappyDayRequest -o ..HappyDayResponse \
@@ -61,6 +63,27 @@ date: {
 =========================== Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
+
+**Omitting -o \<response-type> shows raw format**
+
+```bash
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+   -q -f happyday.proto -i happyday.HappyDayRequest \
+   -u http://localhost:8080/happy-day/verify \
+   -d "includeReason: true"
+
+1: 1
+2: "Thursday is a Happy Day! ⭐"
+3: "Thu, 01 Jan 1970 00:00:00 GMT"
+4: ""
+```
+
+When the response type is unknown or one wants to debug and see what is all in the response,
+then this format shows the values for the given field numbers (instead of their field names).
+
+However, since
+[Protobuf is not self-describing](https://developers.google.com/protocol-buffers/docs/techniques#self-description)
+the types cannot be correctly inferred and may be incorrect.
 
 **JSON**
 
@@ -142,6 +165,7 @@ Invoked with following default & parsed arguments:
   "DataText": "date: { seconds: 1648044939}",
   "InTextType": "text",
   "OutTextType": "text",
+  "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
@@ -386,7 +410,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 26 Apr 2022 22:44:45 GMT
+Date: Wed, 18 May 2022 20:30:02 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

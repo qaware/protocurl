@@ -76,6 +76,35 @@
     ]
   },
   {
+    "filename": "unknown-message-as-text",
+    "args": [
+      "-F -i ..HappyDayRequest -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ],
+    "comment": "The field presence is also shown in the output, since the server sets the err field to the empty string."
+  },
+  {
+    "filename": "unknown-message-as-json",
+    "args": [
+      "-F -i ..HappyDayRequest --out json -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "response-type-arg-inferred-decode-raw",
+    "args": [
+      "-v -F -i ..HappyDayRequest -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
+    "filename": "response-type-arg-overidden-decode-raw",
+    "args": [
+      "-v -F -i ..HappyDayRequest -o ..HappyDayResponse --decode-raw -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ]
+  },
+  {
     "filename": "inferred-message-package-path-nested-subdir",
     "beforeTestBash": "mkdir -p /copy && cp -r /proto /copy/proto && cd /copy/proto && rm -f happyday.proto && mkdir -p subdir && mv nameClashTest.proto.inactive subdir/nameClashTest.proto && sed -i 's/otherPackage/subdir.otherPackage/g' subdir/nameClashTest.proto && cd /protocurl",
     "args": [

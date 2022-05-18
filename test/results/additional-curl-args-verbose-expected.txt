@@ -13,6 +13,7 @@ Invoked with following default & parsed arguments:
   "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
   "InTextType": "text",
   "OutTextType": "text",
+  "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
@@ -276,7 +277,7 @@ Total curl args:
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Tue, 26 Apr 2022 22:34:37 GMT
+< Date: Mon, 16 May 2022 22:09:07 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -287,7 +288,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 26 Apr 2022 22:34:37 GMT
+Date: Mon, 16 May 2022 22:09:07 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65

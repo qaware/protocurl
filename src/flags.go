@@ -60,8 +60,10 @@ func intialiseFlags() {
 	AssertSuccess(rootCmd.MarkFlagRequired("request-type"))
 
 	flags.StringVarP(&CurrentConfig.ResponseType, "response-type", "o", "",
-		"Mandatory: The Protobuf response type. See -i <request-type>")
-	AssertSuccess(rootCmd.MarkFlagRequired("response-type"))
+		"The Protobuf response type. See -i <request-type>. Overrides --decode-raw. If not set, then --decode-raw is used.")
+
+	flags.BoolVar(&CurrentConfig.DecodeRawResponse, "decode-raw", false,
+		"Decode the response into textual format without the schema by only showing field numbers and inferred field types. Types may be incorrect. Only output format "+string(OText)+" is supported. Use -o <response-type> to see correct contents.")
 
 	flags.StringVar(&tmpInTextType, "in", "",
 		"Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON.")
@@ -124,6 +126,19 @@ func propagateFlags() {
 		CurrentConfig.DisplayBinaryAndHttp = false
 	}
 
+	if CurrentConfig.ResponseType == "" && !CurrentConfig.DecodeRawResponse {
+		CurrentConfig.DecodeRawResponse = true
+		if CurrentConfig.Verbose {
+			fmt.Println("Response type (-o) was not provided, hence --decode-raw will be used.")
+		}
+
+	} else if CurrentConfig.ResponseType != "" && CurrentConfig.DecodeRawResponse {
+		CurrentConfig.DecodeRawResponse = false
+		if CurrentConfig.Verbose {
+			fmt.Println("Response type (-o) was provided, hence --decode-raw will be overidden.")
+		}
+	}
+
 	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {
 		tmpDataTextInferredType = IJson
 	} else {
@@ -181,6 +196,10 @@ func propagateFlags() {
 		if CurrentConfig.Verbose {
 			fmt.Printf("Infering proto files (-F), since -f <file> was not provided.\n")
 		}
+	}
+
+	if CurrentConfig.DecodeRawResponse && (strings.Contains(string(CurrentConfig.OutTextType), "json")) {
+		PanicWithMessage("Decoding of raw messages is not supported with output format " + string(CurrentConfig.OutTextType) + ". Please use " + string(OText) + " instead.")
 	}
 
 	if CurrentConfig.ForceNoCurl && len(CurrentConfig.RequestHeaders) != 0 {

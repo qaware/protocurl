@@ -4,6 +4,11 @@ set -e
 
 WORKING_DIR="$1"
 
+if [[ "$WORKING_DIR" == "" ]]; then
+  echo "Please provide the working directory as a a docker-mount friendly path."
+  exit 1
+fi
+
 export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host \
   -v /bin/bash:/bin/bash:ro \
   -v /bin/mkdir:/bin/mkdir:ro \
