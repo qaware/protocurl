@@ -3,13 +3,34 @@ set -e
 
 LATEST_VERSION=""
 
+HEADERS_FILE="release/.cache/headers.txt"
+
 retrieveLatestVersion() {
   REPO="$1"
   TAG_FILTER="$2"
 
+  FILE_FRIENDLY_NAME="$(echo "$REPO" | sed 's#/#.#g')"
+
+  CACHE_FILE="release/.cache/$FILE_FRIENDLY_NAME.cache.json"
+  ETAG_FILE="release/.cache/$FILE_FRIENDLY_NAME.etag"
+  ETAG="$(cat "$ETAG_FILE" 2>/dev/null || echo '')"
+
   GITHUB_REFS="$(curl -s \
+    -D "$HEADERS_FILE" \
+    --etag-save "$ETAG_FILE" \
+    -H "If-None-Match: \"$ETAG\"" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$REPO/git/matching-refs/tags")"
+    "https://api.github.com/repos/$REPO/git/matching-refs/tags?per_page=100")"
+
+  STATUS_CODE_LINE="$(cat "$HEADERS_FILE" | head -n 1)"
+
+  if [[ "$STATUS_CODE_LINE" == *" 200"* ]]; then
+    echo "$GITHUB_REFS" >"$CACHE_FILE"
+  fi
+
+  if [[ "$STATUS_CODE_LINE" == *" 304"* ]]; then
+    GITHUB_REFS="$(cat "$CACHE_FILE")"
+  fi
 
   FULL_REF_FILTER="^refs/tags/$TAG_FILTER\$"
 
