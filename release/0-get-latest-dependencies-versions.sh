@@ -22,6 +22,9 @@ retrieveLatestVersion() {
     PATH_TO_TAG=".tag_name"
     LATEST_VERSION_EXTRACTOR="head"
   else
+    # Actually, we should only be getting the first 100 tags.
+    # However, currently github returns all tags.
+    # See issue: https://github.com/github/docs/issues/3863
     ENDPOINT="git/matching-refs/tags?per_page=100"
     RESPONSE_FILTER="^refs/tags/$TAG_FILTER\$"
     PATH_TO_TAG=".ref"
