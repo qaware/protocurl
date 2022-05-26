@@ -6,8 +6,9 @@ LATEST_VERSION=""
 HEADERS_FILE="release/.cache/headers.txt"
 
 retrieveLatestVersion() {
-  REPO="$1"
-  TAG_FILTER="$2"
+  TYPE="$1" # tag or release
+  REPO="$2"
+  TAG_FILTER="$3"
 
   FILE_FRIENDLY_NAME="$(echo "$REPO" | sed 's#/#.#g')"
 
@@ -15,33 +16,45 @@ retrieveLatestVersion() {
   ETAG_FILE="release/.cache/$FILE_FRIENDLY_NAME.etag"
   ETAG="$(cat "$ETAG_FILE" 2>/dev/null || echo '')"
 
-  GITHUB_REFS="$(curl -s \
+  if [[ "$TYPE" == "release" ]]; then
+    ENDPOINT="releases?per_page=1"
+    RESPONSE_FILTER="^$TAG_FILTER\$"
+    PATH_TO_TAG=".tag_name"
+    LATEST_VERSION_EXTRACTOR="head"
+  else
+    ENDPOINT="git/matching-refs/tags?per_page=100"
+    RESPONSE_FILTER="^refs/tags/$TAG_FILTER\$"
+    PATH_TO_TAG=".ref"
+    LATEST_VERSION_EXTRACTOR="tail"
+  fi
+
+  GITHUB_RESPONSE="$(curl -s \
     -D "$HEADERS_FILE" \
     --etag-save "$ETAG_FILE" \
     -H "If-None-Match: \"$ETAG\"" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$REPO/git/matching-refs/tags?per_page=100")"
+    "https://api.github.com/repos/$REPO/$ENDPOINT")"
 
   STATUS_CODE_LINE="$(cat "$HEADERS_FILE" | head -n 1)"
 
   if [[ "$STATUS_CODE_LINE" == *" 200"* ]]; then
-    echo "$GITHUB_REFS" >"$CACHE_FILE"
+    echo "Populating cache..."
+    echo "$GITHUB_RESPONSE" >"$CACHE_FILE"
   fi
 
   if [[ "$STATUS_CODE_LINE" == *" 304"* ]]; then
-    GITHUB_REFS="$(cat "$CACHE_FILE")"
+    echo "Using cache..."
+    GITHUB_RESPONSE="$(cat "$CACHE_FILE")"
   fi
 
-  FULL_REF_FILTER="^refs/tags/$TAG_FILTER\$"
+  FILTERED_TAGS="$(echo "$GITHUB_RESPONSE" | jq -r ".[] | select($PATH_TO_TAG | test(\"$RESPONSE_FILTER\")) | $PATH_TO_TAG")"
 
-  FILTERED_TAGS="$(echo "$GITHUB_REFS" | jq -r ".[] | select(.ref | test(\"$FULL_REF_FILTER\")) | .ref")"
-
-  LATEST_VERSION="$(echo "$FILTERED_TAGS" | tail -n 1)" # it seems, that github lists the tags chronologically. last is latest
+  LATEST_VERSION="$(echo "$FILTERED_TAGS" | $LATEST_VERSION_EXTRACTOR -n 1)"
 
   if [[ "$LATEST_VERSION" == "" ]]; then
     echo "Found tags after filtering:"
     echo "$FILTERED_TAGS"
-    echo "Error: Could not find latest tag for github.com/$REPO with filter $TAG_FILTER"
+    echo "Error: Could not find latest $TYPE for github.com/$REPO with filter $TAG_FILTER"
     echo "Result: $LATEST_VERSION"
     exit 1
   fi
@@ -50,23 +63,23 @@ retrieveLatestVersion() {
 }
 
 # retrieve version: Google Protobuf
-retrieveLatestVersion "protocolbuffers/protobuf" "v3[.][0-9]+[.][0-9]+"
+retrieveLatestVersion "release" "protocolbuffers/protobuf" "v[0-9]+[.][0-9]+"
 export PROTO_VERSION="${LATEST_VERSION#"v"}"
 echo "Established Protobuf version $PROTO_VERSION"
 
 # retrieve version: go
-retrieveLatestVersion "golang/go" "go1[.][0-9]+[.][0-9]+"
+retrieveLatestVersion "tag" "golang/go" "go1[.][0-9]+[.][0-9]+"
 GO_VERSION="${LATEST_VERSION#"go"}"
 GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
 echo "Established Go version: $GO_VERSION"
 
 # retrieve version: goreleaser
-retrieveLatestVersion "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+"
+retrieveLatestVersion "tag" "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+"
 export GORELEASER_VERSION="$LATEST_VERSION"
 echo "Established Goreleaser version: $GORELEASER_VERSION"
 
 # retrieve version: protocurl
-retrieveLatestVersion "qaware/protocurl" "v[0-9]+[.][0-9]+[.][0-9]+"
+retrieveLatestVersion "tag" "qaware/protocurl" "v[0-9]+[.][0-9]+[.][0-9]+"
 export PROTOCURL_RELEASED_VVERSION="$LATEST_VERSION"
 echo "Established latest released protoCURL version: $PROTOCURL_RELEASED_VVERSION"
 
