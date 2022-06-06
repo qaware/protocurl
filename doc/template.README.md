@@ -17,6 +17,18 @@ If you want to edit this, then change doc/template.README.md instead.
 protoCURL is cURL for Protobuf: The command-line tool for interacting with Protobuf over HTTP REST endpoints using
 human-readable text formats.
 
+## Why?
+
+Every data interchange format, which is used between service boundaries, benefits from a command-line-tool enabling one to directly talk to a service. We do not want to use a full-blown programming language and all its libraries just for quick and simple requests. Such a tool is very useful during development and debugging.
+
+Text-based formats, like JSON and XML, can simply be used with tools like [curl](https://curl.se/) as the requests can be written by hand. However, since Protobuf is a binary-encoded format, writing these requests by hand is hard and cumbersome.
+
+Hence, **protoCURL**.
+
+protoCURL enables us to write requests in a human-readable textual-format while talking to a binary-encoded Protobuf over HTTP REST endpoint.
+
+Without protoCURL, one would either need to duplicate the HTTP REST endpoints returning equivalent JSON/XML responses - or one needs to write custom code and run it from the IDE just to send simple requests. The first option is technical debt at its finest - and the second one is less ergonomic than using protoCURL. 
+
 ## Install
 
 `protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
