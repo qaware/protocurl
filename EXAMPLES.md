@@ -87,6 +87,9 @@ the types cannot be correctly inferred and may be incorrect.
 
 **JSON**
 
+If your input text starts with a `{`, then it is inferred to be JSON
+and the output will automatically be shown in JSON format.
+
 ```bash
 $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -i ..HappyDayRequest -o ..HappyDayResponse \
@@ -410,7 +413,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Wed, 18 May 2022 20:30:02 GMT
+Date: Sat, 11 Jun 2022 11:15:35 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

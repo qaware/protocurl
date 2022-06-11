@@ -66,7 +66,8 @@ func intialiseFlags() {
 		"Decode the response into textual format without the schema by only showing field numbers and inferred field types. Types may be incorrect. Only output format "+string(OText)+" is supported. Use -o <response-type> to see correct contents.")
 
 	flags.StringVar(&tmpInTextType, "in", "",
-		"Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON.")
+		"Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON. "+
+			"The type is inferred as JSON if the first token is a '{'.")
 
 	flags.StringVar(&tmpOutTextType, "out", "",
 		"Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and "+
