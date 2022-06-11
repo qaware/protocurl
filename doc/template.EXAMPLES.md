@@ -51,6 +51,9 @@ the types cannot be correctly inferred and may be incorrect.
 
 **JSON**
 
+If your input text starts with a `{`, then it is inferred to be JSON
+and the output will automatically be shown in JSON format.
+
 ```bash
 ___EXAMPLE_JSON___
 ```
