@@ -144,7 +144,7 @@ jobs:
         continue-on-error: true
         with:
           image-name: qaware/protocurl:${{ github.event.inputs.version }}
-          severity-threshold: low
+          severity-threshold: medium
           run-quality-checks: true
 
   post-release-test-windows:
