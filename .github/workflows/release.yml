@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-dev)"
+        description: "Version: Tag, build and release. (e.g. 1.2.3 or 1.2.4-rc)"
         required: true
       force:
         description: "Enter 'force-reuse-tag', if you want to change an existing git tag. CAUTION!"
