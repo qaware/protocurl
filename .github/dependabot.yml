@@ -16,4 +16,4 @@ updates:
   - package-ecosystem: "npm"
     directory: "/test/servers"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
