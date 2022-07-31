@@ -1,6 +1,7 @@
 general:
   vulnerabilities:
     - CVE-2021-3999
+    - CVE-2022-2097 # only affects 32-bit x86 platforms. We don't offer this architecture in docker however.
   bestPracticeViolations:
     - DKL-LI-0001
     - CIS-DI-0005
