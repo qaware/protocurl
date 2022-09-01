@@ -124,12 +124,7 @@ Aside from JSON, Protobuf primarily and natively supports a text format which re
 wire-format. For instance, repeated fields are condensed into an array in the JSON format - whereas they are simply '
 repeated' without an array type in the text format.
 
-This text format's syntax is
-[hardly documented](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format)
-([protobuf issue](https://github.com/protocolbuffers/protobuf/issues/8636)), so this section will shortly describe how
-to write Protobuf messages in the text format.
-
-Given the following .proto file
+For instance, for the following .proto file
 
 ```
 syntax = "proto3";
@@ -157,7 +152,7 @@ enum Foo {
 }
 ```
 
-A `HappyDayRequest` message in text format might look like this:
+a `HappyDayRequest` message in text format might look like this:
 
 ```
 includeReason: true,
@@ -185,7 +180,7 @@ In summary:
   as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
   are described just like user-defined custom messages via `{ ... }` and their message fields
 
-[This page shows more details on the text format.](https://stackoverflow.com/a/18877167)
+The text format is defined in the [Protobuf: Text Format Language Specification](https://developers.google.com/protocol-buffers/docs/text-format-spec).
 
 ## Development
 
