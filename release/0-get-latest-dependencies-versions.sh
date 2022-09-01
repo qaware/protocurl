@@ -5,6 +5,19 @@ LATEST_VERSION=""
 
 HEADERS_FILE="release/.cache/headers.txt"
 
+# track all versions, so that we can detect any changes.
+export ALL_VERSIONS=""
+
+registerVersion() {
+  NAME="$1"
+  VERSION_VAR="$2"
+  VERSION_VALUE="${!VERSION_VAR}"
+
+  ALL_VERSIONS="$ALL_VERSIONS"$'\n'"$NAME $VERSION_VALUE"
+
+  echo "Established $NAME version $VERSION_VALUE"
+}
+
 retrieveLatestVersion() {
   TYPE="$1" # tag or release
   REPO="$2"
@@ -68,23 +81,23 @@ retrieveLatestVersion() {
 # retrieve version: Google Protobuf
 retrieveLatestVersion "release" "protocolbuffers/protobuf" "v[0-9]+[.][0-9]+"
 export PROTO_VERSION="${LATEST_VERSION#"v"}"
-echo "Established Protobuf version $PROTO_VERSION"
+registerVersion "Protobuf" "PROTO_VERSION"
 
 # retrieve version: go
 retrieveLatestVersion "tag" "golang/go" "go1[.][0-9]+[.][0-9]+"
 GO_VERSION="${LATEST_VERSION#"go"}"
 GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
-echo "Established Go version: $GO_VERSION"
+registerVersion "go" "GO_VERSION"
 
 # retrieve version: goreleaser
 retrieveLatestVersion "tag" "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+"
 export GORELEASER_VERSION="$LATEST_VERSION"
-echo "Established Goreleaser version: $GORELEASER_VERSION"
+registerVersion "Goreleaser" "GORELEASER_VERSION"
 
 # retrieve version: protocurl
 retrieveLatestVersion "tag" "qaware/protocurl" "v[0-9]+[.][0-9]+[.][0-9]+"
 export PROTOCURL_RELEASED_VVERSION="$LATEST_VERSION"
-echo "Established latest released protoCURL version: $PROTOCURL_RELEASED_VVERSION"
+registerVersion "Latest released protoCURL" "PROTOCURL_RELEASED_VVERSION"
 
 # compute download urls
 ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/")"

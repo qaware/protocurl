@@ -41,3 +41,11 @@ The release process works like this:
 After fixing the code and the tests, a release candidate's tag can be overwritten by setting the option `force`
 to `force-reuse-tag` when invoking the workflow. This should only be used when a release candidate is released again
 should be overwritten. If the archive was already released on github, then it should be deleted first - as goreleaser will not force to overwrite it ([issue](https://github.com/goreleaser/goreleaser/issues/557)).
+
+
+## Updating Dependencies
+
+Most dependencies are automatically checked for updates via [Dependabot](.github/dependabot.yml).
+
+The remaining dependencies cannot be managed via Dependabot, because they are manually retrieved
+during release via [0-get-latest-dependencies-versions.sh](./release/0-get-latest-dependencies-versions.sh). Hence, a weekly GitHub Action [check-manual-dependencies](.github/workflows/check-manual-dependencies.yml) checks whether the committed [versions.txt](release/versions.txt) matches the actual latest versions. If there is a new version, then the build fails and the maintainers are automatically notified. To incorporate the new version, simply follow the instructions in the failed build.
