@@ -1,4 +1,3 @@
 Protobuf 21.5
 go 1.18
 Goreleaser v1.11.2
-Latest released protoCURL v1.5.3
