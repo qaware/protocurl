@@ -19,10 +19,12 @@ buildProtocurl() {
   else
     export PROTOCURL_IMAGE="protocurl:latest"
     ./dev/generate-local.Dockerfile.sh
+    BUILD_ARGS="-q -f dev/generated.local.Dockerfile"
+    BUILD_ARGS="$BUILD_ARGS --build-arg PROTO_VERSION=$PROTO_VERSION"
+    BUILD_ARGS="$BUILD_ARGS --build-arg ARCH=$BUILD_ARCH"
+    BUILD_ARGS="$BUILD_ARGS --build-arg GO_DOWNLOAD_URL_ARCH_TEMPLATE=$GO_DOWNLOAD_URL_ARCH_TEMPLATE"
     echo "Building $PROTOCURL_IMAGE ..." &&
-      docker build -q -t $PROTOCURL_IMAGE -f dev/generated.local.Dockerfile \
-        --build-arg PROTO_VERSION=$PROTO_VERSION --build-arg ARCH=$BUILD_ARCH \
-        --build-arg GO_DOWNLOAD_URL_ARCH_TEMPLATE=$GO_DOWNLOAD_URL_ARCH_TEMPLATE . &&
+      docker build --target final -t $PROTOCURL_IMAGE $BUILD_ARGS . &&
       echo "Done."
   fi
 }

@@ -1,9 +1,12 @@
 FROM gcr.io/distroless/cc:latest as final
 WORKDIR /protocurl
 
+# MARKER-FOR-TESTS
+# ^ This marker is used for local testing add a few GNU system utilities
+# into the test image. Other than that, we want to ensure, that the test
+# uses this entire file equally.
+
 COPY --from=builder /usr/bin/curl /usr/bin/curl
-# In the containerized tests, we mount /bin from host to get linux commands for testing.
-# If the base image changes, then that might need adaptation.
 
 # Ideally, we would simply copy these lib files based on their architecture. Unfortunately, we cannot use
 # a build arg such as "ARG ARCH_UNAME_M" here with format as given by "uname -m" (x86_64, etc.).
