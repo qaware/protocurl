@@ -44,7 +44,7 @@ jobs:
           CHANGED_VERSIONS_BRANCH="autoupdate/$(sed 's/ /-/' <<< "$CHANGED_VERSIONS")"
 
           echo "CHANGED_VERSIONS=$CHANGED_VERSIONS" >> $GITHUB_ENV
-          echo "CHANGED_VERSIONS_BRANCH='$CHANGED_VERSIONS_BRANCH'" >> $GITHUB_ENV
+          echo "CHANGED_VERSIONS_BRANCH=$CHANGED_VERSIONS_BRANCH" >> $GITHUB_ENV
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
