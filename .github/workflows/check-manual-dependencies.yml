@@ -51,6 +51,8 @@ jobs:
         id: pull-request
         with:
           title: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
+          # Use deploykey, so that we the new pull request triggers CI
+          ssh-key: ${{ secrets.NEW_PULL_REQUEST_KEY }}
           commit-message: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
           branch: ${{ env.CHANGED_VERSIONS_BRANCH }}
           delete-branch: true
