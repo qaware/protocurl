@@ -46,8 +46,8 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         id: pull-request
         with:
-          title: ${{ env.COMMIT_MESSAGE }}
-          commit-message: "[AutoUpdate] ${{ env.COMMIT_MESSAGE }}"
+          title: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
+          commit-message: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
           branch: ${{ env.CHANGED_VERSIONS_BRANCH }}
           delete-branch: true
           body: |
