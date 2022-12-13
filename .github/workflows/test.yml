@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - auto-update-merge-new-dependencies # todo. remove me later
   pull_request:
     branches:
       - main
+      - auto-update-merge-new-dependencies # todo. remove me later
 
 jobs:
   test:
