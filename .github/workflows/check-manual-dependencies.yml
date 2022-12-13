@@ -37,9 +37,9 @@ jobs:
 
           # Extract newly added lines in diff and combine into commit message part
           CHANGED_VERSIONS="$(git diff | grep -e '^\+[^\+]' | sed 's/^+//' | paste -sd ',' | sed 's/,/, /')"
-          CHANGED_VERSIONS_BRANCH="autoupdate/$(sed 's/ /-/' <<< "CHANGED_VERSIONS")"
+          CHANGED_VERSIONS_BRANCH="autoupdate/$(sed 's/ /-/' <<< "$CHANGED_VERSIONS")"
 
-          echo "COMMIT_MESSAGE='[AutoUpdate] $CHANGED_VERSIONS'" >> $GITHUB_ENV
+          echo "CHANGED_VERSIONS=$CHANGED_VERSIONS" >> $GITHUB_ENV
           echo "CHANGED_VERSIONS_BRANCH='$CHANGED_VERSIONS_BRANCH'" >> $GITHUB_ENV
 
       - name: Create Pull Request
@@ -47,7 +47,7 @@ jobs:
         id: pull-request
         with:
           title: ${{ env.COMMIT_MESSAGE }}
-          commit-message: ${{ env.COMMIT_MESSAGE }}
+          commit-message: "[AutoUpdate] ${{ env.COMMIT_MESSAGE }}"
           branch: ${{ env.CHANGED_VERSIONS_BRANCH }}
           delete-branch: true
           body: |
