@@ -20,6 +20,8 @@ jobs:
         continue-on-error: true
         run: |
           ./release/100-check-latest-versions.sh
+      - name: debug
+        run: echo ${{ steps.check.outcome }}
 
   create-pull-request:
     runs-on: ubuntu-latest
