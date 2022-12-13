@@ -48,4 +48,5 @@ should be overwritten. If the archive was already released on github, then it sh
 Most dependencies are automatically checked for updates via [Dependabot](.github/dependabot.yml).
 
 The remaining dependencies cannot be managed via Dependabot, because they are manually retrieved
-during release via [0-get-latest-dependencies-versions.sh](./release/0-get-latest-dependencies-versions.sh). Hence, a weekly GitHub Action [check-manual-dependencies](.github/workflows/check-manual-dependencies.yml) checks whether the committed [versions.txt](release/versions.txt) matches the actual latest versions. If there is a new version, then the build fails and the maintainers are automatically notified. To incorporate the new version, simply follow the instructions in the failed build.
+during release via [0-get-latest-dependencies-versions.sh](./release/0-get-latest-dependencies-versions.sh). Hence, a weekly GitHub Action [check-manual-dependencies](.github/workflows/check-manual-dependencies.yml) checks whether the committed [versions.txt](release/versions.txt) matches the actual latest versions. If there is a new version, then the build creates a pull request with the new versions and the CI automatically runs it. The pull request is [automatically merged](https://github.com/peter-evans/enable-pull-request-automerge), when the CI tests pass.
+

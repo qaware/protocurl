@@ -32,8 +32,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo ${{ needs.check-dependencies.check-outcome }}
-          echo ${{ needs.check-dependencies.check-outcome == 'failure' }}
+          echo ${{ needs.check-dependencies.outputs.check-outcome }}
+          echo ${{ needs.check-dependencies.outputs.check-outcome == 'failure' }}
           false
       - name: Create changes
         run: |
