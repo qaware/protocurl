@@ -31,6 +31,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Use deploykey, so that we the new pull request triggers CI
+          ssh-key: ${{ secrets.NEW_PULL_REQUEST_KEY }}
+
       - name: Create changes
         run: |
           ./release/101-save-latest-versions.sh
@@ -55,7 +59,7 @@ jobs:
 
             If there are notable changes in the dependencies' changelogs, then please create a new release.
 
-      # - name: Automatically merge when tests pass
-      #   uses: peter-evans/enable-pull-request-automerge@v2
-      #   with:
-      #     pull-request-number: ${{ steps.pull-request.outputs.pull-request-number }}
+      - name: Automatically merge when tests pass
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          pull-request-number: ${{ steps.pull-request.outputs.pull-request-number }}
