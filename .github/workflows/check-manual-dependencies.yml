@@ -12,6 +12,9 @@ jobs:
     outputs:
       check-outcome: ${{ steps.check.outcome }}
 
+    # We want to be able to react, if the check fails due to a new version.
+    continue-on-error: true
+
     steps:
       - uses: actions/checkout@v3
       - name: Check versions of manually managed dependencies
@@ -46,6 +49,10 @@ jobs:
           commit-message: ${{ env.COMMIT_MESSAGE }}
           branch: ${{ env.CHANGED_VERSIONS_BRANCH }}
           delete-branch: true
+          body: |
+            New versions of one or more dependencies were found and combined into this pull request.
+
+            If there are notable changes in the dependencies' changelogs, then please create a new release.
 
       # - name: Automatically merge when tests pass
       #   uses: peter-evans/enable-pull-request-automerge@v2
