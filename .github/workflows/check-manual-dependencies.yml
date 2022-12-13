@@ -27,10 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-dependencies
 
-    if: ${{ needs.check-dependencies.check-outcome == 'failure' }}
+    # if: ${{ needs.check-dependencies.check-outcome == 'failure' }}
 
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          echo ${{ needs.check-dependencies.check-outcome }}
+          echo ${{ needs.check-dependencies.check-outcome == 'failure' }}
+          false
       - name: Create changes
         run: |
           ./release-101-save-latest-versions.sh
