@@ -1,10 +1,6 @@
 FROM gcr.io/distroless/cc:latest as final
-WORKDIR /protocurl
 
-# MARKER-FOR-TESTS
-# ^ This marker is used for local testing add a few GNU system utilities
-# into the test image. Other than that, we want to ensure, that the test
-# uses this entire file equally.
+WORKDIR /protocurl
 
 COPY --from=builder /usr/bin/curl /usr/bin/curl
 
