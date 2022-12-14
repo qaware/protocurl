@@ -6,10 +6,12 @@ customNormaliseOutput() { true; }
 export -f customNormaliseOutput
 
 PROTOCURL_IMAGE=""
+PROTOCURL_IMAGE_ORIGINAL=""
 buildProtocurl() {
   if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
-    export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
-    echo "Pulling $PROTOCURL_IMAGE ..." && docker pull $PROTOCURL_IMAGE && echo "Done."
+    export PROTOCURL_IMAGE_ORIGINAL="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
+    export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION-test"
+    echo "Pulling $PROTOCURL_IMAGE_ORIGINAL ..." && docker pull $PROTOCURL_IMAGE_ORIGINAL && echo "Done."
 
     customNormaliseOutput() {
       sed -i -E "s/protocurl version .*, build .*,/protocurl version <version>, build <hash>,/g" "$1"
@@ -17,16 +19,30 @@ buildProtocurl() {
     }
     export -f customNormaliseOutput
   else
-    export PROTOCURL_IMAGE="protocurl:latest"
+    export PROTOCURL_IMAGE_ORIGINAL="protocurl:latest"
+    export PROTOCURL_IMAGE="$PROTOCURL_IMAGE_ORIGINAL-test"
     ./dev/generate-local.Dockerfile.sh
     BUILD_ARGS="-q -f dev/generated.local.Dockerfile"
     BUILD_ARGS="$BUILD_ARGS --build-arg PROTO_VERSION=$PROTO_VERSION"
     BUILD_ARGS="$BUILD_ARGS --build-arg ARCH=$BUILD_ARCH"
     BUILD_ARGS="$BUILD_ARGS --build-arg GO_DOWNLOAD_URL_ARCH_TEMPLATE=$GO_DOWNLOAD_URL_ARCH_TEMPLATE"
-    echo "Building $PROTOCURL_IMAGE ..." &&
-      docker build --target final -t $PROTOCURL_IMAGE $BUILD_ARGS . &&
+    echo "Building $PROTOCURL_IMAGE_ORIGINAL ..." &&
+      docker build --target final -t $PROTOCURL_IMAGE_ORIGINAL $BUILD_ARGS . &&
       echo "Done."
   fi
+  
+  echo "Building test image variant of protocurl including additonal executables ..."
+  touch tmp.Dockerfile
+  grep "^FROM " release/builder.Dockerfile >> tmp.Dockerfile
+  echo "FROM $PROTOCURL_IMAGE_ORIGINAL as final" >> tmp.Dockerfile
+  echo "COPY --from=builder /bin/* /bin/" >> tmp.Dockerfile
+  grep "^ENTRYPOINT " release/final.Dockerfile >> tmp.Dockerfile
+  remove-leading-spaces-inplace tmp.Dockerfile
+  
+  cat tmp.Dockerfile | docker build --target final -t $PROTOCURL_IMAGE -f - .
+  echo "Done."
+
+  rm -f tmp.Dockerfile
 }
 export -f buildProtocurl
 
@@ -126,3 +142,8 @@ meaningfulDiff() {
   diff -I 'Date: .*' --strip-trailing-cr "$1" "$2"
 }
 export -f meaningfulDiff
+
+remove-leading-spaces-inplace() {
+  sed -i 's/^[ \t]*//' "$1"
+}
+export -f remove-leading-spaces-inplace
