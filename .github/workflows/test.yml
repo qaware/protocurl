@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-      - auto-update-merge-new-dependencies
   pull_request:
-    branches:
-      - main
-      - auto-update-merge-new-dependencies
 
 jobs:
   test:
