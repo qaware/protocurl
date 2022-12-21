@@ -177,6 +177,12 @@ In summary:
 
 The text format is defined in the [Protobuf: Text Format Language Specification](https://developers.google.com/protocol-buffers/docs/text-format-spec).
 
+## Maintainer
+
+The project was created and is currently maintained by [GollyTicker](https://github.com/GollyTicker).
+
+[qaware](https://github.com/qaware/) provided initial sponsorship for the project.
+
 ## Development
 
 For development it is recommended to use the a bash-like Terminal either natively (Linux, Mac) or via MinGW on Windows.
