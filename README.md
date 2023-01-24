@@ -30,7 +30,9 @@ Hence, **protoCURL**.
 
 protoCURL enables us to write requests in a human-readable textual-format while talking to a binary-encoded Protobuf over HTTP REST endpoint.
 
-Without protoCURL, one would either need to duplicate the HTTP REST endpoints returning equivalent JSON/XML responses - or one needs to write custom code and run it from the IDE just to send simple requests. The first option is technical debt at its finest - and the second one is less ergonomic than using protoCURL. 
+Without protoCURL, one would either need to duplicate the HTTP REST endpoints returning equivalent JSON/XML responses - or one needs to write custom code and run it from the IDE just to send simple requests. The first option is technical debt at its finest - and the second one is less ergonomic than using protoCURL.
+
+For an introduction with an example: [Read the intro Blogpost](https://blog.qaware.de/posts/protocurl-intro)
 
 ## Install
 
@@ -107,7 +109,7 @@ See below for usage notes and [EXAMPLES.md](EXAMPLES.md) for more information.
 
 ## Usage and Example
 
-See [usage notes](doc/generated.usage.txt) and [EXAMPLES.md](EXAMPLES.md).
+See [usage notes](doc/generated.usage.txt), [EXAMPLES.md](EXAMPLES.md) as well as the [intro Blogpost](https://blog.qaware.de/posts/protocurl-intro).
 
 ## Protobuf JSON Format
 
