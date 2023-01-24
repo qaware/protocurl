@@ -113,7 +113,7 @@ See [usage notes](doc/generated.usage.txt), [EXAMPLES.md](EXAMPLES.md) as well a
 
 ## Protobuf JSON Format
 
-protoCURL supports the [Protobuf JSON Format](https://developers.google.com/protocol-buffers/docs/proto3#json). Note,
+protoCURL supports the [Protobuf JSON Format](https://protobuf.dev/programming-guides/proto3/#json). Note,
 that the JSON format is not a straightforward 1:1 mapping as it is in the case of the Protobuf Text Format (described
 below). For instance,
 the [JSON mapping for timestamp.proto](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto)
@@ -179,10 +179,10 @@ In summary:
 - scalar values are describes similar to JSON. Single and double quotes are both possible for strings.
 - enum values are referenced by their name
 - built-in messages (such
-  as [google.protobuf.Timestamp](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.Timestamp)
+  as [google.protobuf.Timestamp](https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp)
   are described just like user-defined custom messages via `{ ... }` and their message fields
 
-The text format is defined in the [Protobuf: Text Format Language Specification](https://developers.google.com/protocol-buffers/docs/text-format-spec).
+The text format is defined in the [Protobuf: Text Format Language Specification](https://protobuf.dev/reference/protobuf/textformat-spec/).
 
 ## Maintainer
 
