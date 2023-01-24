@@ -82,7 +82,7 @@ When the response type is unknown or one wants to debug and see what is all in t
 then this format shows the values for the given field numbers (instead of their field names).
 
 However, since
-[Protobuf is not self-describing](https://developers.google.com/protocol-buffers/docs/techniques#self-description)
+[Protobuf is not self-describing](https://protobuf.dev/programming-guides/techniques/#self-description)
 the types cannot be correctly inferred and may be incorrect.
 
 **JSON**
