@@ -22,6 +22,7 @@ builds:
 # https://goreleaser.com/customization/archive/
 archives:
   - format: zip
+    rlcp: true # See: https://goreleaser.com/deprecations/#archivesrlcp
     files:
       # NOTE: These files are listed again in the packages below. Keep them synced!
       # binary is added implicitly
