@@ -14,6 +14,6 @@
   },
   "dependencies": {
     "long": "^5.2.0",
-    "protobufjs": "~7.1.0"
+    "protobufjs": "~7.2.0"
   }
 }
