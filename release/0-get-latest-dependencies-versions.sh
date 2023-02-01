@@ -30,7 +30,7 @@ retrieveLatestVersion() {
   ETAG="$(cat "$ETAG_FILE" 2>/dev/null || echo '')"
 
   if [[ "$TYPE" == "release" ]]; then
-    ENDPOINT="releases?per_page=1"
+    ENDPOINT="releases?per_page=20"
     RESPONSE_FILTER="^$TAG_FILTER\$"
     PATH_TO_TAG=".tag_name"
     LATEST_VERSION_EXTRACTOR="head"
@@ -47,7 +47,7 @@ retrieveLatestVersion() {
   GITHUB_RESPONSE="$(curl -s \
     -D "$HEADERS_FILE" \
     --etag-save "$ETAG_FILE" \
-    -H "If-None-Match: \"$ETAG\"" \
+    -H "If-None-Match: $ETAG" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/$REPO/$ENDPOINT")"
 
