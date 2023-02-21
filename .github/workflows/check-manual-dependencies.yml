@@ -29,14 +29,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.NEW_PULL_REQUEST_KEY }}
 
       - name: Create changes
         run: |
           ./release/101-save-latest-versions.sh
 
           # Extract newly added lines in diff and combine into commit message part
-          CHANGED_VERSIONS="$(git diff | grep -e '^\+[^\+]' | sed 's/^+//' | paste -sd ',' | sed 's/,/, /')"
-          CHANGED_VERSIONS_BRANCH="autoupdate/$(sed 's/ /-/' <<< "$CHANGED_VERSIONS")"
+          CHANGED_VERSIONS="$(git diff | grep -e '^\+[^\+]' | sed 's/^+//g' | paste -sd ',' | sed 's/,/, /g')"
+          CHANGED_VERSIONS_BRANCH="autoupdate/$(echo "$CHANGED_VERSIONS" | sed 's/, /_/g' | sed 's/ /-/g')"
 
           echo "CHANGED_VERSIONS=$CHANGED_VERSIONS" >> $GITHUB_ENV
           echo "CHANGED_VERSIONS_BRANCH=$CHANGED_VERSIONS_BRANCH" >> $GITHUB_ENV
@@ -46,8 +48,6 @@ jobs:
         id: pull-request
         with:
           title: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
-          # Use deploykey, so that we the new pull request triggers CI
-          ssh-key: ${{ secrets.NEW_PULL_REQUEST_KEY }}
           commit-message: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
           branch: ${{ env.CHANGED_VERSIONS_BRANCH }}
           delete-branch: true
