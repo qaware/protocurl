@@ -39,6 +39,8 @@ For an introduction with an example: [Read the intro Blogpost](https://blog.qawa
 `protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
 configurable http requests. Otherwise `protocurl` will use a simple non-configurable fallback http implementation.
 
+`protocurl` uses [semantic versioning](https://semver.org/spec/v2.0.0.html) when new releases are versioned.
+
 ### Native CLI
 
 **Archive**
