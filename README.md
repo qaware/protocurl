@@ -34,6 +34,8 @@ Without protoCURL, one would either need to duplicate the HTTP REST endpoints re
 
 For an introduction with an example: [Read the intro Blogpost](https://blog.qaware.de/posts/protocurl-intro)
 
+This project reached the HackerNews frontpage when it was [posted on HackerNews in Feb 2023](https://news.ycombinator.com/item?id=34866155).
+
 ## Install
 
 `protocurl` includes and uses a bundled `protoc` by default. It is recommended to install `curl` into PATH for
