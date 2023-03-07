@@ -1,3 +1,3 @@
 Protobuf 22.0
 go 1.20
-Goreleaser v1.15.2
+Goreleaser v1.16.0
