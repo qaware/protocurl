@@ -9,6 +9,8 @@ basic functionality work multi-platform and contains regression tests for OS-spe
 
 The native tests extract the release archive and the release packages (e.g. .deb, .apk) and run basic tests.
 
+To run the tests, first setup the prerequisites from [Setup section in the README.md](README.md#setup).
+
 ## Containerized Tests
 
 The tests are run automatically via GitHub Actions [here](.github/workflows/test.yml). Run them
