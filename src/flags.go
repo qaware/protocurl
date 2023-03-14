@@ -84,6 +84,9 @@ func intialiseFlags() {
 			"The format can be set explicitly via --in. See "+GithubRepositoryLink)
 	AssertSuccess(rootCmd.MarkFlagRequired("data-text"))
 
+	flags.BoolVarP(&CurrentConfig.NoDefaultHeaders, "no-default-headers", "n", false,
+		"Uses no default headers like `Content-Type`. you can use this flag with curl only. E.g. --curl -nH 'Content-Type: FooBar'.")
+
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.")
 

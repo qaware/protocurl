@@ -23,6 +23,7 @@ type Config struct {
 	OutTextType          OutTextType
 	DecodeRawResponse    bool
 	DisplayBinaryAndHttp bool
+	NoDefaultHeaders     bool
 	RequestHeaders       []string
 	CustomCurlPath       string
 	AdditionalCurlArgs   string
@@ -172,6 +173,10 @@ func properResponseTypeIfProvidedOrEmptyType() string {
 }
 
 func addDefaultHeaderArgument() {
+	if CurrentConfig.NoDefaultHeaders {
+		return
+	}
+
 	if CurrentConfig.Verbose {
 		fmt.Printf("Adding default header argument to request headers : %s\n", DefaultHeaders)
 	}
