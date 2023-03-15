@@ -414,7 +414,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Wed, 15 Mar 2023 06:08:50 GMT
+Date: Fri, 17 Mar 2023 11:48:00 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
@@ -424,6 +424,25 @@ Content-Length: 35
 00000020  54 22 00                                          |T".|
 Searching for message with base name: HappyDayResponse
 Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
+=========================== Response Text    =========================== <<<
+formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+```
+
+**No Default Header**
+
+Some headers uses default values (e.g. `Content-Type: application/x-protobuf`). If you do not want to use these default values, use `--no-default-headers` flag. You cannot use this flag with go's internal http client.
+
+```bash
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify \
+  -d "date: { seconds: 1648044939}" \
+  --curl -n -H 'Content-Type: application/octet-stream'
+
+=========================== Request Text     =========================== >>>
+date: {
+  seconds: 1648044939
+}
 =========================== Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```

@@ -85,7 +85,7 @@ func intialiseFlags() {
 	AssertSuccess(rootCmd.MarkFlagRequired("data-text"))
 
 	flags.BoolVarP(&CurrentConfig.NoDefaultHeaders, "no-default-headers", "n", false,
-		"Uses no default headers like `Content-Type`. you can use this flag with curl only. E.g. --curl -nH 'Content-Type: FooBar'.")
+		"Default headers (e.g. \"Content-Type\") will not be passed to curl. Assumes --curl. Use \"-n -H 'Content-Type: FooBar'\" to override the default content type.")
 
 	flags.StringArrayVarP(&CurrentConfig.RequestHeaders, "request-header", "H", []string{},
 		"Adds the `string` header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.")
@@ -212,5 +212,5 @@ func propagateFlags() {
 }
 
 func PanicDueToUnsupportedHeadersWhenInternalHttp(headers []string) {
-	PanicWithMessage(fmt.Sprintf("Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: %+q", headers))
+	PanicWithMessage(fmt.Sprintf("Non-default or custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: %+q", headers))
 }

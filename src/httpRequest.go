@@ -21,7 +21,7 @@ func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 		fmt.Println("Invoking internal http request.")
 	}
 
-	if !isSupported() {
+	if usingUnsupportedNonDefaultHeaders() {
 		PanicDueToUnsupportedHeadersWhenInternalHttp(CurrentConfig.RequestHeaders)
 	}
 
@@ -40,16 +40,9 @@ func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 	return body, strings.TrimSpace(headersString)
 }
 
-func isSupported() bool {
-	if CurrentConfig.NoDefaultHeaders {
-		return false
-	}
-
-	if len(CurrentConfig.RequestHeaders) != 1 || CurrentConfig.RequestHeaders[0] != DefaultHeaders[0] {
-		return false
-	}
-
-	return true
+func usingUnsupportedNonDefaultHeaders() bool {
+	usingNonDefaultHeaders := len(CurrentConfig.RequestHeaders) != 1 || CurrentConfig.RequestHeaders[0] != DefaultHeaders[0]
+	return CurrentConfig.NoDefaultHeaders || usingNonDefaultHeaders
 }
 
 func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {

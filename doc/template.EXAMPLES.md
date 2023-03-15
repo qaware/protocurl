@@ -87,3 +87,11 @@ ___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___
 ```bash
 ___EXAMPLE_4___
 ```
+
+**No Default Header**
+
+Some headers uses default values (e.g. `Content-Type: application/x-protobuf`). If you do not want to use these default values, use `--no-default-headers` flag. You cannot use this flag with go's internal http client.
+
+```bash
+___EXAMPLE_5___
+```

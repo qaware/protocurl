@@ -14,15 +14,13 @@ Invoked with following default & parsed arguments:
   "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
   "NoDefaultHeaders": true,
-  "RequestHeaders": [
-    "Content-Type: application/octet-stream"
-  ],
+  "RequestHeaders": [],
   "CustomCurlPath": "",
   "AdditionalCurlArgs": "",
   "Verbose": true,
   "ShowOutputOnly": false,
-  "ForceNoCurl": false,
-  "ForceCurl": true,
+  "ForceNoCurl": true,
+  "ForceCurl": false,
   "GlobalProtoc": false,
   "CustomProtocPath": "",
   "InferProtoFiles": false
@@ -237,39 +235,8 @@ date: {
 includeReason: true
 =========================== Request Binary   =========================== >>>
 00000000  0a 0b 08 8b d7 ec 91 06  10 80 ac bd 48 10 01     |............H..|
-Expecting to find curl executable due to forced use of curl.
-Found curl: /usr/bin/curl
-Invoking curl http request.
-Understood additional curl args: []
-Total curl args:
-  -s
-  -X
-  POST
-  --data-binary
-  @<tmp>
-  --output
-  <tmp>
-  --dump-header
-  <tmp>
-  -H
-  Content-Type: application/octet-stream
-  http://localhost:8080/happy-day/verify
-=========================== Response Headers =========================== <<<
-HTTP/1.1 200 OK
-Content-Type: application/x-protobuf
-Date: Wed, 15 Mar 2023 06:30:09 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
-Content-Length: 68
-=========================== Response Binary  =========================== <<<
-00000000  08 00 12 1f 54 6f 75 67  68 20 6c 75 63 6b 20 6f  |....Tough luck o|
-00000010  6e 20 57 65 64 6e 65 73  64 61 79 2e 2e 2e 20 f0  |n Wednesday... .|
-00000020  9f 98 95 1a 1d 57 65 64  2c 20 32 33 20 4d 61 72  |.....Wed, 23 Mar|
-00000030  20 32 30 32 32 20 31 34  3a 31 35 3a 33 39 20 47  | 2022 14:15:39 G|
-00000040  4d 54 22 00                                       |MT".|
-Looking up message with full name: happyday.HappyDayResponse
-=========================== Response Text    =========================== <<<
-reason: "Tough luck on Wednesday... 😕"
-formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+Using internal http request due to forced avoidance of curl.
+Invoking internal http request.
 ######### STDERR #########
-######### EXIT 0 #########
+Error: Non-default or custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: []
+######### EXIT 1 #########

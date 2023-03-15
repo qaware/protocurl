@@ -18,29 +18,29 @@ Examples:
   protocurl -I my-protos -i package.path.Req -o package.path.Resp -u http://example.com/api -d "myField: true, otherField: 1337"
 
 Flags:
-      --curl                              Forces the use of curl executable found in PATH. If none was found, then exits with an error.
-  -C, --curl-args string                  Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.
-      --curl-path string                  Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.
-  -d, --data-text string                  Mandatory: The payload data in Protobuf text format or JSON. It is inferred from the input as JSON if the first token is a '{'. The format can be set explicitly via --in. See https://github.com/qaware/protocurl
-      --decode-raw                        Decode the response into textual format without the schema by only showing field numbers and inferred field types. Types may be incorrect. Only output format text is supported. Use -o <response-type> to see correct contents.
-  -D, --display-binary-and-http           Displays the binary request and response as well as the non-binary response headers.
-  -h, --help                              help for protocurl
-      --in string                         Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON. The type is inferred as JSON if the first token is a '{'.
-  -F, --infer-files                       Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.
-      --no-curl                           Forces the use of the built-in internal http request instead of curl.
-  -n, --no-default-headers Content-Type   Uses no default headers like Content-Type. you can use this flag with curl only. E.g. --curl -nH 'Content-Type: FooBar'.
-      --out string                        Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.
-  -I, --proto-dir string                  Uses the specified directory to find the proto-file. (default "/proto")
-  -f, --proto-file string                 Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
-      --protoc                            Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.
-      --protoc-path string                Uses the given path to invoke protoc instead of searching for protoc in PATH. Also activates --protoc.
-  -H, --request-header string             Adds the string header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.
-  -i, --request-type string               Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest
-  -o, --response-type string              The Protobuf response type. See -i <request-type>. Overrides --decode-raw. If not set, then --decode-raw is used.
-  -q, --show-output-only                  Suppresses all output except response Protobuf as text. Overrides and deactivates -v and -D. Errors are still printed to stderr.
-  -u, --url string                        Mandatory: The url to send the request to
-  -v, --verbose                           Prints version and enables verbose output. Also activates -D.
-      --version                           version for protocurl
+      --curl                      Forces the use of curl executable found in PATH. If none was found, then exits with an error.
+  -C, --curl-args string          Additional cURL args which will be passed on to cURL during request invocation for further configuration. Also activates --curl.
+      --curl-path string          Uses the given path to invoke curl instead of searching for curl in PATH. Also activates --curl.
+  -d, --data-text string          Mandatory: The payload data in Protobuf text format or JSON. It is inferred from the input as JSON if the first token is a '{'. The format can be set explicitly via --in. See https://github.com/qaware/protocurl
+      --decode-raw                Decode the response into textual format without the schema by only showing field numbers and inferred field types. Types may be incorrect. Only output format text is supported. Use -o <response-type> to see correct contents.
+  -D, --display-binary-and-http   Displays the binary request and response as well as the non-binary response headers.
+  -h, --help                      help for protocurl
+      --in string                 Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON. The type is inferred as JSON if the first token is a '{'.
+  -F, --infer-files               Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.
+      --no-curl                   Forces the use of the built-in internal http request instead of curl.
+  -n, --no-default-headers        Default headers (e.g. "Content-Type") will not be passed to curl. Assumes --curl. Use "-n -H 'Content-Type: FooBar'" to override the default content type.
+      --out string                Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.
+  -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
+  -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).
+      --protoc                    Forces the use of a global protoc executable found in PATH or via --protoc-path instead of using the bundled one. If none was found, then exits with an error.
+      --protoc-path string        Uses the given path to invoke protoc instead of searching for protoc in PATH. Also activates --protoc.
+  -H, --request-header string     Adds the string header to the invocation of cURL. This option is not supported when --no-curl is active. E.g. -H 'MyHeader: FooBar'.
+  -i, --request-type string       Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest
+  -o, --response-type string      The Protobuf response type. See -i <request-type>. Overrides --decode-raw. If not set, then --decode-raw is used.
+  -q, --show-output-only          Suppresses all output except response Protobuf as text. Overrides and deactivates -v and -D. Errors are still printed to stderr.
+  -u, --url string                Mandatory: The url to send the request to
+  -v, --verbose                   Prints version and enables verbose output. Also activates -D.
+      --version                   version for protocurl
 
 Error: required flag(s) "data-text","request-type","url" not set
 ######### EXIT 1 #########
