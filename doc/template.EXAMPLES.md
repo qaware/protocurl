@@ -82,16 +82,17 @@ will produce no output, exit with a non-zero exitcode and only show this error:
 ___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___
 ```
 
+**No Default Header**
+
+Some headers use default values (e.g. `Content-Type: application/x-protobuf`). If you do not want to use these default values, use `--no-default-headers` flag (only work when using `--curl`).
+
+```bash
+___EXAMPLE_NO_DEFAULT_HEADER___
+```
+
+
 **Verbose via -v**
 
 ```bash
 ___EXAMPLE_4___
-```
-
-**No Default Header**
-
-Some headers uses default values (e.g. `Content-Type: application/x-protobuf`). If you do not want to use these default values, use `--no-default-headers` flag. You cannot use this flag with go's internal http client.
-
-```bash
-___EXAMPLE_5___
 ```

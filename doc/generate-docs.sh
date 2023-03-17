@@ -171,8 +171,8 @@ $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
 escapeString "$EXAMPLE_4"
 EXAMPLE_4="$ESCAPED"
 
-# EXAMPLE_5 ============================
-EXAMPLE_5="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
+# EXAMPLE_NO_DEFAULT_HEADER ============================
+EXAMPLE_NO_DEFAULT_HEADER="\$ docker run -v \"\$PWD/test/proto:/proto\" --network host qaware/protocurl \\
   -i ..HappyDayRequest -o ..HappyDayResponse \\
   -u http://localhost:8080/happy-day/verify \\
   -d \"date: { seconds: 1648044939}\" \\
@@ -184,8 +184,8 @@ $(docker run -v "$WORKING_DIR/test/proto:/proto" --network host protocurl \
   -d "date: { seconds: 1648044939}" \
   --curl -n -H'Content-Type: application/octet-stream')"
 
-escapeString "$EXAMPLE_5"
-EXAMPLE_5="$ESCAPED"
+escapeString "$EXAMPLE_NO_DEFAULT_HEADER"
+EXAMPLE_NO_DEFAULT_HEADER="$ESCAPED"
 
 # replacements ============================
 echo "$EXAMPLES_TEMPLATE" |
@@ -198,8 +198,8 @@ echo "$EXAMPLES_TEMPLATE" |
   sed "s%___EXAMPLE_OUTPUT_ONLY___%$EXAMPLE_OUTPUT_ONLY%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_1___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_1%" |
   sed "s%___EXAMPLE_OUTPUT_ONLY_WITH_ERR_2___%$EXAMPLE_OUTPUT_ONLY_WITH_ERR_2%" |
-  sed "s%___EXAMPLE_4___%$EXAMPLE_4%" |
-  sed "s%___EXAMPLE_5___%$EXAMPLE_5%" >EXAMPLES.md
+  sed "s%___EXAMPLE_NO_DEFAULT_HEADER___%$EXAMPLE_NO_DEFAULT_HEADER%" |
+  sed "s%___EXAMPLE_4___%$EXAMPLE_4%" >EXAMPLES.md
 
 normaliseOutput EXAMPLES.md
 

@@ -9,7 +9,7 @@ It uses 'curl' from PATH. If none was found, it will fall back to an internal no
 It uses a bundled 'protoc' (by default) which is used to parse the .proto files.
 The bundle also includes the well-known Google Protobuf files necessary to create FileDescriptorSet payloads via 'protoc'.
 If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.
-The Header 'Content-Type: application/x-protobuf' is set as a request header by default.
+The Header 'Content-Type: application/x-protobuf' is set as a request header by default. (disable via -n)
 When converting between binary and text, the encoding UTF-8 is always used.
 When the correct response type is unknown or being debugged, omitting -o <response-type> will attempt to show the response in raw format.
 

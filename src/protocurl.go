@@ -66,7 +66,7 @@ var rootCmd = &cobra.Command{
 		"It uses a bundled '" + ProtocExecutableName + "' (by default) which is used to parse the .proto files.\n" +
 		"The bundle also includes the well-known Google Protobuf files necessary to create FileDescriptorSet payloads via '" + ProtocExecutableName + "'.\n" +
 		"If the bundled '" + ProtocExecutableName + "' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.\n" +
-		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default.\n" +
+		"The Header 'Content-Type: application/x-protobuf' is set as a request header by default. (disable via -n)\n" +
 		"When converting between binary and text, the encoding UTF-8 is always used.\n" +
 		"When the correct response type is unknown or being debugged, omitting -o <response-type> will attempt to show the response in raw format.\n\n" +
 		"Enhancements and bugs: " + EnhancementsAndBugsLink,
