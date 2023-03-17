@@ -10,7 +10,7 @@ It uses 'curl' from PATH. If none was found, it will fall back to an internal no
 It uses a bundled 'protoc' (by default) which is used to parse the .proto files.
 The bundle also includes the well-known Google Protobuf files necessary to create FileDescriptorSet payloads via 'protoc'.
 If the bundled 'protoc' is used, then these .proto files are included. Otherwise .proto files from the system-wide include are used.
-The Header 'Content-Type: application/x-protobuf' is set as a request header by default.
+The Header 'Content-Type: application/x-protobuf' is set as a request header by default. (disable via -n)
 When converting between binary and text, the encoding UTF-8 is always used.
 When the correct response type is unknown or being debugged, omitting -o <response-type> will attempt to show the response in raw format.
 
@@ -30,6 +30,7 @@ Flags:
       --in string                 Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON. The type is inferred as JSON if the first token is a '{'.
   -F, --infer-files               Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.
       --no-curl                   Forces the use of the built-in internal http request instead of curl.
+  -n, --no-default-headers        Default headers (e.g. "Content-Type") will not be passed to curl. Assumes --curl. Use "-n -H 'Content-Type: FooBar'" to override the default content type.
       --out string                Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.
   -I, --proto-dir string          Uses the specified directory to find the proto-file. (default "/proto")
   -f, --proto-file string         Uses the specified file path to find the Protobuf definition of the message types within 'proto-dir' (relative file path).

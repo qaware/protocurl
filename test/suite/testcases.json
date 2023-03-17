@@ -499,5 +499,29 @@
     "filename": "version",
     "args": ["--version"],
     "runAgainWithArg": "--no-curl"
+  },
+  {
+    "filename": "no-default-headers-with-no-additional-headers",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
+      "-n --curl"
+    ]
+  },
+  {
+    "filename": "no-default-headers-with-custom-content-type-header",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
+      "--curl -n -H \"Content-Type: application/octet-stream\""
+    ]
+  },
+  {
+    "filename": "no-default-headers-with-no-curl-flag",
+    "args": [
+      "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
+      "-n --no-curl"
+    ]
   }
 ]

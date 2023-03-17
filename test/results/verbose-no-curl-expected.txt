@@ -14,6 +14,7 @@ Invoked with following default & parsed arguments:
   "OutTextType": "text",
   "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
   ],
@@ -244,7 +245,7 @@ HTTP/1.1 200 OK
 Content-Length: 65
 Connection: keep-alive
 Content-Type: application/x-protobuf
-Date: Mon, 16 May 2022 22:09:02 GMT
+Date: Fri, 17 Mar 2023 11:27:01 GMT
 Keep-Alive: timeout=5
 =========================== Response Binary  =========================== <<<
 00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |

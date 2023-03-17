@@ -146,6 +146,26 @@ will produce no output, exit with a non-zero exitcode and only show this error:
 Error: Request was unsuccessful. Received response status code outside of 2XX. Got: HTTP/1.1 404 Not Found
 ```
 
+**No Default Header**
+
+Some headers use default values (e.g. `Content-Type: application/x-protobuf`). If you do not want to use these default values, use `--no-default-headers` flag (only work when using `--curl`).
+
+```bash
+$ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
+  -i ..HappyDayRequest -o ..HappyDayResponse \
+  -u http://localhost:8080/happy-day/verify \
+  -d "date: { seconds: 1648044939}" \
+  --curl -n -H 'Content-Type: application/octet-stream'
+
+=========================== Request Text     =========================== >>>
+date: {
+  seconds: 1648044939
+}
+=========================== Response Text    =========================== <<<
+formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
+```
+
+
 **Verbose via -v**
 
 ```bash
@@ -170,6 +190,7 @@ Invoked with following default & parsed arguments:
   "OutTextType": "text",
   "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
   ],
@@ -413,7 +434,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Sat, 11 Jun 2022 11:15:35 GMT
+Date: Fri, 17 Mar 2023 23:19:03 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

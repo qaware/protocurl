@@ -6,5 +6,5 @@ date: {
 }
 includeReason: true
 ######### STDERR #########
-Error: Custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["Content-Type: application/x-protobuf" "x-abc: def"]
+Error: Non-default or custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["Content-Type: application/x-protobuf" "x-abc: def"]
 ######### EXIT 1 #########

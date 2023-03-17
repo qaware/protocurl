@@ -15,6 +15,7 @@ Invoked with following default & parsed arguments:
   "OutTextType": "json",
   "DecodeRawResponse": false,
   "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
   "RequestHeaders": [
     "Content-Type: application/x-protobuf"
   ],
@@ -260,7 +261,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Mon, 16 May 2022 22:08:56 GMT
+Date: Fri, 17 Mar 2023 11:26:54 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 68
