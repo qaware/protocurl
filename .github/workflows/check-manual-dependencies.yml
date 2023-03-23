@@ -57,6 +57,6 @@ jobs:
             If there are notable changes in the dependencies' changelogs, then please create a new release.
 
       - name: Automatically merge when tests pass
-        uses: peter-evans/enable-pull-request-automerge@v2
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ steps.pull-request.outputs.pull-request-number }}
