@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.6.2"
+    "typescript": "^5.0.3"
   },
   "dependencies": {
     "long": "^5.2.0",
