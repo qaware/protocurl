@@ -44,7 +44,7 @@ jobs:
           echo "CHANGED_VERSIONS_BRANCH=$CHANGED_VERSIONS_BRANCH" >> $GITHUB_ENV
 
       - name: Create Pull Request and conditionally auto-merge
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v5
         id: pull-request
         with:
           title: "[AutoUpdate] ${{ env.CHANGED_VERSIONS }}"
