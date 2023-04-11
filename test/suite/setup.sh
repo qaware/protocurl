@@ -30,19 +30,30 @@ buildProtocurl() {
       docker build --target final -t $PROTOCURL_IMAGE_ORIGINAL $BUILD_ARGS . &&
       echo "Done."
   fi
-  
-  echo "Building test image variant of protocurl including additonal executables ..."
-  touch tmp.Dockerfile
-  grep "^FROM " release/builder.Dockerfile >> tmp.Dockerfile
-  echo "FROM $PROTOCURL_IMAGE_ORIGINAL as final" >> tmp.Dockerfile
-  echo "COPY --from=builder /bin/* /bin/" >> tmp.Dockerfile
-  grep "^ENTRYPOINT " release/final.Dockerfile >> tmp.Dockerfile
-  remove-leading-spaces-inplace tmp.Dockerfile
-  
-  cat tmp.Dockerfile | docker build --target final -t $PROTOCURL_IMAGE -f - .
-  echo "Done."
 
-  rm -f tmp.Dockerfile
+  echo "Building test image variant of protocurl including additonal executables ..."
+  TMP_DOCKERFILE="test/suite/tmp.Dockerfile"
+  echo "" >$TMP_DOCKERFILE
+  grep "^FROM " release/builder.Dockerfile >>$TMP_DOCKERFILE
+  # add inotify to binaries to test tmp-file permissions. also add pkill for cleanup
+  echo "RUN apt-get update && apt-get install -y inotify-tools procps" >>$TMP_DOCKERFILE
+  echo "# =============" >>$TMP_DOCKERFILE
+  echo "FROM $PROTOCURL_IMAGE_ORIGINAL as final" >>$TMP_DOCKERFILE
+  echo "COPY --from=builder /bin/* /bin/" >>$TMP_DOCKERFILE
+  echo "COPY --from=builder /usr/bin/* /usr/bin/" >>$TMP_DOCKERFILE
+  echo "
+COPY --from=builder /lib/*-linux-gnu /lib/x86_64-linux-gnu/
+COPY --from=builder /lib/*-linux-gnu /lib/x86_32-linux-gnu/
+COPY --from=builder /lib/*-linux-gnu /lib/aarch_64-linux-gnu/
+COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/x86_64-linux-gnu/
+COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/x86_32-linux-gnu/
+COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/aarch_64-linux-gnu/
+  " >>$TMP_DOCKERFILE
+  grep "^ENTRYPOINT " release/final.Dockerfile >>$TMP_DOCKERFILE
+  remove-leading-spaces-inplace $TMP_DOCKERFILE
+
+  cat $TMP_DOCKERFILE | docker build --target final -t $PROTOCURL_IMAGE -f - .
+  echo "Done."
 }
 export -f buildProtocurl
 
@@ -129,7 +140,7 @@ normaliseOutput() {
   sed -i 's/, {/,{/g' "$1"
   sed -i 's/,  {/,{/g' "$1"
 
-  # remove lines with random tamporary folder names
+  # remove lines with random temporary folder names
   sed -i "s|/tmp/protocurl-temp.*|<tmp>|g" "$1"
 
   customNormaliseOutput "$1"

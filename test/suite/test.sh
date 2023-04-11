@@ -22,12 +22,13 @@ testSingleRequest() {
   ARGS="$2"
   BEFORE_TEST_BASH="$3"
   RUN_AGAIN_WITH_ARG="$4"
+  AFTER_TEST_BASH="$5"
 
   if [[ "$RUN_AGAIN_WITH_ARG" != "" ]]; then
     NEW_ARGS="$RUN_AGAIN_WITH_ARG $ARGS"
     NEW_FILENAME="${FILENAME}-${RUN_AGAIN_WITH_ARG#--}"
-    testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" ""
-    testSingleRequest "$NEW_FILENAME" "$NEW_ARGS" "$BEFORE_TEST_BASH" ""
+    testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" "" "$AFTER_TEST_BASH"
+    testSingleRequest "$NEW_FILENAME" "$NEW_ARGS" "$BEFORE_TEST_BASH" "" "$AFTER_TEST_BASH"
   else
 
     EXPECTED="test/results/$FILENAME-expected.txt"
@@ -41,12 +42,17 @@ testSingleRequest() {
 
     set +e
 
-    if [[ "$BEFORE_TEST_BASH" == "" ]]; then
+    if [[ "$BEFORE_TEST_BASH" == "" && "$AFTER_TEST_BASH" == "" ]]; then
       eval "$RUN_CLIENT --name $FILENAME $PROTOCURL_IMAGE $ARGS" 2>"$OUT_ERR" >>"$OUT"
       EXIT_CODE="$?"
     else
+      if [[ "$BEFORE_TEST_BASH" == "" ]]; then BEFORE_TEST_BASH="true"; fi
+      if [[ "$AFTER_TEST_BASH" == "" ]]; then AFTER_TEST_BASH="true"; fi
       ARGS="$(echo "$ARGS" | sed 's/"/\\"/g')" # escape before usage inside quoted context
-      eval "$RUN_CLIENT --entrypoint bash --name $FILENAME $PROTOCURL_IMAGE -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS\"" 2>"$OUT_ERR" >>"$OUT"
+      eval "$RUN_CLIENT --entrypoint bash \
+        --name $FILENAME $PROTOCURL_IMAGE \
+        -c \"$BEFORE_TEST_BASH && ./bin/protocurl $ARGS && $AFTER_TEST_BASH\"" \
+        2>"$OUT_ERR" >>"$OUT"
       EXIT_CODE="$?"
     fi
     echo "######### STDERR #########" >>"$OUT"
@@ -79,7 +85,7 @@ runAllTests() {
 
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
-  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.runAgainWithArg // \"\"|@sh)\""
+  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleRequest \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.runAgainWithArg // \"\"|@sh) \(.afterTestBash // \"\"|@sh)\""
   cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleRequest

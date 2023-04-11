@@ -33,12 +33,13 @@ from `test/suite/testcases.json` against the testserver. Each testcase is of the
     "<These are split into an array to make it easier to write them in the JSON file.>",
     "<All of these array elements will be concatenated with spaces.>"
   ],
-  "runAgainWithArg": "<--some-arg>"
+  "runAgainWithArg": "<--some-arg>",
+  "afterTestBash": "<bash statements>"
 }
 ```
 
 For each testcase, the `args` array will be concatenated and the concatenated string will be given to `protocurl` (via
-docker run) as arguments. `beforeTestBash` and `runAgainWithArg` are optional - and are replaced with `""` if not given.
+docker run) as arguments. `beforeTestBash`, `afterTestBash` and `runAgainWithArg` are optional - and are replaced with `""` if not given.
 This happens via `test/suite/run-testcases.sh` - which is dynamically created from the JSON. This script contains lines
 of the form
 
@@ -55,7 +56,7 @@ memory addresses in them are unstable.
 
 If `beforeTestBash` is given, then the bash statements will be executed inside the client docker container before
 invoking protocurl with the given arguments. This enables one to explicitly remove curl from the container for testing
-purposes.
+purposes. The same happens with `afterTestBash`, except they are run after protocurl was invoked.
 
 If `runAgainWithArg` is given, then the test case will be run twice. It will be run once with the given normal arguments
 and once more with the given `<--some-arg>` prepended to the arguments of protocurl. This is useful to run the testcases
