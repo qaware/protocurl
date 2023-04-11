@@ -523,5 +523,14 @@
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
       "-n --no-curl"
     ]
+  },
+  {
+    "filename": "tmp-file-permissions-readable",
+    "beforeTestBash": "((inotifywait -q -m -e create /tmp | head -n 2 | tail -n 1 | while read DIRECTORY EVENT FILE; do ls -lah /tmp/protocurl* | grep request.bin | awk '{ print \\$1; }'; done) &) && sleep 5s",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"\""
+    ],
+    "afterTestBash": "pkill -f inotifywait"
   }
 ]

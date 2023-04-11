@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/kballard/go-shellquote"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
@@ -14,7 +13,11 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/kballard/go-shellquote"
 )
+
+const publicReadPermissions os.FileMode = 0644
 
 func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 	if CurrentConfig.Verbose {
@@ -55,7 +58,7 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	requestBinaryFile := filepath.Join(tmpDir, "request.bin")
-	err = ioutil.WriteFile(requestBinaryFile, requestBinary, 0)
+	err = ioutil.WriteFile(requestBinaryFile, requestBinary, publicReadPermissions)
 	PanicOnError(err)
 
 	responseBinaryFile := filepath.Join(tmpDir, "response.bin")
