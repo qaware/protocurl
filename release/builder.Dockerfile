@@ -1,6 +1,6 @@
 # This should be kept in sync with dev/builder.local.Dockerfile
 
-FROM debian:stable-slim as builder
+FROM debian:11-slim as builder
 ARG VERSION
 ARG TARGETARCH
 RUN apt-get -q update && \
