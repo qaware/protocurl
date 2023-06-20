@@ -274,9 +274,11 @@ Total curl args:
 > Content-Length: 15
 > 
 } [15 bytes data]
+* upload completely sent off: 15 out of 15 bytes
+* Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Tue, 20 Jun 2023 08:58:13 GMT
+< Date: Tue, 20 Jun 2023 20:38:59 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -287,7 +289,7 @@ Total curl args:
 =========================== Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 20 Jun 2023 08:58:13 GMT
+Date: Tue, 20 Jun 2023 20:38:59 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65
