@@ -6,17 +6,15 @@ includeReason: true
 * Connected to localhost (127.0.0.1) port 8080 (#0)
 > POST /echo HTTP/1.1
 > Host: localhost:8080
-> User-Agent: curl/7.74.0
+> User-Agent: curl/7.88.1
 > Accept: */*
 > Content-Type: application/x-protobuf
 > Content-Length: 2
 > 
 } [2 bytes data]
-* upload completely sent off: 2 out of 2 bytes
-* Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Fri, 17 Mar 2023 11:27:23 GMT
+< Date: Tue, 20 Jun 2023 08:58:22 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 2

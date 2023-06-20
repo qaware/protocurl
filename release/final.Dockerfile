@@ -20,13 +20,14 @@ COPY --from=builder /usr/bin/curl /usr/bin/curl
 # The docker image will be uncessarily large... but one could simply use
 # the native CLI for better speed and smaller download size anyways. 
 
+# We only support 64-bit docker images
 COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/x86_64-linux-gnu/
-COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/x86_32-linux-gnu/
 COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/aarch_64-linux-gnu/
 
 COPY --from=builder /lib/*-linux-gnu /lib/x86_64-linux-gnu/
-COPY --from=builder /lib/*-linux-gnu /lib/x86_32-linux-gnu/
 COPY --from=builder /lib/*-linux-gnu /lib/aarch_64-linux-gnu/
+
+COPY --from=builder /lib64/ld-linux-*.so.2 /lib64/
 
 COPY --from=builder /protocurl/ /protocurl/
 ENTRYPOINT ["/protocurl/bin/protocurl"]
