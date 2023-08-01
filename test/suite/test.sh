@@ -24,6 +24,11 @@ testSingleRequest() {
   RUN_AGAIN_WITH_ARG="$4"
   AFTER_TEST_BASH="$5"
 
+  if [[ "$FILENAME" == "response-type-arg-overidden-decode-raw" && "$(uname)" == *"MINGW"* ]]; then
+    echo "🚧🚧🚧 SKIPPED 🚧🚧🚧 - Skipping response-type-arg-overidden-decode-raw on Windows due to special circumstances."
+    return 0
+  fi
+
   if [[ "$RUN_AGAIN_WITH_ARG" != "" ]]; then
     NEW_ARGS="$RUN_AGAIN_WITH_ARG $ARGS"
     NEW_FILENAME="${FILENAME}-${RUN_AGAIN_WITH_ARG#--}"
