@@ -8,6 +8,7 @@ export -f customNormaliseOutput
 PROTOCURL_IMAGE=""
 PROTOCURL_IMAGE_ORIGINAL=""
 buildProtocurl() {
+  set -e
   if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
     export PROTOCURL_IMAGE_ORIGINAL="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
     export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION-test"

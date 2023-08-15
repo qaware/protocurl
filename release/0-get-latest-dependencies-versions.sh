@@ -86,7 +86,7 @@ registerVersion "Protobuf" "PROTO_VERSION"
 # retrieve version: go
 retrieveLatestVersion "tag" "golang/go" "go1[.][0-9]+[.][0-9]+"
 GO_VERSION="${LATEST_VERSION#"go"}"
-GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
+# GO_VERSION="$(echo "$GO_VERSION" | sed -E "s/\.[0-9]+$//")" # remove patch version
 registerVersion "go" "GO_VERSION"
 
 # retrieve version: goreleaser
