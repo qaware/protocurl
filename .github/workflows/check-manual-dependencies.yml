@@ -13,7 +13,7 @@ jobs:
       check-outcome: ${{ steps.check.outcome }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check versions of manually managed dependencies
         id: check
         # We want to be able to react, if the check fails due to a new version.
@@ -28,7 +28,7 @@ jobs:
     if: ${{ needs.check-dependencies.outputs.check-outcome == 'failure' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.NEW_PULL_REQUEST_KEY }}
 
