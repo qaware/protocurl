@@ -27,7 +27,7 @@ COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/aarch_64-linux-gnu/
 COPY --from=builder /lib/*-linux-gnu /lib/x86_64-linux-gnu/
 COPY --from=builder /lib/*-linux-gnu /lib/aarch_64-linux-gnu/
 
-COPY --from=builder /lib64/ld-linux-*.so.2 /lib64/
+COPY --from=builder /lib64*/ld-linux-*.so.2 /lib64/
 
 COPY --from=builder /protocurl/ /protocurl/
 ENTRYPOINT ["/protocurl/bin/protocurl"]
