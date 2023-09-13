@@ -2,7 +2,7 @@ name: Check manual dependencies
 
 on:
   schedule:
-    - cron: "25 3 * * 2" # weekly: tuesdays at 3:25
+    - cron: "25 3 4 * *" # monthly: At 03:25 on day-of-month 4
   workflow_dispatch: # Allow manual run
 
 jobs:
