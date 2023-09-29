@@ -122,7 +122,9 @@
   },
   {
     "filename": "infer-files-provide-file-wrong-args",
-    "args": ["-F -f f -i i -o o -u u -d \"\""]
+    "args": [
+      "-F -f f -i i -o o -u u -d \"\""
+    ]
   },
   {
     "filename": "wednesday-is-not-a-happy-day-json",
@@ -134,11 +136,15 @@
   },
   {
     "filename": "in-wrong",
-    "args": ["--in=bad -f f -i i -o o -u u -d \"\""]
+    "args": [
+      "--in=bad -f f -i i -o o -u u -d \"\""
+    ]
   },
   {
     "filename": "out-wrong",
-    "args": ["--out=bad -f f -i i -o o -u u -d \"\""]
+    "args": [
+      "--out=bad -f f -i i -o o -u u -d \"\""
+    ]
   },
   {
     "filename": "json-in",
@@ -476,28 +482,38 @@
   },
   {
     "filename": "missing-args",
-    "args": [""],
+    "args": [
+      ""
+    ],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "missing-args-partial",
-    "args": ["-f abc -i i"],
+    "args": [
+      "-f abc -i i"
+    ],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "help",
-    "args": ["-h"],
+    "args": [
+      "-h"
+    ],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "help-missing-curl",
     "beforeTestBash": "mv /usr/bin/curl /usr/bin/curl.bak",
-    "args": ["-h -v"],
+    "args": [
+      "-h -v"
+    ],
     "runAgainWithArg": "--no-curl"
   },
   {
     "filename": "version",
-    "args": ["--version"],
+    "args": [
+      "--version"
+    ],
     "runAgainWithArg": "--no-curl"
   },
   {

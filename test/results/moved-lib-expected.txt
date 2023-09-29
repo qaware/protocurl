@@ -10,6 +10,7 @@ Invoked with following default & parsed arguments:
   "RequestType": "..HappyDayRequest",
   "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "POST",
   "DataText": "includeReason: true",
   "InTextType": "text",
   "OutTextType": "text",

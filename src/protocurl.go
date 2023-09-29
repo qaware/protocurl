@@ -18,6 +18,7 @@ type Config struct {
 	RequestType          string
 	ResponseType         string
 	Url                  string
+	Method               string
 	DataText             string
 	InTextType           InTextType
 	OutTextType          OutTextType
@@ -107,13 +108,13 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 	)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Request %s     %s %s\n%s\n",
-			VISUAL_SEPARATOR, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
+		fmt.Printf("%s %s Request %s    %s %s\n%s\n",
+			VISUAL_SEPARATOR, CurrentConfig.Method, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
 			SEND, reconstructedRequestText)
 	}
 
 	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
-		fmt.Printf("%s Request Binary   %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, SEND, hex.Dump(requestBinary))
+		fmt.Printf("%s %s Request Binary %s %s\n%s", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, SEND, hex.Dump(requestBinary))
 	}
 
 	return requestBinary
@@ -145,9 +146,9 @@ func invokeHttpRequestBasedOnConfig(requestBinary []byte) ([]byte, string) {
 
 func decodeResponse(responseBinary []byte, responseHeaders string, registry *protoregistry.Files) {
 	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
-		fmt.Printf("%s Response Headers %s %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, responseHeaders)
+		fmt.Printf("%s %s Response Headers %s %s\n%s\n", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, RECV, responseHeaders)
 
-		fmt.Printf("%s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
+		fmt.Printf("%s %s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
 	}
 
 	responseMessageType := properResponseTypeIfProvidedOrEmptyType()
@@ -155,8 +156,8 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 	responseText, _ := protoBinaryToMsgAndText(responseMessageType, responseBinary, CurrentConfig.OutTextType, registry)
 
 	if !CurrentConfig.ShowOutputOnly {
-		fmt.Printf("%s Response %s    %s %s\n",
-			VISUAL_SEPARATOR, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
+		fmt.Printf("%s %s Response %s    %s %s\n",
+			VISUAL_SEPARATOR, CurrentConfig.Method, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
 	}
 	fmt.Printf("%s\n", responseText)
 }

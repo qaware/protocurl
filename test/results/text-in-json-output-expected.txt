@@ -10,6 +10,7 @@ Invoked with following default & parsed arguments:
   "RequestType": "..HappyDayRequest",
   "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "POST",
   "DataText": "includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }",
   "InTextType": "text",
   "OutTextType": "json",
@@ -234,13 +235,13 @@ Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 date: {
   seconds: 1648044939
   nanos: 152000000
 }
 includeReason: true
-=========================== Request Binary   =========================== >>>
+=========================== POST Request Binary =========================== >>>
 00000000  0a 0b 08 8b d7 ec 91 06  10 80 ac bd 48 10 01     |............H..|
 Found curl: /usr/bin/curl
 Invoking curl http request.
@@ -258,14 +259,14 @@ Total curl args:
   -H
   Content-Type: application/x-protobuf
   http://localhost:8080/happy-day/verify
-=========================== Response Headers =========================== <<<
+=========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 17 Mar 2023 11:26:54 GMT
+Date: Fri, 29 Sep 2023 23:19:59 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 68
-=========================== Response Binary  =========================== <<<
+=========================== POST Response Binary  =========================== <<<
 00000000  08 00 12 1f 54 6f 75 67  68 20 6c 75 63 6b 20 6f  |....Tough luck o|
 00000010  6e 20 57 65 64 6e 65 73  64 61 79 2e 2e 2e 20 f0  |n Wednesday... .|
 00000020  9f 98 95 1a 1d 57 65 64  2c 20 32 33 20 4d 61 72  |.....Wed, 23 Mar|
@@ -273,7 +274,7 @@ Content-Length: 68
 00000040  4d 54 22 00                                       |MT".|
 Searching for message with base name: HappyDayResponse
 Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
-=========================== Response JSON    =========================== <<<
+=========================== POST Response JSON    =========================== <<<
 {"reason":"Tough luck on Wednesday... 😕","formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
 ######### STDERR #########
 ######### EXIT 0 #########

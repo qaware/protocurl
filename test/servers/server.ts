@@ -15,6 +15,11 @@ let HappyDayResponseType: protobuf.Type;
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const wednesdayDateWeekday = 3;
 
+const CONSTANT_RESPONSE = {
+    isHappyDay: false,
+    reason: "Just a constant response",
+}
+
 // these would be usually automatically generated
 interface HappyDayRequest {
     date: {
@@ -38,10 +43,13 @@ interface HappyDayResponse {
  */
 interface PathHandler {
     path: string;
+    method: ('GET' | 'POST')[];
     reqType: protobuf.Type;
 
     handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]>;
 }
+
+// todo. update handler doc here with new paths
 
 /**
  * Defines two paths.
@@ -55,48 +63,67 @@ interface PathHandler {
  * <p> The path `/echo` simply returns the input body back.
  */
 function defineHandlers(): PathHandler[] {
-    return [{
-        path: '/happy-day/verify',
-        reqType: HappyDayRequestType,
-        async handler(req: HappyDayRequest) {
-            let err = '';
+    return [
+        {
+            path: '/happy-day/verify',
+            method: ['GET', 'POST'],
+            reqType: HappyDayRequestType,
+            async handler(req: HappyDayRequest) {
+                let err = '';
 
-            const date = req?.date ?? {seconds: new Long(0, 0), nanos: 0};
-            const seconds = date.seconds;
-            const nanos = date.nanos;
+                const date = req?.date ?? { seconds: new Long(0, 0), nanos: 0 };
+                const seconds = date.seconds;
+                const nanos = date.nanos;
 
-            const epochMillis = seconds.mul(1000).add(Math.floor(nanos / 1000 / 1000));
+                const epochMillis = seconds.mul(1000).add(Math.floor(nanos / 1000 / 1000));
 
-            const epochMillisNumber = epochMillis.toNumber();
+                const epochMillisNumber = epochMillis.toNumber();
 
-            if (epochMillis.toString() !== epochMillisNumber.toString()) {
-                return [HappyDayResponseType, {err: err + 'Cannot handle number of millis ' + epochMillis + ' as number: ' + epochMillisNumber + '\n'}];
+                if (epochMillis.toString() !== epochMillisNumber.toString()) {
+                    return [HappyDayResponseType, { err: err + 'Cannot handle number of millis ' + epochMillis + ' as number: ' + epochMillisNumber + '\n' }];
+                }
+
+                const jsDate = new Date(epochMillisNumber);
+
+                const dateWeekday = jsDate.getUTCDay();
+                const formattedWeekday = weekdays[dateWeekday];
+
+                console.log('Weekday is ' + dateWeekday + ', ' + formattedWeekday);
+
+                const isHappyDay = dateWeekday !== wednesdayDateWeekday;
+
+                const reason = isHappyDay ? (formattedWeekday + ' is a Happy Day! ⭐') : ('Tough luck on ' + formattedWeekday + '... 😕');
+
+                return [HappyDayResponseType, {
+                    isHappyDay,
+                    reason: req.includeReason ? reason : undefined,
+                    formattedDate: jsDate.toUTCString(),
+                    err,
+                } as HappyDayResponse];
             }
-
-            const jsDate = new Date(epochMillisNumber);
-
-            const dateWeekday = jsDate.getUTCDay();
-            const formattedWeekday = weekdays[dateWeekday];
-
-            console.log('Weekday is ' + dateWeekday + ', ' + formattedWeekday);
-
-            const isHappyDay = dateWeekday !== wednesdayDateWeekday;
-
-            const reason = isHappyDay ? (formattedWeekday + ' is a Happy Day! ⭐') : ('Tough luck on ' + formattedWeekday + '... 😕');
-
-            return [HappyDayResponseType, {
-                isHappyDay,
-                reason: req.includeReason ? reason : undefined,
-                formattedDate: jsDate.toUTCString(),
-                err,
-            } as HappyDayResponse];
-        }
-    },
+        },
         {
             path: '/echo',
+            method: ['GET', 'POST'],
             reqType: HappyDayRequestType,
             async handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
                 return [HappyDayRequestType, reqDecoded];
+            }
+        },
+        {
+            path: '/constant/get',
+            method: ['GET'],
+            reqType: HappyDayRequestType,
+            async handler(_reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
+                return [HappyDayResponseType, CONSTANT_RESPONSE];
+            }
+        },
+        {
+            path: '/constant/post',
+            method: ['POST'],
+            reqType: HappyDayRequestType,
+            async handler(_reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
+                return [HappyDayResponseType, CONSTANT_RESPONSE];
             }
         }
     ];
@@ -114,7 +141,10 @@ function runHttpServer(handlers: PathHandler[]) {
         console.log('=========== ' + req.method + ' ' + req.url);
         console.log(req.rawHeaders.map(s => '  ' + s));
 
-        const currentHandler = handlers.find(handler => handler.path == req.url);
+        const currentHandler = handlers.find(handler =>
+            handler.method.includes(req.method as any) &&
+            new URL(req.url ?? "", `http://${req.headers.host}`).pathname == handler.path
+        );
 
         if (currentHandler === undefined) {
             res.statusCode = 404;
@@ -160,9 +190,10 @@ function runHttpServer(handlers: PathHandler[]) {
         });
     };
 
-    const server = http.createServer(requestListener);
-    server.listen(PORT);
-    console.log('Listening to port: ' + PORT); // This line is used in the test runner to detect readiness
+    http.createServer(requestListener).listen(PORT);
+
+    // This line is used in the test runner to detect readiness during testing.
+    console.log('Listening to port: ' + PORT);
 }
 
 protobuf.load(protoFilePath)
@@ -174,3 +205,5 @@ protobuf.load(protoFilePath)
     })
     .then(defineHandlers)
     .then(handlers => runHttpServer(handlers));
+
+//

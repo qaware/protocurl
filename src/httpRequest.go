@@ -67,7 +67,7 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 	curlArgs := []string{
 		curlPath,
 		"-s",
-		"-X", "POST",
+		"-X", CurrentConfig.Method,
 		"--data-binary", "@" + requestBinaryFile,
 		"--output", responseBinaryFile,
 		"--dump-header", responseHeadersTextFile,

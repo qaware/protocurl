@@ -10,6 +10,7 @@ Invoked with following default & parsed arguments:
   "RequestType": "..HappyDayRequest",
   "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "POST",
   "DataText": "{ \"includeReason\": true, \"date\": \"9999-12-31T23:59:59Z\"}",
   "InTextType": "json",
   "OutTextType": "json",
@@ -234,9 +235,9 @@ Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
-=========================== Request JSON     =========================== >>>
+=========================== POST Request JSON    =========================== >>>
 {"date":"9999-12-31T23:59:59Z","includeReason":true}
-=========================== Request Binary   =========================== >>>
+=========================== POST Request Binary =========================== >>>
 00000000  0a 07 08 ff 82 d1 ff af  07 10 01                 |...........|
 Found curl: /usr/bin/curl
 Invoking curl http request.
@@ -254,21 +255,21 @@ Total curl args:
   -H
   Content-Type: application/x-protobuf
   http://localhost:8080/happy-day/verify
-=========================== Response Headers =========================== <<<
+=========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 17 Mar 2023 11:27:12 GMT
+Date: Fri, 29 Sep 2023 23:20:07 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 63
-=========================== Response Binary  =========================== <<<
+=========================== POST Response Binary  =========================== <<<
 00000000  08 01 12 1a 46 72 69 64  61 79 20 69 73 20 61 20  |....Friday is a |
 00000010  48 61 70 70 79 20 44 61  79 21 20 e2 ad 90 1a 1d  |Happy Day! .....|
 00000020  46 72 69 2c 20 33 31 20  44 65 63 20 39 39 39 39  |Fri, 31 Dec 9999|
 00000030  20 32 33 3a 35 39 3a 35  39 20 47 4d 54 22 00     | 23:59:59 GMT".|
 Searching for message with base name: HappyDayResponse
 Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
-=========================== Response JSON    =========================== <<<
+=========================== POST Response JSON    =========================== <<<
 {"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}
 ######### STDERR #########
 ######### EXIT 0 #########

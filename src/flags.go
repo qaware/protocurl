@@ -34,6 +34,11 @@ func displayOut(outText OutTextType) string {
 	return DisplayType[string(outText)]
 }
 
+var explicitlySupportedMethods = map[string]bool{
+	"GET":  true,
+	"POST": true,
+}
+
 var tmpInTextType string
 var tmpOutTextType string
 var tmpDataTextInferredType InTextType
@@ -54,6 +59,9 @@ func intialiseFlags() {
 
 	flags.BoolVarP(&CurrentConfig.InferProtoFiles, "infer-files", "F", false,
 		"Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.")
+
+	flags.StringVarP(&CurrentConfig.Method, "method", "X", "POST",
+		"HTTP request method. POST (default) and GET supported. Other methods are passed on on to curl optimistically.")
 
 	flags.StringVarP(&CurrentConfig.RequestType, "request-type", "i", "",
 		"Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest")
@@ -141,6 +149,10 @@ func propagateFlags() {
 		if CurrentConfig.Verbose {
 			fmt.Println("Response type (-o) was provided, hence --decode-raw will be overidden.")
 		}
+	}
+
+	if !explicitlySupportedMethods[CurrentConfig.Method] && CurrentConfig.Verbose {
+		fmt.Printf("Got method %s which is not explicitly supported. Proceeding optimistically.", CurrentConfig.Method)
 	}
 
 	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {
