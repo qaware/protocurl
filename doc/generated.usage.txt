@@ -28,6 +28,7 @@ Flags:
   -h, --help                      help for protocurl
       --in string                 Specifies, in which format the input -d should be interpreted in. 'text' (default) uses the Protobuf text format and 'json' uses JSON. The type is inferred as JSON if the first token is a '{'.
   -F, --infer-files               Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.
+  -X, --method string             HTTP request method. POST (default) and GET supported. Other methods are passed on on to curl optimistically. (default "POST")
       --no-curl                   Forces the use of the built-in internal http request instead of curl.
   -n, --no-default-headers        Default headers (e.g. "Content-Type") will not be passed to curl. Assumes --curl. Use "-n -H 'Content-Type: FooBar'" to override the default content type.
       --out string                Produces the output in the specified format. 'text' (default) produces Protobuf text format. 'json' produces dense JSON and 'json:pretty' produces pretty-printed JSON. The produced JSON always uses the original Protobuf field names instead of lowerCamelCasing them.

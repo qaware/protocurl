@@ -26,9 +26,9 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
    -u http://localhost:8080/happy-day/verify \
    -d "includeReason: true"
 
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 includeReason: true
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 isHappyDay: true
 reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
@@ -41,9 +41,9 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
   -u http://localhost:8080/happy-day/verify -d ""
 
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 isHappyDay: true
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
 ```
@@ -56,11 +56,11 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
@@ -96,9 +96,9 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
 
-=========================== Request JSON     =========================== >>>
+=========================== POST Request JSON    =========================== >>>
 {"date":"2022-03-23T14:15:39Z"}
-=========================== Response JSON    =========================== <<<
+=========================== POST Response JSON    =========================== <<<
 {"formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
 ```
 
@@ -110,9 +110,9 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify --out=json:pretty \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
 
-=========================== Request JSON     =========================== >>>
+=========================== POST Request JSON    =========================== >>>
 {"date":"2022-03-23T14:15:39Z"}
-=========================== Response JSON    =========================== <<<
+=========================== POST Response JSON    =========================== <<<
 {
   "formattedDate": "Wed, 23 Mar 2022 14:15:39 GMT"
 }
@@ -157,11 +157,11 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -d "date: { seconds: 1648044939}" \
   --curl -n -H 'Content-Type: application/octet-stream'
 
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```
 
@@ -185,6 +185,7 @@ Invoked with following default & parsed arguments:
   "RequestType": "..HappyDayRequest",
   "ResponseType": "..HappyDayResponse",
   "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "POST",
   "DataText": "date: { seconds: 1648044939}",
   "InTextType": "text",
   "OutTextType": "text",
@@ -409,11 +410,11 @@ Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
-=========================== Request Binary   =========================== >>>
+=========================== POST Request Binary =========================== >>>
 00000000  0a 06 08 8b d7 ec 91 06                           |........|
 Found curl: /usr/bin/curl
 Invoking curl http request.
@@ -431,19 +432,19 @@ Total curl args:
   -H
   Content-Type: application/x-protobuf
   http://localhost:8080/happy-day/verify
-=========================== Response Headers =========================== <<<
+=========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Fri, 17 Mar 2023 23:19:03 GMT
+Date: Tue, 03 Oct 2023 09:29:50 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35
-=========================== Response Binary  =========================== <<<
+=========================== POST Response Binary  =========================== <<<
 00000000  08 00 1a 1d 57 65 64 2c  20 32 33 20 4d 61 72 20  |....Wed, 23 Mar |
 00000010  32 30 32 32 20 31 34 3a  31 35 3a 33 39 20 47 4d  |2022 14:15:39 GM|
 00000020  54 22 00                                          |T".|
 Searching for message with base name: HappyDayResponse
 Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 formattedDate: "Wed, 23 Mar 2022 14:15:39 GMT"
 ```

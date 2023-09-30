@@ -103,9 +103,9 @@ Then protocurl will
 and produce the following output:
 
 ```
-=========================== Request Text     =========================== >>>
+=========================== POST Request Text    =========================== >>>
 includeReason: true
-=========================== Response Text    =========================== <<<
+=========================== POST Response Text    =========================== <<<
 isHappyDay: true
 reason: "Thursday is a Happy Day! ⭐"
 formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"

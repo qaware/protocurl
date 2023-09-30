@@ -33,7 +33,7 @@ from `test/suite/testcases.json` against the testserver. Each testcase is of the
     "<These are split into an array to make it easier to write them in the JSON file.>",
     "<All of these array elements will be concatenated with spaces.>"
   ],
-  "runAgainWithArg": "<--some-arg>",
+  "rerunwithArgForEachElement": ["<some-arg-for-one-scenario>", "<some-arg-for-another-scenario>"],
   "afterTestBash": "<bash statements>"
 }
 ```
@@ -44,8 +44,10 @@ This happens via `test/suite/run-testcases.sh` - which is dynamically created fr
 of the form
 
 ```
-testSingleRequest '<filename>' '<args concatenated with spaces>' '<bash statements>' '--some-arg'
+testSingleSpec '<filename>' '<args concatenated with spaces>' '<bash statements>' 'some-arg-for-one-scenario' 'some-arg-for-another-scenario'
 ```
+
+todo. update this documentation
 
 During the execution of each line in this script, the output will be written into `test/results/$FILENAME-out.txt` -
 which will be compared via `diff` to `test/results/$FILENAME-expected.txt`. If both match, then the result is accepted.
