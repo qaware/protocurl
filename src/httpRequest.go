@@ -28,7 +28,20 @@ func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 		PanicDueToUnsupportedHeadersWhenInternalHttp(CurrentConfig.RequestHeaders)
 	}
 
-	httpResponse, err := http.Post(CurrentConfig.Url, DefaultContentType, bytes.NewReader(requestBinary))
+	var httpResponse *http.Response
+	var err error
+	switch CurrentConfig.Method {
+	case "GET":
+		if CurrentConfig.RequestType != "" {
+			PanicWithMessage("Internal Http implementation doesn't support GET requests with body. Please use curl.")
+		}
+		httpResponse, err = http.Get(CurrentConfig.Url)
+	case "POST":
+		httpResponse, err = http.Post(CurrentConfig.Url, DefaultContentType, bytes.NewReader(requestBinary))
+	default:
+		PanicWithMessage("HTTP method " + CurrentConfig.Method + " not supported with internal HTTP implementation. Please use curl.")
+	}
+
 	PanicWithMessageOnError(err, func() string { return "Failed internal HTTP request. Error: " + err.Error() })
 	defer func() { _ = httpResponse.Body.Close() }()
 
@@ -68,10 +81,14 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 		curlPath,
 		"-s",
 		"-X", CurrentConfig.Method,
-		"--data-binary", "@" + requestBinaryFile,
 		"--output", responseBinaryFile,
 		"--dump-header", responseHeadersTextFile,
 	}
+
+	if CurrentConfig.RequestType != "" {
+		curlArgs = append(curlArgs, "--data-binary", "@"+requestBinaryFile)
+	}
+
 	for _, header := range CurrentConfig.RequestHeaders {
 		curlArgs = append(curlArgs, "-H", header)
 	}

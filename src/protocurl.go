@@ -90,7 +90,12 @@ var rootCmd = &cobra.Command{
 func runProtocurlWorkflow() {
 	protoRegistryFiles := convertProtoFilesToProtoRegistryFiles()
 
-	requestBinary := encodeToBinary(CurrentConfig.RequestType, CurrentConfig.DataText, protoRegistryFiles)
+	var requestBinary []byte // empty iff no body was provided or if an empty body was provided.
+	if CurrentConfig.Method == "GET" && CurrentConfig.RequestType == "" {
+		requestBinary = []byte{}
+	} else {
+		requestBinary = encodeToBinary(CurrentConfig.RequestType, CurrentConfig.DataText, protoRegistryFiles)
+	}
 
 	responseBinary, responseHeaders := invokeHttpRequestBasedOnConfig(requestBinary)
 

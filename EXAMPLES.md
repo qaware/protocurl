@@ -423,19 +423,19 @@ Total curl args:
   -s
   -X
   POST
-  --data-binary
-  @<tmp>
   --output
   <tmp>
   --dump-header
   <tmp>
+  --data-binary
+  @<tmp>
   -H
   Content-Type: application/x-protobuf
   http://localhost:8080/happy-day/verify
 =========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 03 Oct 2023 09:29:50 GMT
+Date: Tue, 03 Oct 2023 20:46:17 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

@@ -61,11 +61,10 @@ func intialiseFlags() {
 		"Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.")
 
 	flags.StringVarP(&CurrentConfig.Method, "method", "X", "POST",
-		"HTTP request method. POST (default) and GET supported. Other methods are passed on on to curl optimistically.")
+		"HTTP request method. POST and GET are explicitly supported. Other methods are passed on on to curl optimistically.")
 
 	flags.StringVarP(&CurrentConfig.RequestType, "request-type", "i", "",
-		"Mandatory: Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. E.g. mypackage.MyRequest or ..MyRequest")
-	AssertSuccess(rootCmd.MarkFlagRequired("request-type"))
+		"Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. Mandatory for POST requests. E.g. mypackage.MyRequest or ..MyRequest")
 
 	flags.StringVarP(&CurrentConfig.ResponseType, "response-type", "o", "",
 		"The Protobuf response type. See -i <request-type>. Overrides --decode-raw. If not set, then --decode-raw is used.")
@@ -87,10 +86,10 @@ func intialiseFlags() {
 	AssertSuccess(rootCmd.MarkFlagRequired("url"))
 
 	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
-		"Mandatory: The payload data in Protobuf text format or JSON. "+
+		"The payload data in Protobuf text format or JSON. "+
 			"It is inferred from the input as JSON if the first token is a '{'. "+
-			"The format can be set explicitly via --in. See "+GithubRepositoryLink)
-	AssertSuccess(rootCmd.MarkFlagRequired("data-text"))
+			"The format can be set explicitly via --in. Mandatory if request-type is provided."+
+			"See "+GithubRepositoryLink)
 
 	flags.BoolVarP(&CurrentConfig.NoDefaultHeaders, "no-default-headers", "n", false,
 		"Default headers (e.g. \"Content-Type\") will not be passed to curl. Assumes --curl. Use \"-n -H 'Content-Type: FooBar'\" to override the default content type.")
@@ -153,6 +152,16 @@ func propagateFlags() {
 
 	if !explicitlySupportedMethods[CurrentConfig.Method] && CurrentConfig.Verbose {
 		fmt.Printf("Got method %s which is not explicitly supported. Proceeding optimistically.", CurrentConfig.Method)
+	}
+
+	if CurrentConfig.Method == "POST" {
+		if CurrentConfig.RequestType == "" {
+			PanicWithMessage("With method POST, a request type and the data text is needed. However, request type was not provided. Aborting.")
+		}
+	}
+
+	if CurrentConfig.DataText != "" && CurrentConfig.RequestType == "" {
+		PanicWithMessage("Non-empty data-body as provided, but no request type was given. Hence, encoding of data-body is not possible.")
 	}
 
 	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {
