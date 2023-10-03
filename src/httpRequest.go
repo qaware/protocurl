@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httputil"
 	"os"
@@ -45,7 +45,7 @@ func invokeInternalHttpRequest(requestBinary []byte) ([]byte, string) {
 	PanicWithMessageOnError(err, func() string { return "Failed internal HTTP request. Error: " + err.Error() })
 	defer func() { _ = httpResponse.Body.Close() }()
 
-	body, err := ioutil.ReadAll(httpResponse.Body)
+	body, err := io.ReadAll(httpResponse.Body)
 	PanicOnError(err)
 
 	headers, err := httputil.DumpResponse(httpResponse, false)
@@ -66,12 +66,12 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 		fmt.Println("Invoking curl http request.")
 	}
 
-	tmpDir, err := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
+	tmpDir, err := os.MkdirTemp(os.TempDir(), "protocurl-temp-*")
 	PanicOnError(err)
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	requestBinaryFile := filepath.Join(tmpDir, "request.bin")
-	err = ioutil.WriteFile(requestBinaryFile, requestBinary, publicReadPermissions)
+	err = os.WriteFile(requestBinaryFile, requestBinary, publicReadPermissions)
 	PanicOnError(err)
 
 	responseBinaryFile := filepath.Join(tmpDir, "response.bin")
@@ -118,17 +118,17 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 	err = curlCmd.Run()
 
 	if !CurrentConfig.ShowOutputOnly && curlStdOut.Len() != 0 {
-		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdOut.Bytes()))
+		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, curlStdOut.String())
 	}
 
 	if !CurrentConfig.ShowOutputOnly && curlStdErr.Len() != 0 {
-		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, string(curlStdErr.Bytes()))
+		fmt.Printf("%s CURL ERROR       %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, curlStdErr.String())
 	}
 
 	PanicWithMessageOnError(err, func() string { return "Encountered an error while running curl. Error: " + err.Error() })
 
-	responseBinary, err := ioutil.ReadFile(responseBinaryFile)
-	responseHeaders, err := ioutil.ReadFile(responseHeadersTextFile)
+	responseBinary, err := os.ReadFile(responseBinaryFile)
+	responseHeaders, err := os.ReadFile(responseHeadersTextFile)
 	responseHeadersText := strings.TrimSpace(string(responseHeaders))
 
 	ensureStatusCodeIs2XX(responseHeadersText)

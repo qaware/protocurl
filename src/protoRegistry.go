@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -46,7 +45,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 
 	protocPath, isBundled := findProtocExecutable()
 
-	tmpDir, errTmp := ioutil.TempDir(os.TempDir(), "protocurl-temp-*")
+	tmpDir, errTmp := os.MkdirTemp(os.TempDir(), "protocurl-temp-*")
 	PanicOnError(errTmp)
 	defer func() { _ = os.RemoveAll(tmpDir) }()
 
@@ -85,7 +84,7 @@ func convertProtoFilesToProtoRegistryFiles() *protoregistry.Files {
 		_, _ = fmt.Fprintln(os.Stderr, "Encountered errors while attempting to "+actionDescription+" via protoc:\n"+protocErr.String())
 	}
 
-	inputFileBin, err := ioutil.ReadFile(inputFileBinPath)
+	inputFileBin, err := os.ReadFile(inputFileBinPath)
 	PanicOnError(err)
 
 	protoFileDescriptorSet := descriptorpb.FileDescriptorSet{}

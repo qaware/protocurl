@@ -18,10 +18,11 @@ export TESTS_SUCCESS="true"
 source test/suite/setup.sh
 
 testSingleRequest() {
-  FILENAME="$1"
-  ARGS="$2"
-  BEFORE_TEST_BASH="$3"
-  AFTER_TEST_BASH="$4"
+  # use local variables to avoid collision with other functions
+  local FILENAME="$1"
+  local ARGS="$2"
+  local BEFORE_TEST_BASH="$3"
+  local AFTER_TEST_BASH="$4"
 
   if [[ "$FILENAME" == "response-type-arg-overidden-decode-raw" && "$(uname)" == *"MINGW"* ]]; then
     echo "🚧🚧🚧 SKIPPED 🚧🚧🚧 - Skipping response-type-arg-overidden-decode-raw on Windows due to special circumstances."
@@ -74,15 +75,16 @@ testSingleRequest() {
 
 # A spec consists of potentially many single requests.
 testSingleSpec() {
-  FILENAME="$1"
-  ARGS="$2"
-  BEFORE_TEST_BASH="$3"
-  AFTER_TEST_BASH="$4"
+  # use local variables to avoid collision with other functions
+  local FILENAME="$1"
+  local ARGS="$2"
+  local BEFORE_TEST_BASH="$3"
+  local AFTER_TEST_BASH="$4"
 
   testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
   shift 4
   for extra_arg in "$@"; do
-    NEW_FILENAME="${FILENAME}-${extra_arg#--}"
+    local NEW_FILENAME="${FILENAME}-${extra_arg#--}"
     NEW_FILENAME="$(echo "$NEW_FILENAME" | sed 's/ /_/g')" # sanitise filename
     testSingleRequest "$NEW_FILENAME" "$extra_arg $ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
   done
