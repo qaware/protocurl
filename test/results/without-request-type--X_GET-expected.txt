@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Non-empty data-body was provided, but no request type was given. Hence, encoding of data-body is not possible.
+######### EXIT 1 #########

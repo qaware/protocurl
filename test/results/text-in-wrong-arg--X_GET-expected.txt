@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Specified input format json is different from inferred format text. Please check your arguments.
+######### EXIT 1 #########

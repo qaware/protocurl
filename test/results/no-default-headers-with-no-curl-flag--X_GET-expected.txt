@@ -1,0 +1,243 @@
+######### STDOUT #########
+Inferred input text type as text.
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
+Invoked with following default & parsed arguments:
+{
+  "ProtoFilesDir": "/proto",
+  "ProtoInputFilePath": "happyday.proto",
+  "RequestType": "happyday.HappyDayRequest",
+  "ResponseType": "happyday.HappyDayResponse",
+  "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "GET",
+  "DataText": "includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }",
+  "InTextType": "text",
+  "OutTextType": "text",
+  "DecodeRawResponse": false,
+  "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": true,
+  "RequestHeaders": [],
+  "CustomCurlPath": "",
+  "AdditionalCurlArgs": "",
+  "Verbose": true,
+  "ShowOutputOnly": false,
+  "ForceNoCurl": true,
+  "ForceCurl": false,
+  "GlobalProtoc": false,
+  "CustomProtocPath": "",
+  "InferProtoFiles": false
+}
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
+Converting file happyday.proto in /proto to a FileDescriptorSet.
+=========================== .proto descriptor ===========================
+file: {
+  name: "google/protobuf/timestamp.proto"
+  package: "google.protobuf"
+  message_type: {
+    name: "Timestamp"
+    field: {
+      name: "seconds"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "seconds"
+    }
+    field: {
+      name: "nanos"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "nanos"
+    }
+  }
+  options: {
+    java_package: "com.google.protobuf"
+    java_outer_classname: "TimestampProto"
+    java_multiple_files: true
+    go_package: "google.golang.org/protobuf/types/known/timestamppb"
+    cc_enable_arenas: true
+    objc_class_prefix: "GPB"
+    csharp_namespace: "Google.Protobuf.WellKnownTypes"
+  }
+  syntax: "proto3"
+}
+file: {
+  name: "happyday.proto"
+  package: "happyday"
+  dependency: "google/protobuf/timestamp.proto"
+  message_type: {
+    name: "HappyDayRequest"
+    field: {
+      name: "date"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_MESSAGE
+      type_name: ".google.protobuf.Timestamp"
+      json_name: "date"
+    }
+    field: {
+      name: "includeReason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "includeReason"
+    }
+    field: {
+      name: "double"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_DOUBLE
+      json_name: "double"
+    }
+    field: {
+      name: "int32"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "int32"
+    }
+    field: {
+      name: "int64"
+      number: 5
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "int64"
+    }
+    field: {
+      name: "string"
+      number: 6
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "string"
+    }
+    field: {
+      name: "bytes"
+      number: 7
+      label: LABEL_OPTIONAL
+      type: TYPE_BYTES
+      json_name: "bytes"
+    }
+    field: {
+      name: "fooEnum"
+      number: 8
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      json_name: "fooEnum"
+    }
+    field: {
+      name: "misc"
+      number: 9
+      label: LABEL_REPEATED
+      type: TYPE_MESSAGE
+      type_name: ".happyday.MiscInfo"
+      json_name: "misc"
+    }
+    field: {
+      name: "float"
+      number: 10
+      label: LABEL_OPTIONAL
+      type: TYPE_FLOAT
+      json_name: "float"
+    }
+    field: {
+      name: "NonCamel_case_FieldName"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "NonCamelCaseFieldName"
+    }
+  }
+  message_type: {
+    name: "HappyDayResponse"
+    field: {
+      name: "isHappyDay"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "isHappyDay"
+    }
+    field: {
+      name: "reason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "reason"
+    }
+    field: {
+      name: "formattedDate"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "formattedDate"
+    }
+    field: {
+      name: "err"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "err"
+    }
+  }
+  message_type: {
+    name: "MiscInfo"
+    field: {
+      name: "weatherOfPastFewDays"
+      number: 1
+      label: LABEL_REPEATED
+      type: TYPE_STRING
+      json_name: "weatherOfPastFewDays"
+    }
+    field: {
+      name: "fooString"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      oneof_index: 0
+      json_name: "fooString"
+    }
+    field: {
+      name: "fooEnum"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      oneof_index: 0
+      json_name: "fooEnum"
+    }
+    oneof_decl: {
+      name: "alternative"
+    }
+  }
+  enum_type: {
+    name: "Foo"
+    value: {
+      name: "BAR"
+      number: 0
+    }
+    value: {
+      name: "BAZ"
+      number: 1
+    }
+    value: {
+      name: "FAZ"
+      number: 2
+    }
+  }
+  syntax: "proto3"
+}
+Looking up message with full name: happyday.HappyDayRequest
+Looking up message with full name: happyday.HappyDayRequest
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+=========================== GET Request Binary =========================== >>>
+00000000  0a 0b 08 8b d7 ec 91 06  10 80 ac bd 48 10 01     |............H..|
+Using internal http request due to forced avoidance of curl.
+Invoking internal http request.
+######### STDERR #########
+Error: Non-default or custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: []
+######### EXIT 1 #########

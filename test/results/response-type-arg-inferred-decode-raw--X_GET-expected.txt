@@ -1,0 +1,281 @@
+######### STDOUT #########
+Response type (-o) was not provided, hence --decode-raw will be used.
+Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
+Invoked with following default & parsed arguments:
+{
+  "ProtoFilesDir": "/proto",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "",
+  "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "GET",
+  "DataText": "includeReason: true",
+  "InTextType": "text",
+  "OutTextType": "text",
+  "DecodeRawResponse": true,
+  "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
+  "RequestHeaders": [
+    "Content-Type: application/x-protobuf"
+  ],
+  "CustomCurlPath": "",
+  "AdditionalCurlArgs": "",
+  "Verbose": true,
+  "ShowOutputOnly": false,
+  "ForceNoCurl": false,
+  "ForceCurl": false,
+  "GlobalProtoc": false,
+  "CustomProtocPath": "",
+  "InferProtoFiles": true
+}
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
+Converting all files in /proto to a FileDescriptorSet.
+Found .proto: happyday.proto
+=========================== .proto descriptor ===========================
+file: {
+  name: "google/protobuf/timestamp.proto"
+  package: "google.protobuf"
+  message_type: {
+    name: "Timestamp"
+    field: {
+      name: "seconds"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "seconds"
+    }
+    field: {
+      name: "nanos"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "nanos"
+    }
+  }
+  options: {
+    java_package: "com.google.protobuf"
+    java_outer_classname: "TimestampProto"
+    java_multiple_files: true
+    go_package: "google.golang.org/protobuf/types/known/timestamppb"
+    cc_enable_arenas: true
+    objc_class_prefix: "GPB"
+    csharp_namespace: "Google.Protobuf.WellKnownTypes"
+  }
+  syntax: "proto3"
+}
+file: {
+  name: "happyday.proto"
+  package: "happyday"
+  dependency: "google/protobuf/timestamp.proto"
+  message_type: {
+    name: "HappyDayRequest"
+    field: {
+      name: "date"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_MESSAGE
+      type_name: ".google.protobuf.Timestamp"
+      json_name: "date"
+    }
+    field: {
+      name: "includeReason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "includeReason"
+    }
+    field: {
+      name: "double"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_DOUBLE
+      json_name: "double"
+    }
+    field: {
+      name: "int32"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "int32"
+    }
+    field: {
+      name: "int64"
+      number: 5
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "int64"
+    }
+    field: {
+      name: "string"
+      number: 6
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "string"
+    }
+    field: {
+      name: "bytes"
+      number: 7
+      label: LABEL_OPTIONAL
+      type: TYPE_BYTES
+      json_name: "bytes"
+    }
+    field: {
+      name: "fooEnum"
+      number: 8
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      json_name: "fooEnum"
+    }
+    field: {
+      name: "misc"
+      number: 9
+      label: LABEL_REPEATED
+      type: TYPE_MESSAGE
+      type_name: ".happyday.MiscInfo"
+      json_name: "misc"
+    }
+    field: {
+      name: "float"
+      number: 10
+      label: LABEL_OPTIONAL
+      type: TYPE_FLOAT
+      json_name: "float"
+    }
+    field: {
+      name: "NonCamel_case_FieldName"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "NonCamelCaseFieldName"
+    }
+  }
+  message_type: {
+    name: "HappyDayResponse"
+    field: {
+      name: "isHappyDay"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "isHappyDay"
+    }
+    field: {
+      name: "reason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "reason"
+    }
+    field: {
+      name: "formattedDate"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "formattedDate"
+    }
+    field: {
+      name: "err"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "err"
+    }
+  }
+  message_type: {
+    name: "MiscInfo"
+    field: {
+      name: "weatherOfPastFewDays"
+      number: 1
+      label: LABEL_REPEATED
+      type: TYPE_STRING
+      json_name: "weatherOfPastFewDays"
+    }
+    field: {
+      name: "fooString"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      oneof_index: 0
+      json_name: "fooString"
+    }
+    field: {
+      name: "fooEnum"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      oneof_index: 0
+      json_name: "fooEnum"
+    }
+    oneof_decl: {
+      name: "alternative"
+    }
+  }
+  enum_type: {
+    name: "Foo"
+    value: {
+      name: "BAR"
+      number: 0
+    }
+    value: {
+      name: "BAZ"
+      number: 1
+    }
+    value: {
+      name: "FAZ"
+      number: 2
+    }
+  }
+  syntax: "proto3"
+}
+Adding google.protobuf.Empty to proto registry to ensure it can be used for decoding raw Protobuf.
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+=========================== GET Request Text    =========================== >>>
+includeReason: true
+=========================== GET Request Binary =========================== >>>
+00000000  10 01                                             |..|
+Found curl: /usr/bin/curl
+Invoking curl http request.
+Understood additional curl args: []
+Total curl args:
+  -s
+  -X
+  GET
+  --output
+  <tmp>
+  --dump-header
+  <tmp>
+  --data-binary
+  @<tmp>
+  -H
+  Content-Type: application/x-protobuf
+  http://localhost:8080/happy-day/verify
+=========================== GET Response Headers =========================== <<<
+HTTP/1.1 200 OK
+Content-Type: application/x-protobuf
+Date: Wed, 04 Oct 2023 08:52:03 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Content-Length: 65
+=========================== GET Response Binary  =========================== <<<
+00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |
+00000010  61 20 48 61 70 70 79 20  44 61 79 21 20 e2 ad 90  |a Happy Day! ...|
+00000020  1a 1d 54 68 75 2c 20 30  31 20 4a 61 6e 20 31 39  |..Thu, 01 Jan 19|
+00000030  37 30 20 30 30 3a 30 30  3a 30 30 20 47 4d 54 22  |70 00:00:00 GMT"|
+00000040  00                                                |.|
+Decoding response against google.protobuf.Empty as no response type was provided.
+Looking up message with full name: google.protobuf.Empty
+=========================== GET Response Text    =========================== <<<
+1: 1
+2: "Thursday is a Happy Day! ⭐"
+3: "Thu, 01 Jan 1970 00:00:00 GMT"
+4: ""
+######### STDERR #########
+######### EXIT 0 #########

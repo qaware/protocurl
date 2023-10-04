@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Unknown input format bad. Expected text or json for --in
+######### EXIT 1 #########

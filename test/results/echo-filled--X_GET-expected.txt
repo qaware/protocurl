@@ -1,0 +1,15 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+=========================== GET Response Text    =========================== <<<
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+######### STDERR #########
+######### EXIT 0 #########

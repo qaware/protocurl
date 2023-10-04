@@ -7,7 +7,8 @@
     ],
     "rerunwithArgForEachElement": [
       "--no-curl",
-      "-X GET"
+      "-X GET",
+      "-X POST"
     ]
   },
   {
@@ -15,6 +16,9 @@
     "args": [
       "-f happyday.proto -i happyday.DoesNotExist -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -22,6 +26,9 @@
     "args": [
       "-f happyday.proto -i ..DoesNotExist -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -30,6 +37,9 @@
     "args": [
       "-I /copy/proto -f nameClashTest.proto -i otherPackage.ThisIsAnEnum -o otherPackage.HappyDayRequest -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -37,6 +47,9 @@
     "args": [
       "-v -f happyday.proto -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -45,6 +58,9 @@
     "args": [
       "-I /copy/proto -f happyday.proto -i ..MyNestedMessage -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -54,7 +70,9 @@
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "-F"
+      "-F",
+      "-X GET",
+      "-F -X GET"
     ]
   },
   {
@@ -62,6 +80,9 @@
     "args": [
       "-F -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -70,6 +91,9 @@
     "args": [
       "-I /copy/proto -F -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -78,6 +102,30 @@
     "args": [
       "-I /copy/proto -F -i subdir.otherPackage.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
+    ]
+  },
+  {
+    "filename": "without-input",
+    "args": [
+      "-F -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify"
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET",
+      "-i ..HappyDayRequest",
+      "-X GET -i ..HappyDayRequest"
+    ]
+  },
+  {
+    "filename": "without-request-type",
+    "args": [
+      "-F -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -86,6 +134,9 @@
       "-F -i ..HappyDayRequest -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
     ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
+    ],
     "comment": "The field presence is also shown in the output, since the server sets the err field to the empty string."
   },
   {
@@ -93,6 +144,9 @@
     "args": [
       "-F -i ..HappyDayRequest --out json -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -100,6 +154,9 @@
     "args": [
       "-v -F -i ..HappyDayRequest -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -107,6 +164,9 @@
     "args": [
       "-v -F -i ..HappyDayRequest -o ..HappyDayResponse --decode-raw -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -115,6 +175,9 @@
     "args": [
       "-I /copy/proto -F -i ..HappyDayRequest -o ..OtherResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -123,12 +186,18 @@
     "args": [
       "-v -I /copy/proto -F -i happyday.HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
     "filename": "infer-files-provide-file-wrong-args",
     "args": [
       "-F -f f -i i -o o -u u -d \"\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -138,19 +207,26 @@
       "-d \"{\\\"includeReason\\\":true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
     "filename": "in-wrong",
     "args": [
       "--in=bad -f f -i i -o o -u u -d \"\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
     "filename": "out-wrong",
     "args": [
       "--out=bad -f f -i i -o o -u u -d \"\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -158,6 +234,9 @@
     "args": [
       "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -165,6 +244,9 @@
     "args": [
       "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"NonCamel_case_FieldName\\\": \\\"text\\\", \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -172,6 +254,9 @@
     "args": [
       "--out=json:pretty -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -179,6 +264,9 @@
     "args": [
       "--in text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -186,6 +274,9 @@
     "args": [
       "--in text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -193,6 +284,9 @@
     "args": [
       "--in=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -200,6 +294,9 @@
     "args": [
       "-v --out=json -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -207,6 +304,9 @@
     "args": [
       "-v --out=text -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"2022-03-23T14:15:39Z\\\" }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -215,6 +315,9 @@
     "args": [
       "--no-curl -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -223,6 +326,9 @@
     "args": [
       "-H \"x-abc: def\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -232,7 +338,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -243,7 +350,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -251,6 +359,9 @@
     "args": [
       "-f does-not-exist.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -258,6 +369,9 @@
     "args": [
       "--proto-dir does-not-exist -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -275,6 +389,9 @@
     "args": [
       "-v -f happyday.proto --request-type happyday.HappyDayRequest -o=happyday.HappyDayResponse --url=http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -284,7 +401,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -293,6 +411,9 @@
     "args": [
       "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -302,7 +423,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -312,7 +434,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -322,7 +445,8 @@
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -330,6 +454,9 @@
     "args": [
       "-D -v -C \"-v --ipv4 -A my-user-agent\" -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -339,7 +466,8 @@
       "-d \"date: { seconds: 1642044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--curl"
+      "--curl",
+      "-X GET"
     ]
   },
   {
@@ -349,7 +477,8 @@
       "-d \"includeReason: true, date: { seconds: 123231648044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -359,7 +488,8 @@
       "-d \"{ \\\"includeReason\\\": true, \\\"date\\\": \\\"9999-12-31T23:59:59Z\\\"}\""
     ],
     "rerunwithArgForEachElement": [
-      "-v"
+      "-v",
+      "-X GET"
     ]
   },
   {
@@ -369,7 +499,8 @@
       "-d \"includeReason: true\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -380,7 +511,8 @@
       "-d \"includeReason: true\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -391,7 +523,8 @@
       "-d \"includeReason: true\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -400,6 +533,9 @@
     "args": [
       "--protoc -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -408,6 +544,9 @@
     "args": [
       "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -416,6 +555,9 @@
     "args": [
       "--protoc-path /usr/bin/protoc-bak -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -424,6 +566,9 @@
     "args": [
       "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -432,6 +577,9 @@
     "args": [
       "-v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -439,6 +587,9 @@
     "args": [
       "-v --protoc -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify ",
       "-d \"includeReason: true\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -448,7 +599,8 @@
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -458,7 +610,12 @@
       "-d \"\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET",
+      "-X GET -v",
+      "-X HEAD",
+      "-X HEAD -v",
+      "-X HEAD --no-curl"
     ]
   },
   {
@@ -468,7 +625,8 @@
       "-d \"includeReason: true\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -482,7 +640,8 @@
       "misc: { fooString: \\\"abc\\\" }\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -494,6 +653,9 @@
       "\\\"fooEnum\\\": \\\"BAZ\\\", \\\"string\\\": \\\"some string here\\\", \\\"bytes\\\": \\\"AAEC//79\\\", \\\"misc\\\": [{}, \\\n",
       "{ \\\"weatherOfPastFewDays\\\": [\\\"1\\\", \\\"2\\\"], \\\"fooEnum\\\": \\\"FAZ\\\" }, \\\n",
       "{ \\\"fooString\\\": \\\"abc\\\" } ] \\\n}\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -504,7 +666,8 @@
       "double: 0.12346789, float: 0.123, int32: 123123123, int64: 123123123123123\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -514,7 +677,8 @@
       "-d \"\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -524,7 +688,8 @@
       "-d \"\""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -533,7 +698,8 @@
       ""
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -542,7 +708,8 @@
       "-f abc -i i"
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -551,7 +718,8 @@
       "-h"
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -561,7 +729,8 @@
       "-h -v"
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -570,7 +739,8 @@
       "--version"
     ],
     "rerunwithArgForEachElement": [
-      "--no-curl"
+      "--no-curl",
+      "-X GET"
     ]
   },
   {
@@ -579,6 +749,9 @@
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
       "-n --curl"
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -587,6 +760,9 @@
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
       "--curl -n -H \"Content-Type: application/octet-stream\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
@@ -595,14 +771,20 @@
       "-f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"includeReason: true, date: { seconds: 1648044939, nanos: 152000000 }\" -v",
       "-n --no-curl"
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ]
   },
   {
     "filename": "tmp-file-permissions-readable",
-    "beforeTestBash": "((inotifywait -q -m -e create /tmp | head -n 2 | tail -n 1 | while read DIRECTORY EVENT FILE; do ls -lah /tmp/protocurl* | grep request.bin | awk \"{ print \\$1; }\"; done) &) && sleep 5s",
+    "beforeTestBash": "((inotifywait -q -m -e create /tmp | head -n 2 | tail -n 1 | while read DIRECTORY EVENT FILE; do ls -lah /tmp/protocurl* | grep request.bin | awk \"{ print \\$1; }\"; done) &) && sleep 2s",
     "args": [
       "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
       "-d \"\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-X GET"
     ],
     "afterTestBash": "pkill -f inotifywait"
   }

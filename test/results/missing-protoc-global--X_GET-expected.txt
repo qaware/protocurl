@@ -1,0 +1,37 @@
+######### STDOUT #########
+Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
+Invoked with following default & parsed arguments:
+{
+  "ProtoFilesDir": "/proto",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
+  "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "GET",
+  "DataText": "includeReason: true",
+  "InTextType": "text",
+  "OutTextType": "text",
+  "DecodeRawResponse": false,
+  "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
+  "RequestHeaders": [
+    "Content-Type: application/x-protobuf"
+  ],
+  "CustomCurlPath": "",
+  "AdditionalCurlArgs": "",
+  "Verbose": true,
+  "ShowOutputOnly": false,
+  "ForceNoCurl": false,
+  "ForceCurl": false,
+  "GlobalProtoc": true,
+  "CustomProtocPath": "",
+  "InferProtoFiles": true
+}
+GlobalProtoc is set, hence bundled protoc will be ignored.
+######### STDERR #########
+Error: I could not find a 'protoc' executable. Please check your PATH.
+Underlying error: exec: "protoc": executable file not found in $PATH
+######### EXIT 1 #########

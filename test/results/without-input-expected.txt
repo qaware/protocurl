@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: With method POST, a request type and the data text is needed. However, request type was not provided. Aborting.
+######### EXIT 1 #########

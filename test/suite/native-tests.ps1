@@ -31,6 +31,12 @@ function Run-Tests
     -u http://localhost:8080/happy-day/verify -d "includeReason: true"
     AbortIfCommandFailed
 
+    Write-Output "=== GET request works without input ==="
+    &"$ProtocurlExec" -I test/proto `
+    -X GET -f happyday.proto -o happyday.HappyDayResponse `
+    -u http://localhost:8080/happy-day/verify
+    AbortIfCommandFailed
+
     Write-Output "=== Using custom protoc and proto lib and global curl ==="
     if (Test-Path my-protoc) {
         Remove-Item my-protoc -Recurse -force

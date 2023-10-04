@@ -1,0 +1,13 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1642044939
+  nanos: 152000000
+}
+includeReason: true
+=========================== GET Response Text    =========================== <<<
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 13 Jan 2022 03:35:39 GMT"
+######### STDERR #########
+######### EXIT 0 #########

@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Both -F is set and -f <file> is provided. Please provide only one of these.
+######### EXIT 1 #########

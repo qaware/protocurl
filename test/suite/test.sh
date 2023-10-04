@@ -24,8 +24,8 @@ testSingleRequest() {
   local BEFORE_TEST_BASH="$3"
   local AFTER_TEST_BASH="$4"
 
-  if [[ "$FILENAME" == "response-type-arg-overidden-decode-raw" && "$(uname)" == *"MINGW"* ]]; then
-    echo "🚧🚧🚧 SKIPPED 🚧🚧🚧 - Skipping response-type-arg-overidden-decode-raw on Windows due to special circumstances."
+  if [[ "$FILENAME" == "response-type-arg-overidden-decode-raw"* && "$(uname)" == *"MINGW"* ]]; then
+    echo "🚧🚧🚧 SKIPPED 🚧🚧🚧 - $FILENAME skipped on Windows due to special circumstances."
     return 0
   fi
 
@@ -85,7 +85,7 @@ testSingleSpec() {
   shift 4
   for extra_arg in "$@"; do
     local NEW_FILENAME="${FILENAME}-${extra_arg#--}"
-    NEW_FILENAME="$(echo "$NEW_FILENAME" | sed 's/ /_/g')" # sanitise filename
+    NEW_FILENAME="$(echo "$NEW_FILENAME" | sed 's/ /_/g' | sed 's/\./_/g')" # sanitise filename
     testSingleRequest "$NEW_FILENAME" "$extra_arg $ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
   done
 }

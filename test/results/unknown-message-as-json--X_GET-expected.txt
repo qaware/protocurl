@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Decoding of raw messages is not supported with output format json. Please use text instead.
+######### EXIT 1 #########

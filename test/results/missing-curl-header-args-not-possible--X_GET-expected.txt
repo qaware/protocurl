@@ -1,0 +1,10 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+######### STDERR #########
+Error: Non-default or custom headers are not supported when  using internal http. Please provide curl in path and avoid using --no-curl. Found headers: ["Content-Type: application/x-protobuf" "x-abc: def"]
+######### EXIT 1 #########

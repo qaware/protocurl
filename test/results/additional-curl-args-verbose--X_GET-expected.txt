@@ -1,0 +1,310 @@
+######### STDOUT #########
+Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
+Invoked with following default & parsed arguments:
+{
+  "ProtoFilesDir": "/proto",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
+  "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "GET",
+  "DataText": "includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }",
+  "InTextType": "text",
+  "OutTextType": "text",
+  "DecodeRawResponse": false,
+  "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
+  "RequestHeaders": [
+    "Content-Type: application/x-protobuf"
+  ],
+  "CustomCurlPath": "",
+  "AdditionalCurlArgs": "-v --ipv4 -A my-user-agent",
+  "Verbose": true,
+  "ShowOutputOnly": false,
+  "ForceNoCurl": false,
+  "ForceCurl": true,
+  "GlobalProtoc": false,
+  "CustomProtocPath": "",
+  "InferProtoFiles": true
+}
+Found bundled protoc at /protocurl/protocurl-internal/bin/protoc
+Using google protobuf include: /protocurl/protocurl-internal/include
+Converting all files in /proto to a FileDescriptorSet.
+Found .proto: happyday.proto
+=========================== .proto descriptor ===========================
+file: {
+  name: "google/protobuf/timestamp.proto"
+  package: "google.protobuf"
+  message_type: {
+    name: "Timestamp"
+    field: {
+      name: "seconds"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "seconds"
+    }
+    field: {
+      name: "nanos"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "nanos"
+    }
+  }
+  options: {
+    java_package: "com.google.protobuf"
+    java_outer_classname: "TimestampProto"
+    java_multiple_files: true
+    go_package: "google.golang.org/protobuf/types/known/timestamppb"
+    cc_enable_arenas: true
+    objc_class_prefix: "GPB"
+    csharp_namespace: "Google.Protobuf.WellKnownTypes"
+  }
+  syntax: "proto3"
+}
+file: {
+  name: "happyday.proto"
+  package: "happyday"
+  dependency: "google/protobuf/timestamp.proto"
+  message_type: {
+    name: "HappyDayRequest"
+    field: {
+      name: "date"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_MESSAGE
+      type_name: ".google.protobuf.Timestamp"
+      json_name: "date"
+    }
+    field: {
+      name: "includeReason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "includeReason"
+    }
+    field: {
+      name: "double"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_DOUBLE
+      json_name: "double"
+    }
+    field: {
+      name: "int32"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_INT32
+      json_name: "int32"
+    }
+    field: {
+      name: "int64"
+      number: 5
+      label: LABEL_OPTIONAL
+      type: TYPE_INT64
+      json_name: "int64"
+    }
+    field: {
+      name: "string"
+      number: 6
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "string"
+    }
+    field: {
+      name: "bytes"
+      number: 7
+      label: LABEL_OPTIONAL
+      type: TYPE_BYTES
+      json_name: "bytes"
+    }
+    field: {
+      name: "fooEnum"
+      number: 8
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      json_name: "fooEnum"
+    }
+    field: {
+      name: "misc"
+      number: 9
+      label: LABEL_REPEATED
+      type: TYPE_MESSAGE
+      type_name: ".happyday.MiscInfo"
+      json_name: "misc"
+    }
+    field: {
+      name: "float"
+      number: 10
+      label: LABEL_OPTIONAL
+      type: TYPE_FLOAT
+      json_name: "float"
+    }
+    field: {
+      name: "NonCamel_case_FieldName"
+      number: 11
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "NonCamelCaseFieldName"
+    }
+  }
+  message_type: {
+    name: "HappyDayResponse"
+    field: {
+      name: "isHappyDay"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_BOOL
+      json_name: "isHappyDay"
+    }
+    field: {
+      name: "reason"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "reason"
+    }
+    field: {
+      name: "formattedDate"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "formattedDate"
+    }
+    field: {
+      name: "err"
+      number: 4
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "err"
+    }
+  }
+  message_type: {
+    name: "MiscInfo"
+    field: {
+      name: "weatherOfPastFewDays"
+      number: 1
+      label: LABEL_REPEATED
+      type: TYPE_STRING
+      json_name: "weatherOfPastFewDays"
+    }
+    field: {
+      name: "fooString"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      oneof_index: 0
+      json_name: "fooString"
+    }
+    field: {
+      name: "fooEnum"
+      number: 3
+      label: LABEL_OPTIONAL
+      type: TYPE_ENUM
+      type_name: ".happyday.Foo"
+      oneof_index: 0
+      json_name: "fooEnum"
+    }
+    oneof_decl: {
+      name: "alternative"
+    }
+  }
+  enum_type: {
+    name: "Foo"
+    value: {
+      name: "BAR"
+      number: 0
+    }
+    value: {
+      name: "BAZ"
+      number: 1
+    }
+    value: {
+      name: "FAZ"
+      number: 2
+    }
+  }
+  syntax: "proto3"
+}
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+Searching for message with base name: HappyDayRequest
+Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1642044939
+  nanos: 152000000
+}
+includeReason: true
+=========================== GET Request Binary =========================== >>>
+00000000  0a 0b 08 8b bc fe 8e 06  10 80 ac bd 48 10 01     |............H..|
+Expecting to find curl executable due to forced use of curl.
+Found curl: /usr/bin/curl
+Invoking curl http request.
+Understood additional curl args: ["-v" "--ipv4" "-A" "my-user-agent"]
+Total curl args:
+  -s
+  -X
+  GET
+  --output
+  <tmp>
+  --dump-header
+  <tmp>
+  --data-binary
+  @<tmp>
+  -H
+  Content-Type: application/x-protobuf
+  -v
+  --ipv4
+  -A
+  my-user-agent
+  http://localhost:8080/happy-day/verify
+=========================== CURL ERROR       ===========================
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> GET /happy-day/verify HTTP/1.1
+> Host: localhost:8080
+> User-Agent: my-user-agent
+> Accept: */*
+> Content-Type: application/x-protobuf
+> Content-Length: 15
+> 
+} [15 bytes data]
+* upload completely sent off: 15 out of 15 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Content-Type: application/x-protobuf
+< Date: Wed, 04 Oct 2023 08:55:21 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Content-Length: 65
+< 
+{ [65 bytes data]
+* Connection #0 to host localhost left intact
+
+=========================== GET Response Headers =========================== <<<
+HTTP/1.1 200 OK
+Content-Type: application/x-protobuf
+Date: Wed, 04 Oct 2023 08:55:21 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Content-Length: 65
+=========================== GET Response Binary  =========================== <<<
+00000000  08 01 12 1c 54 68 75 72  73 64 61 79 20 69 73 20  |....Thursday is |
+00000010  61 20 48 61 70 70 79 20  44 61 79 21 20 e2 ad 90  |a Happy Day! ...|
+00000020  1a 1d 54 68 75 2c 20 31  33 20 4a 61 6e 20 32 30  |..Thu, 13 Jan 20|
+00000030  32 32 20 30 33 3a 33 35  3a 33 39 20 47 4d 54 22  |22 03:35:39 GMT"|
+00000040  00                                                |.|
+Searching for message with base name: HappyDayResponse
+Resolved message package-paths for name HappyDayResponse: [happyday.HappyDayResponse]
+=========================== GET Response Text    =========================== <<<
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 13 Jan 2022 03:35:39 GMT"
+######### STDERR #########
+######### EXIT 0 #########

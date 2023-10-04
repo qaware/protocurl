@@ -1,0 +1,9 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Failed to convert input .proto to FileDescriptorSet. Error: exit status 1
+protoc stderr:
+does-not-exist: warning: directory does not exist.
+Could not make proto path relative: does-not-exist/happyday.proto: No such file or directory
+
+Underlying error: exit status 1
+######### EXIT 1 #########

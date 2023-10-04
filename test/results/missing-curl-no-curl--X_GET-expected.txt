@@ -1,0 +1,10 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+date: {
+  seconds: 1648044939
+  nanos: 152000000
+}
+includeReason: true
+######### STDERR #########
+Error: Internal Http implementation doesn't support GET requests with body. Please use curl.
+######### EXIT 1 #########

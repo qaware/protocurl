@@ -1,0 +1,9 @@
+######### STDOUT #########
+######### STDERR #########
+Error: I couldn't find any Protobuf message for the message package-path otherPackage.ThisIsAnEnum.
+Did you correctly -I (include) your proto files directory?
+Did you correctly specify the full message package-path to your Protobuf message type?
+Try again with -v (verbose).
+Underlying error: could not convert descriptor to protoreflect.MessageDescriptor:
+EnumDescriptor{Syntax: proto3, FullName: otherPackage.ThisIsAnEnum, Values: [{Name: A},{Name: B, Number: 1}]}
+######### EXIT 1 #########

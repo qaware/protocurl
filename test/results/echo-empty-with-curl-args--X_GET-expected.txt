@@ -1,0 +1,30 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+includeReason: true
+=========================== CURL ERROR       ===========================
+*   Trying 127.0.0.1:8080...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> GET /echo HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.74.0
+> Accept: */*
+> Content-Type: application/x-protobuf
+> Content-Length: 2
+> 
+} [2 bytes data]
+* upload completely sent off: 2 out of 2 bytes
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Content-Type: application/x-protobuf
+< Date: Wed, 04 Oct 2023 08:57:18 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+< Content-Length: 2
+< 
+{ [2 bytes data]
+* Connection #0 to host localhost left intact
+
+=========================== GET Response Text    =========================== <<<
+includeReason: true
+######### STDERR #########
+######### EXIT 0 #########

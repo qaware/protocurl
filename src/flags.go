@@ -161,7 +161,7 @@ func propagateFlags() {
 	}
 
 	if CurrentConfig.DataText != "" && CurrentConfig.RequestType == "" {
-		PanicWithMessage("Non-empty data-body as provided, but no request type was given. Hence, encoding of data-body is not possible.")
+		PanicWithMessage("Non-empty data-body was provided, but no request type was given. Hence, encoding of data-body is not possible.")
 	}
 
 	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {

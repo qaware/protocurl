@@ -1,0 +1,9 @@
+######### STDOUT #########
+=========================== GET Request Text    =========================== >>>
+includeReason: true
+=========================== GET Response Text    =========================== <<<
+isHappyDay: true
+reason: "Thursday is a Happy Day! ⭐"
+formattedDate: "Thu, 01 Jan 1970 00:00:00 GMT"
+######### STDERR #########
+######### EXIT 0 #########

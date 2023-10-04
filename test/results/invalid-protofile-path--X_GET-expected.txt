@@ -1,0 +1,8 @@
+######### STDOUT #########
+######### STDERR #########
+Error: Failed to convert input .proto to FileDescriptorSet. Error: exit status 1
+protoc stderr:
+Could not make proto path relative: /proto/does-not-exist.proto: No such file or directory
+
+Underlying error: exit status 1
+######### EXIT 1 #########

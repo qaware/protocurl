@@ -43,7 +43,7 @@ interface HappyDayResponse {
  */
 interface PathHandler {
     path: string;
-    method: ('GET' | 'POST')[];
+    method: ('GET' | 'POST' | 'HEAD')[];
     reqType: protobuf.Type;
 
     handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]>;
@@ -66,7 +66,7 @@ function defineHandlers(): PathHandler[] {
     return [
         {
             path: '/happy-day/verify',
-            method: ['GET', 'POST'],
+            method: ['GET', 'POST', 'HEAD'],
             reqType: HappyDayRequestType,
             async handler(req: HappyDayRequest) {
                 let err = '';
@@ -104,26 +104,10 @@ function defineHandlers(): PathHandler[] {
         },
         {
             path: '/echo',
-            method: ['GET', 'POST'],
+            method: ['GET', 'POST', 'HEAD'],
             reqType: HappyDayRequestType,
             async handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
                 return [HappyDayRequestType, reqDecoded];
-            }
-        },
-        {
-            path: '/constant/get',
-            method: ['GET'],
-            reqType: HappyDayRequestType,
-            async handler(_reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
-                return [HappyDayResponseType, CONSTANT_RESPONSE];
-            }
-        },
-        {
-            path: '/constant/post',
-            method: ['POST'],
-            reqType: HappyDayRequestType,
-            async handler(_reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]> {
-                return [HappyDayResponseType, CONSTANT_RESPONSE];
             }
         }
     ];

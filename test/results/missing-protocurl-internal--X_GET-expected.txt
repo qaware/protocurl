@@ -1,0 +1,40 @@
+######### STDOUT #########
+Inferred input text type as text.
+Infering proto files (-F), since -f <file> was not provided.
+protocurl <version>, build <hash>, https://github.com/qaware/protocurl
+Adding default header argument to request headers : [Content-Type: application/x-protobuf]
+Invoked with following default & parsed arguments:
+{
+  "ProtoFilesDir": "/proto",
+  "ProtoInputFilePath": "",
+  "RequestType": "..HappyDayRequest",
+  "ResponseType": "..HappyDayResponse",
+  "Url": "http://localhost:8080/happy-day/verify",
+  "Method": "GET",
+  "DataText": "includeReason: true",
+  "InTextType": "text",
+  "OutTextType": "text",
+  "DecodeRawResponse": false,
+  "DisplayBinaryAndHttp": true,
+  "NoDefaultHeaders": false,
+  "RequestHeaders": [
+    "Content-Type: application/x-protobuf"
+  ],
+  "CustomCurlPath": "",
+  "AdditionalCurlArgs": "",
+  "Verbose": true,
+  "ShowOutputOnly": false,
+  "ForceNoCurl": false,
+  "ForceCurl": false,
+  "GlobalProtoc": false,
+  "CustomProtocPath": "",
+  "InferProtoFiles": true
+}
+######### STDERR #########
+Error: Cannot find 'protocurl-internal' directory.
+Please ensure that you correctly extracted the full protocurl archive.
+I was expecting to find a directory 'protocurl-internal' side by side
+to the bin directory containing the protocurl executable.
+The executable was found at /protocurl/bin/protocurl
+Error: lstat /protocurl/protocurl-internal: no such file or directory
+######### EXIT 1 #########
