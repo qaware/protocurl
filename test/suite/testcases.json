@@ -114,6 +114,7 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET",
+      "-X GET --no-curl",
       "-i ..HappyDayRequest",
       "-X GET -i ..HappyDayRequest"
     ]

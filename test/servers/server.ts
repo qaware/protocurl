@@ -15,11 +15,6 @@ let HappyDayResponseType: protobuf.Type;
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const wednesdayDateWeekday = 3;
 
-const CONSTANT_RESPONSE = {
-    isHappyDay: false,
-    reason: "Just a constant response",
-}
-
 // these would be usually automatically generated
 interface HappyDayRequest {
     date: {
@@ -48,8 +43,6 @@ interface PathHandler {
 
     handler(reqDecoded: { [p in string]: any }): Promise<[protobuf.Type, { [p in string]: any }]>;
 }
-
-// todo. update handler doc here with new paths
 
 /**
  * Defines two paths.

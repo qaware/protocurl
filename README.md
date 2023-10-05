@@ -103,7 +103,7 @@ Then protocurl will
 and produce the following output:
 
 ```
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 includeReason: true
 =========================== POST Response Text    =========================== <<<
 isHappyDay: true

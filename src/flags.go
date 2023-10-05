@@ -61,7 +61,7 @@ func intialiseFlags() {
 		"Infer the correct files containing the relevant protobuf messages. All proto files in the proto directory provided by -I will be used. If no -f <file> is provided, this -F is set and the files are inferred.")
 
 	flags.StringVarP(&CurrentConfig.Method, "method", "X", "POST",
-		"HTTP request method. POST and GET are explicitly supported. Other methods are passed on on to curl optimistically.")
+		"HTTP request method. POST and GET are explicitly supported. Other methods are passed on to curl optimistically.")
 
 	flags.StringVarP(&CurrentConfig.RequestType, "request-type", "i", "",
 		"Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. Mandatory for POST requests. E.g. mypackage.MyRequest or ..MyRequest")

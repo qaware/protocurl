@@ -26,7 +26,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
    -u http://localhost:8080/happy-day/verify \
    -d "includeReason: true"
 
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 includeReason: true
 =========================== POST Response Text    =========================== <<<
 isHappyDay: true
@@ -41,7 +41,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -f happyday.proto -i happyday.HappyDayRequest -o happyday.HappyDayResponse \
   -u http://localhost:8080/happy-day/verify -d ""
 
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 
 =========================== POST Response Text    =========================== <<<
 isHappyDay: true
@@ -56,7 +56,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "date: { seconds: 1648044939}"
 
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
@@ -96,7 +96,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
 
-=========================== POST Request JSON    =========================== >>>
+=========================== POST Request  JSON    =========================== >>>
 {"date":"2022-03-23T14:15:39Z"}
 =========================== POST Response JSON    =========================== <<<
 {"formattedDate":"Wed, 23 Mar 2022 14:15:39 GMT"}
@@ -110,7 +110,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -u http://localhost:8080/happy-day/verify --out=json:pretty \
   -d "{ \"date\": \"2022-03-23T14:15:39Z\" }"
 
-=========================== POST Request JSON    =========================== >>>
+=========================== POST Request  JSON    =========================== >>>
 {"date":"2022-03-23T14:15:39Z"}
 =========================== POST Response JSON    =========================== <<<
 {
@@ -157,7 +157,7 @@ $ docker run -v "$PWD/test/proto:/proto" --network host qaware/protocurl \
   -d "date: { seconds: 1648044939}" \
   --curl -n -H 'Content-Type: application/octet-stream'
 
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
@@ -410,7 +410,7 @@ Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 date: {
   seconds: 1648044939
 }
@@ -435,7 +435,7 @@ Total curl args:
 =========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Tue, 03 Oct 2023 20:46:17 GMT
+Date: Thu, 05 Oct 2023 09:21:38 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

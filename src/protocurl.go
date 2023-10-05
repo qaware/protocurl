@@ -113,8 +113,7 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 	)
 
 	if !CurrentConfig.ShowOutputOnly {
-		// todo. remove one space here for aligned output
-		fmt.Printf("%s %s Request %s    %s %s\n%s\n",
+		fmt.Printf("%s %s Request  %s    %s %s\n%s\n",
 			VISUAL_SEPARATOR, CurrentConfig.Method, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
 			SEND, reconstructedRequestText)
 	}

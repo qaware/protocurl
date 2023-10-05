@@ -1,5 +1,5 @@
 ######### STDOUT #########
-=========================== POST Request JSON    =========================== >>>
+=========================== POST Request  JSON    =========================== >>>
 {"date":"9999-12-31T23:59:59Z","includeReason":true}
 =========================== POST Response JSON    =========================== <<<
 {"isHappyDay":true,"reason":"Friday is a Happy Day! ⭐","formattedDate":"Fri, 31 Dec 9999 23:59:59 GMT"}

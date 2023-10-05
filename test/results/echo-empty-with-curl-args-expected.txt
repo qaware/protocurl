@@ -1,5 +1,5 @@
 ######### STDOUT #########
-=========================== POST Request Text    =========================== >>>
+=========================== POST Request  Text    =========================== >>>
 includeReason: true
 =========================== CURL ERROR       ===========================
 *   Trying 127.0.0.1:8080...
@@ -16,7 +16,7 @@ includeReason: true
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Tue, 03 Oct 2023 20:42:44 GMT
+< Date: Thu, 05 Oct 2023 09:18:27 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 2

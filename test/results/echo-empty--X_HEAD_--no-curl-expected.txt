@@ -1,5 +1,5 @@
 ######### STDOUT #########
-=========================== HEAD Request Text    =========================== >>>
+=========================== HEAD Request  Text    =========================== >>>
 
 ######### STDERR #########
 Error: HTTP method HEAD not supported with internal HTTP implementation. Please use curl.

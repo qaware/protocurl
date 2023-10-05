@@ -235,7 +235,7 @@ Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
 Searching for message with base name: HappyDayRequest
 Resolved message package-paths for name HappyDayRequest: [happyday.HappyDayRequest]
-=========================== GET Request JSON    =========================== >>>
+=========================== GET Request  JSON    =========================== >>>
 {"date":"2022-03-23T14:15:39Z","includeReason":true}
 =========================== GET Request Binary =========================== >>>
 00000000  0a 06 08 8b d7 ec 91 06  10 01                    |..........|
@@ -258,7 +258,7 @@ Total curl args:
 =========================== GET Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Wed, 04 Oct 2023 08:53:31 GMT
+Date: Thu, 05 Oct 2023 09:17:48 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 68
