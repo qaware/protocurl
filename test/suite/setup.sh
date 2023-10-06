@@ -111,15 +111,15 @@ setup() {
   tearDown
 
   buildProtocurl
-  startServer
+  # startServer
 
-  ensureServerIsReady
+  # ensureServerIsReady
 }
 export -f setup
 
 tearDown() {
   rm -rf tmpfile.log || true
-  stopServer
+  # stopServer
 }
 export -f tearDown
 

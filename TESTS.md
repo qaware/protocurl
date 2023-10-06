@@ -40,14 +40,14 @@ from `test/suite/testcases.json` against the testserver. Each testcase is of the
 
 For each testcase, the `args` array will be concatenated and the concatenated string will be given to `protocurl` (via
 docker run) as arguments. `beforeTestBash`, `afterTestBash` and `runAgainWithArg` are optional - and are replaced with `""` if not given.
-This happens via `test/suite/run-testcases.sh` - which is dynamically created from the JSON. This script contains lines
+This happens via `test/suite/testcases.run` - which is dynamically created from the JSON. This script contains lines
 of the form
 
 ```
 testSingleSpec '<filename>' '<args concatenated with spaces>' '<bash statements>' 'some-arg-for-one-scenario' 'some-arg-for-another-scenario'
 ```
 
-During the execution of each line in this script, the output will be written into `test/results/$FILENAME-out.txt` -
+During the execution of each line in this script (after escaping and parallelisation with xargs), the output will be written into `test/results/$FILENAME-out.txt` -
 which will be compared via `diff` to `test/results/$FILENAME-expected.txt`. If both match, then the result is accepted.
 
 Lines containing `Date: ` and will be ignored during the diffing, as they are runtime dependent and their difference is

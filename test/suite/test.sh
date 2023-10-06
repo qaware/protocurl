@@ -13,7 +13,7 @@ export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network h
 
 export SHOW_LOGS="docker logs"
 
-export TESTS_SUCCESS="true"
+echo "true" >test/suite/success
 
 source test/suite/setup.sh
 
@@ -59,7 +59,7 @@ testSingleRequest() {
   meaningfulDiff "$EXPECTED" "$OUT" >/dev/null
 
   if [[ "$?" != 0 ]]; then
-    export TESTS_SUCCESS="false"
+    echo "false" >test/suite/success
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
     echo "=== Found difference between expected and actual output (ignoring $NORMALISED_ASPECTS) ==="
     meaningfulDiff "$EXPECTED" "$OUT" | sed 's/^/  /'
@@ -82,6 +82,7 @@ testSingleSpec() {
   local AFTER_TEST_BASH="$4"
 
   testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
+
   shift 4
   for extra_arg in "$@"; do
     local NEW_FILENAME="${FILENAME}-${extra_arg#--}"
@@ -92,17 +93,30 @@ testSingleSpec() {
 
 runAllTests() {
   echo "=== Running ALL Tests ==="
-  rm -f ./test/suite/run-testcases.sh || true
+  rm -f ./test/suite/testcases*run 2>/dev/null || true
 
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
-  # Simply look at the produced run-testcases.sh file to see what it looks like.
+  # Simply look at the produced .run file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
-  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
+  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/testcases.run
 
+  # Escape for parallel processing with xargs
+  cat test/suite/testcases.run |
+    sed 's/"/\"/g' |
+    sed "s/'/\\'/g" >test/suite/testcases.escaped.run
+
+  # Prepare variables for xargs subshell execution
   export -f testSingleSpec
   export -f testSingleRequest
-  chmod +x ./test/suite/run-testcases.sh
-  source ./test/suite/run-testcases.sh
+  export SHELLOPTS
+
+  # Ensure we can terminate all parallel processing with an interrupt (Ctrl+C)
+  # from: https://stackoverflow.com/a/22644006
+  trap "exit" INT TERM
+  trap "kill 0" EXIT
+
+  # Pipe the escaped testcases through xargs for parallelisation
+  cat test/suite/testcases.escaped.run | xargs -0 -P 0 -n 10 bash -c
 
   echo "=== Finished Running ALL Tests ==="
 }
@@ -111,4 +125,4 @@ setup
 runAllTests
 tearDown
 
-eval "$TESTS_SUCCESS"
+eval "$(cat test/suite/success)"
