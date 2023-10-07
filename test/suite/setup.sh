@@ -9,7 +9,7 @@ PROTOCURL_IMAGE=""
 PROTOCURL_IMAGE_ORIGINAL=""
 buildProtocurl() {
   set -e
-  if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
+  if [[ -v PROTOCURL_RELEASE_VERSION ]]; then
     export PROTOCURL_IMAGE_ORIGINAL="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
     export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION-test"
     echo "Pulling $PROTOCURL_IMAGE_ORIGINAL ..." && docker pull $PROTOCURL_IMAGE_ORIGINAL && echo "Done."
@@ -52,7 +52,7 @@ COPY --from=builder /lib64*/ld-linux-*.so.2 /lib64/
   grep "^ENTRYPOINT " release/final.Dockerfile >>$TMP_DOCKERFILE
   remove-leading-spaces-inplace $TMP_DOCKERFILE
 
-  cat $TMP_DOCKERFILE | docker build --target final -t $PROTOCURL_IMAGE -f - .
+  cat $TMP_DOCKERFILE | docker build --target final -t $PROTOCURL_IMAGE -q -f - .
   echo "Done."
 }
 export -f buildProtocurl

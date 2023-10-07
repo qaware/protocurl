@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # PRECONDITION: git fetch origin --tags
 
@@ -12,7 +12,7 @@ export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | se
 git config versionsort.suffix -
 # See: https://github.com/git/git/blob/master/Documentation/config/versionsort.txt
 
-if [[ "$VVERSION" == "" ]]; then
+if [[ ! -v VVERSION ]]; then
 
   GIT_TAG="$(git tag --points-at HEAD --sort -version:refname | head -n 1)"
   if [[ "$GIT_TAG" != "" ]]; then
