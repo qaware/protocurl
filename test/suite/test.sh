@@ -14,6 +14,7 @@ testSingleRequest() {
   local ARGS="$2"
   local BEFORE_TEST_BASH="$3"
   local AFTER_TEST_BASH="$4"
+  local CLEANUP="$5"
 
   if [[ "$FILENAME" == "response-type-arg-overidden-decode-raw"* && "$(uname)" == *"MINGW"* ]]; then
     echo "🚧🚧🚧 SKIPPED 🚧🚧🚧 - $FILENAME skipped on Windows due to special circumstances."
@@ -34,10 +35,12 @@ testSingleRequest() {
 
   if [[ "$BEFORE_TEST_BASH" == "" ]]; then BEFORE_TEST_BASH="true"; fi
   if [[ "$AFTER_TEST_BASH" == "" ]]; then AFTER_TEST_BASH="true"; fi
+  if [[ "$CLEANUP" == "" ]]; then CLEANUP="true"; fi
 
   eval "$BEFORE_TEST_BASH && /protocurl/bin/protocurl $ARGS && $AFTER_TEST_BASH" \
     2>"$OUT_ERR" >>"$OUT"
   EXIT_CODE="$?"
+  eval "$CLEANUP" | sed 's|^|cleanup: |' >>"$OUT"
 
   echo "######### STDERR #########" >>"$OUT"
   cat "$OUT_ERR" >>"$OUT"
@@ -68,13 +71,14 @@ testSingleSpec() {
   local ARGS="$2"
   local BEFORE_TEST_BASH="$3"
   local AFTER_TEST_BASH="$4"
+  local CLEANUP="$5"
 
-  testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
-  shift 4
+  testSingleRequest "$FILENAME" "$ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH" "$CLEANUP"
+  shift 5
   for extra_arg in "$@"; do
     local NEW_FILENAME="${FILENAME}-${extra_arg#--}"
     NEW_FILENAME="$(echo "$NEW_FILENAME" | sed 's/ /_/g' | sed 's/\./_/g')" # sanitise filename
-    testSingleRequest "$NEW_FILENAME" "$extra_arg $ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH"
+    testSingleRequest "$NEW_FILENAME" "$extra_arg $ARGS" "$BEFORE_TEST_BASH" "$AFTER_TEST_BASH" "$CLEANUP"
   done
 }
 
@@ -84,7 +88,7 @@ runAllTests() {
 
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
-  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
+  CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \(.cleanup // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
   cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
 
   export -f testSingleSpec

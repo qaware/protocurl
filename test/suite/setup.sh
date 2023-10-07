@@ -52,7 +52,7 @@ COPY --from=builder /lib64*/ld-linux-*.so.2 /lib64/
   grep "^ENTRYPOINT " release/final.Dockerfile >>$TMP_DOCKERFILE
   remove-leading-spaces-inplace $TMP_DOCKERFILE
 
-  cat $TMP_DOCKERFILE | docker build --target final -t $PROTOCURL_IMAGE -f - .
+  cat $TMP_DOCKERFILE | docker build --target final -t $PROTOCURL_IMAGE -q -f - .
   echo "Done."
 }
 export -f buildProtocurl

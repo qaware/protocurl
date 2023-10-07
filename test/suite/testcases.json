@@ -40,7 +40,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "inferred-message-package-path",
@@ -61,7 +62,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "inferred-proto-file",
@@ -94,7 +96,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "message-package-path-nested-subdir",
@@ -105,7 +108,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "without-input",
@@ -179,7 +183,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "inferred-message-package-path-name-clash-explicit-path",
@@ -190,7 +195,8 @@
     ],
     "rerunwithArgForEachElement": [
       "-X GET"
-    ]
+    ],
+    "cleanup": "rm -rf /copy"
   },
   {
     "filename": "infer-files-provide-file-wrong-args",
