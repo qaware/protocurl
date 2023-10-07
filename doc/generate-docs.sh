@@ -1,9 +1,9 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 WORKING_DIR="$1"
 
-if [[ "$WORKING_DIR" == "" ]]; then
+if [[ ! -v WORKING_DIR ]]; then
   echo "Please provide the working directory as a a docker-mount friendly path."
   exit 1
 fi

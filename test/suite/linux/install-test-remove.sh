@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # should be run inside ./test folder within a container to test packaged linux releases
 

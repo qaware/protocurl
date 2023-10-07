@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 LATEST_VERSION=""
 
@@ -67,7 +67,7 @@ retrieveLatestVersion() {
 
   LATEST_VERSION="$(echo "$FILTERED_TAGS" | $LATEST_VERSION_EXTRACTOR -n 1)"
 
-  if [[ "$LATEST_VERSION" == "" ]]; then
+  if [[ ! -v LATEST_VERSION ]]; then
     echo "Found tags after filtering:"
     echo "$FILTERED_TAGS"
     echo "Error: Could not find latest $TYPE for github.com/$REPO with filter $TAG_FILTER"

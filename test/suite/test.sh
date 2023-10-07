@@ -1,13 +1,15 @@
-set -e
+#!/bin/bash
+
+set -euo pipefail
 
 # Test suite: Starts the server and sends multiple requests against it to check the log output
 
-WORKING_DIR="$1"
-
-if [[ "$WORKING_DIR" == "" ]]; then
+if [[ "$#" == 0 ]]; then
   echo "Please provide the working directory as a a docker-mount friendly path."
   exit 1
 fi
+
+WORKING_DIR="$1"
 
 export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
 

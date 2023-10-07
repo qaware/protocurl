@@ -1,23 +1,23 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 set -x
 
 setup() {
   # Install powershell + curl + gcompat
 
   apk add --no-cache curl gcompat \
-                       ca-certificates \
-                       less \
-                       ncurses-terminfo-base \
-                       krb5-libs \
-                       libgcc \
-                       libintl \
-                       libssl1.1 \
-                       libstdc++ \
-                       tzdata \
-                       userspace-rcu \
-                       zlib \
-                       icu-libs
+    ca-certificates \
+    less \
+    ncurses-terminfo-base \
+    krb5-libs \
+    libgcc \
+    libintl \
+    libssl1.1 \
+    libstdc++ \
+    tzdata \
+    userspace-rcu \
+    zlib \
+    icu-libs
 
   apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust
   # todo. auto-updating url?
