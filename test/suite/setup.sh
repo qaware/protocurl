@@ -9,7 +9,7 @@ PROTOCURL_IMAGE=""
 PROTOCURL_IMAGE_ORIGINAL=""
 buildProtocurl() {
   set -e
-  if [[ "$PROTOCURL_RELEASE_VERSION" != "" ]]; then
+  if [[ -v PROTOCURL_RELEASE_VERSION ]]; then
     export PROTOCURL_IMAGE_ORIGINAL="qaware/protocurl:$PROTOCURL_RELEASE_VERSION"
     export PROTOCURL_IMAGE="qaware/protocurl:$PROTOCURL_RELEASE_VERSION-test"
     echo "Pulling $PROTOCURL_IMAGE_ORIGINAL ..." && docker pull $PROTOCURL_IMAGE_ORIGINAL && echo "Done."
@@ -37,7 +37,7 @@ buildProtocurl() {
   echo "" >$TMP_DOCKERFILE
   grep "^FROM " release/builder.Dockerfile >>$TMP_DOCKERFILE
   # add inotify to binaries to test tmp-file permissions. also add pkill for cleanup
-  echo "RUN apt-get update && apt-get install -y inotify-tools procps" >>$TMP_DOCKERFILE
+  echo "RUN apt-get update && apt-get install -y inotify-tools procps jq curl git" >>$TMP_DOCKERFILE
   echo "# =============" >>$TMP_DOCKERFILE
   echo "FROM $PROTOCURL_IMAGE_ORIGINAL as final" >>$TMP_DOCKERFILE
   echo "COPY --from=builder /bin/* /bin/" >>$TMP_DOCKERFILE

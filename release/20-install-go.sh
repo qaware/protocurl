@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 set -x
 
 # Installs Go inside a GitHub action VM / Docker container environment

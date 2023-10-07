@@ -1,15 +1,6 @@
-set -e
+set -euo pipefail
 
 # Test suite: Starts the server and sends multiple requests against it to check the log output
-
-WORKING_DIR="$1"
-
-if [[ "$WORKING_DIR" == "" ]]; then
-  echo "Please provide the working directory as a a docker-mount friendly path."
-  exit 1
-fi
-
-export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
 
 export SHOW_LOGS="docker logs"
 
@@ -35,8 +26,7 @@ testSingleRequest() {
   touch "$EXPECTED"
   rm -f "$OUT" || true
   rm -f "$OUT_ERR" || true
-  docker rm -f "$FILENAME" >/dev/null 2>&1 || true # stop any previously running container for this testcase
-  EXIT_CODE="?"                                    # default exit code, if process aborts abnormaly
+  EXIT_CODE="?" # default exit code, if process aborts abnormaly
 
   echo "######### STDOUT #########" >"$OUT"
 
@@ -45,9 +35,7 @@ testSingleRequest() {
   if [[ "$BEFORE_TEST_BASH" == "" ]]; then BEFORE_TEST_BASH="true"; fi
   if [[ "$AFTER_TEST_BASH" == "" ]]; then AFTER_TEST_BASH="true"; fi
 
-  eval "$RUN_CLIENT --entrypoint bash \
-    --name $FILENAME $PROTOCURL_IMAGE \
-    -c '$BEFORE_TEST_BASH && ./bin/protocurl $ARGS && $AFTER_TEST_BASH'" \
+  eval "$BEFORE_TEST_BASH && /protocurl/bin/protocurl $ARGS && $AFTER_TEST_BASH" \
     2>"$OUT_ERR" >>"$OUT"
   EXIT_CODE="$?"
 
@@ -107,8 +95,6 @@ runAllTests() {
   echo "=== Finished Running ALL Tests ==="
 }
 
-setup
 runAllTests
-tearDown
 
 eval "$TESTS_SUCCESS"
