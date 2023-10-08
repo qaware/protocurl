@@ -140,12 +140,12 @@ jobs:
           ./test/suite/test.sh "$PWD"
 
       - name: Security Scan
-        uses: azure/container-scan@v0
+        uses: crazy-max/ghaction-container-scan@v3
         continue-on-error: true
         with:
-          image-name: qaware/protocurl:${{ github.event.inputs.version }}
-          severity-threshold: medium
-          run-quality-checks: true
+          image: qaware/protocurl:${{ github.event.inputs.version }}
+          severity_threshold: MEDIUM
+          dockerfile: release/generated.Dockerfile
 
   post-release-test-windows:
     runs-on: windows-latest
