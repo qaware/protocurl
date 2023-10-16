@@ -35,10 +35,6 @@ jobs:
           set +x
           source release/source.sh
 
-      - name: Protoc
-        run: |
-          ./release/10-get-protoc-binaries.sh
-
       - name: Install Go and Goreleaser
         run: |
           sudo apt-get -q update

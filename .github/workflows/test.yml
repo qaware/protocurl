@@ -19,7 +19,6 @@ jobs:
           sudo apt-get -q update
           sudo apt-get -q install -y jq zip unzip curl
           git fetch --tags origin
-          ./release/10-get-protoc-binaries.sh
 
       - name: Tests
         run: |

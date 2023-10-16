@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-source release/source.sh
-
 # platforms and architectures for which Google released pre-built binaries
 VARIATIONS=(
   "linux-aarch_64"

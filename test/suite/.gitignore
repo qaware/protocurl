@@ -1,3 +1,2 @@
 run-testcases.sh
 tmp.Dockerfile
-results/*-tmp.txt
