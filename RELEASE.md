@@ -40,7 +40,7 @@ The release process works like this:
 
 After fixing the code and the tests, a release candidate's tag can be overwritten by setting the option `force`
 to `force-reuse-tag` when invoking the workflow. This should only be used when a release candidate is released again
-should be overwritten. If the archive was already released on github, then it should be deleted first - as goreleaser will not force to overwrite it ([issue](https://github.com/goreleaser/goreleaser/issues/557)).
+should be overwritten.
 
 
 ## Updating Dependencies
