@@ -33,6 +33,7 @@ node_modules/
 
 # IntelliJ
 .idea
+*.iml
 
 # GoReleaser
 dist/
