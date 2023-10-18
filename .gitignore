@@ -36,6 +36,7 @@ node_modules/
 *.iml
 
 # GoReleaser
-dist/
+/dist/
+/completions/
 # template output
 .goreleaser.yaml
