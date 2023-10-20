@@ -100,10 +100,11 @@ brews:
     url_template: "https://github.com/qaware/protocurl/releases/{{ .Tag }}/{{ .ArtifactName }}"
     skip_upload: false # TODO: When finished set this to auto. For testing rc's are also deployed
     # GitHub/GitLab repository to push the formula to
-    tap:
+    repository:
       owner: qaware
       name: homebrew-tap
       branch: main
+      token: "{{ .Env.GH_TOKEN_QAWARE_TAP_REPO }}" # TODO: Setup token
     folder: Formula
     dependencies:
       - name: curl
