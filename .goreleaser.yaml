@@ -1,8 +1,8 @@
 # Documentation at https://goreleaser.com
 
 before:
-  hooks:
-    - ./release/completions.sh
+  hooks: []
+    # - ./release/completions.sh # TODO: Fix completions build
 
 # https://goreleaser.com/customization/build/
 builds:
@@ -28,7 +28,7 @@ archives:
       # binary is added implicitly
       - README.md
       - LICENSE.md
-      - completions/*
+      # - completions/* ' TODO: Fix completions build
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: 'protocurl-internal/bin'
@@ -86,6 +86,20 @@ nfpms:
         dst: '/opt/protocurl/protocurl-internal/bin'
       - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
+      # Completions
+      # TODO: Fix completions build
+#      - src: ./completions/protocurl.bash
+#        dst: /usr/share/bash-completion/completions/protocurl
+#        file_info:
+#          mode: 0644
+#      - src: ./completions/protocurl.fish
+#        dst: /usr/share/fish/vendor_completions.d/protocurl.fish
+#        file_info:
+#          mode: 0644
+#      - src: ./completions/protocurl.zsh
+#        dst: /usr/share/zsh/vendor-completions/_protocurl
+#        file_info:
+#          mode: 0644
 
 brews:
   - name: protocurl@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
@@ -108,9 +122,10 @@ brews:
       - name: curl
     install: |-
       bin.install "{{ .ProjectName }}"
-      bash_completion.install "completions/{{ .ProjectName }}.bash" => "{{ .ProjectName }}"
-      zsh_completion.install "completions/{{ .ProjectName }}.zsh" => "_{{ .ProjectName }}"
-      fish_completion.install "completions/{{ .ProjectName }}.fish"
+#    TODO: Make completion build run
+#      bash_completion.install "completions/{{ .ProjectName }}.bash" => "{{ .ProjectName }}"
+#      zsh_completion.install "completions/{{ .ProjectName }}.zsh" => "_{{ .ProjectName }}"
+#      fish_completion.install "completions/{{ .ProjectName }}.fish"
 
 release:
   # If set to auto, will mark the release as not ready for production
