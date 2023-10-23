@@ -116,7 +116,7 @@ brews:
       owner: qaware
       name: homebrew-tap
       branch: main
-      token: "{{ .Env.GH_TOKEN_QAWARE_TAP_REPO }}"
+      token: "{{ .Env.GITHUB_TOKEN }}"
     folder: Formula
     dependencies:
       - name: curl
