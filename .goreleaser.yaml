@@ -103,7 +103,7 @@ nfpms:
 
 brews:
   - name: protocurl@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
-    homepage: https://gitlab.com/{{ .Env.PROJECT_PATH }}
+    homepage: https://gitlab.com/qaware/protocurl
     description: >-
       protoCURL is cURL for Protobuf:
       The command-line tool for interacting with Protobuf over
