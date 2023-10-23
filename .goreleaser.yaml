@@ -31,10 +31,10 @@ archives:
       # - completions/* ' TODO: Fix completions build
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
-        dst: 'protocurl-internal/bin'
+        dst: '{{ .ProjectName }}-internal/bin'
         strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
-        dst: 'protocurl-internal/include/google/protobuf'
+        dst: '{{ .ProjectName }}-internal/include/google/protobuf'
         strip_parent: true
 
 # Linux packages
@@ -45,7 +45,7 @@ nfpms:
       The command-line tool for interacting with Protobuf over
       HTTP REST endpoints using human-readable text formats.
 
-    homepage: https://github.com/qaware/protocurl
+    homepage: https://github.com/qaware/{{ .ProjectName }}
     license: MIT
     maintainer: GollyTicker <golly.ticker@gmail.com>
     priority: extra
@@ -71,7 +71,7 @@ nfpms:
 
     # GoReleaser will automatically add the binaries.
     contents:
-      - src: /opt/protocurl/bin/{{ .ProjectName }}
+      - src: /opt/{{ .ProjectName }}/bin/{{ .ProjectName }}
         dst: /usr/bin/{{ .ProjectName }}
         type: "symlink"
 
@@ -83,9 +83,9 @@ nfpms:
         dst: /opt/{{ .ProjectName }}/LICENSE.md
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
-        dst: '/opt/protocurl/protocurl-internal/bin'
+        dst: '/opt/{{ .ProjectName }}/{{ .ProjectName }}-internal/bin'
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
-        dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
+        dst: '/opt/{{ .ProjectName }}/{{ .ProjectName }}-internal/include/google/protobuf'
       # Completions
       # TODO: Fix completions build
 #      - src: ./completions/{{ .ProjectName }}.bash
@@ -102,14 +102,14 @@ nfpms:
 #          mode: 0644
 
 brews:
-  - name: protocurl@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
-    homepage: https://gitlab.com/qaware/protocurl
+  - name: {{ .ProjectName }}@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
+    homepage: https://gitlab.com/qaware/{{ .ProjectName }}
     description: >-
       protoCURL is cURL for Protobuf:
       The command-line tool for interacting with Protobuf over
       HTTP REST endpoints using human-readable text formats.
     license: MIT
-    url_template: "https://github.com/qaware/protocurl/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/qaware/{{ .ProjectName }}/releases/{{ .Tag }}/{{ .ArtifactName }}"
     skip_upload: false # TODO: When finished set this to auto. For testing rc's are also deployed
     # GitHub/GitLab repository to push the formula to
     repository:
