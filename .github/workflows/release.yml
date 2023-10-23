@@ -64,6 +64,7 @@ jobs:
           export PATH=$PATH:/usr/local/go/bin
           export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
           export GORELEASER_PREVIOUS_TAG="${{ env.GORELEASER_PREVIOUS_TAG }}"
+          export GH_TOKEN_QAWARE_TAP_REPO="${{ secrets.GH_TOKEN_QAWARE_TAP_REPO }}"
           ./release/30-build-go-archive.sh
 
       - name: DockerHub Login
