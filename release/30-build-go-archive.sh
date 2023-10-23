@@ -14,6 +14,8 @@ if [[ "$SNAPSHOT" == "true" ]]; then
   GORELEASER_ARGS="--skip=announce"
 fi
 
+echo "GH_TOKEN_QAWARE_TAP_REPO length: ${#GH_TOKEN_QAWARE_TAP_REPO}"
+
 goreleaser release --clean $GORELEASER_ARGS
 
 # Alternate commands when testing release process locally
