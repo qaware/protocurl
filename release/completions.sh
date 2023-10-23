@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # https://carlosbecker.com/posts/golang-completions-cobra/
 set -e
 

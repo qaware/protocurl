@@ -30,10 +30,10 @@ archives:
       - LICENSE.md
       # - completions/* ' TODO: Fix completions build
       # copy protoc binaries and their .proto files previously downloaded
-      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/bin'
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: 'protocurl-internal/bin'
         strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
-      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: 'protocurl-internal/include/google/protobuf'
         strip_parent: true
 
@@ -82,9 +82,9 @@ nfpms:
       - src: LICENSE.md
         dst: /opt/protocurl/LICENSE.md
       # copy protoc binaries and their .proto files previously downloaded
-      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/bin'
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: '/opt/protocurl/protocurl-internal/bin'
-      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
       # Completions
       # TODO: Fix completions build
