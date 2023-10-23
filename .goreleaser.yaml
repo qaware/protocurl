@@ -67,7 +67,7 @@ nfpms:
           - gcompat
 
     # adds the ./bin/protocurl
-    bindir: /opt/{{ .ProjectName }}
+    bindir: "/opt/{{ .ProjectName }}"
 
     # GoReleaser will automatically add the binaries.
     contents:
@@ -102,7 +102,7 @@ nfpms:
 #          mode: 0644
 
 brews:
-  - name: {{ .ProjectName }}@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
+  - name: "{{ .ProjectName }}@{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
     homepage: https://gitlab.com/qaware/{{ .ProjectName }}
     description: >-
       protoCURL is cURL for Protobuf:
