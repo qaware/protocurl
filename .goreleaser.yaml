@@ -1,8 +1,5 @@
 # Documentation at https://goreleaser.com
 
-# This file is a template and expressions such as __PROTOC_VERSION__ are replaced
-# with environment variables such as $PROTOC_VERSION before usage.
-
 before:
   hooks:
     - ./release/completions.sh
@@ -33,10 +30,10 @@ archives:
       - LICENSE.md
       - completions/*
       # copy protoc binaries and their .proto files previously downloaded
-      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
+      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: 'protocurl-internal/bin'
         strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
-      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: 'protocurl-internal/include/google/protobuf'
         strip_parent: true
 
@@ -85,13 +82,14 @@ nfpms:
       - src: LICENSE.md
         dst: /opt/protocurl/LICENSE.md
       # copy protoc binaries and their .proto files previously downloaded
-      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/bin'
+      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: '/opt/protocurl/protocurl-internal/bin'
-      - src: 'release/tmp/protoc-__PROTO_VERSION__-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+      - src: 'release/tmp/protoc-{{ .Version }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
         dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
 
 brews:
-  - homepage: https://gitlab.com/{{ .Env.PROJECT_PATH }}
+  - name: protocurl@{{ .Major }}.{{ .Minor }}.{{ .Patch }}
+    homepage: https://gitlab.com/{{ .Env.PROJECT_PATH }}
     description: >-
       protoCURL is cURL for Protobuf:
       The command-line tool for interacting with Protobuf over
@@ -104,7 +102,7 @@ brews:
       owner: qaware
       name: homebrew-tap
       branch: main
-      token: "{{ .Env.GH_TOKEN_QAWARE_TAP_REPO }}" # TODO: Setup token
+      token: "{{ .Env.GH_TOKEN_QAWARE_TAP_REPO }}"
     folder: Formula
     dependencies:
       - name: curl

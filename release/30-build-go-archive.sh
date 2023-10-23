@@ -3,9 +3,6 @@ set -euo pipefail
 
 source release/source.sh
 
-cp template.goreleaser.yaml .goreleaser.yaml
-sed -i "s/__PROTO_VERSION__/$PROTO_VERSION/g" .goreleaser.yaml
-
 set -x
 
 goreleaser check
