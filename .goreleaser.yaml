@@ -6,7 +6,7 @@ before:
 
 # https://goreleaser.com/customization/build/
 builds:
-  - binary: bin/protocurl
+  - binary: "bin/{{ .ProjectName }}"
     dir: src
     env:
       - CGO_ENABLED=0
@@ -39,7 +39,7 @@ archives:
 
 # Linux packages
 nfpms:
-  - package_name: protocurl
+  - package_name: "{{ .ProjectName }}"
     description: |-
       protoCURL is cURL for Protobuf:
       The command-line tool for interacting with Protobuf over
@@ -67,20 +67,20 @@ nfpms:
           - gcompat
 
     # adds the ./bin/protocurl
-    bindir: /opt/protocurl
+    bindir: /opt/{{ .ProjectName }}
 
     # GoReleaser will automatically add the binaries.
     contents:
-      - src: /opt/protocurl/bin/protocurl
-        dst: /usr/bin/protocurl
+      - src: /opt/protocurl/bin/{{ .ProjectName }}
+        dst: /usr/bin/{{ .ProjectName }}
         type: "symlink"
 
       # NOTE: These files are listed again in the archives above. Keep them synced!
       # binary is added implicitly
       - src: README.md
-        dst: /opt/protocurl/README.md
+        dst: /opt/{{ .ProjectName }}/README.md
       - src: LICENSE.md
-        dst: /opt/protocurl/LICENSE.md
+        dst: /opt/{{ .ProjectName }}/LICENSE.md
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
         dst: '/opt/protocurl/protocurl-internal/bin'
@@ -88,16 +88,16 @@ nfpms:
         dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
       # Completions
       # TODO: Fix completions build
-#      - src: ./completions/protocurl.bash
-#        dst: /usr/share/bash-completion/completions/protocurl
+#      - src: ./completions/{{ .ProjectName }}.bash
+#        dst: /usr/share/bash-completion/completions/{{ .ProjectName }}
 #        file_info:
 #          mode: 0644
-#      - src: ./completions/protocurl.fish
-#        dst: /usr/share/fish/vendor_completions.d/protocurl.fish
+#      - src: ./completions/{{ .ProjectName }}.fish
+#        dst: /usr/share/fish/vendor_completions.d/{{ .ProjectName }}.fish
 #        file_info:
 #          mode: 0644
-#      - src: ./completions/protocurl.zsh
-#        dst: /usr/share/zsh/vendor-completions/_protocurl
+#      - src: ./completions/{{ .ProjectName }}.zsh
+#        dst: /usr/share/zsh/vendor-completions/_{{ .ProjectName }}
 #        file_info:
 #          mode: 0644
 
