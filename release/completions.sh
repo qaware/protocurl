@@ -4,6 +4,9 @@ set -e
 
 rm -rf completions
 mkdir completions
+
+cd src
+
 for sh in bash zsh fish; do
-	go run src/protocurl.go completion "$sh" >"completions/protocurl.$sh"
+	go run protocurl.go completion "$sh" >"../completions/protocurl.$sh"
 done
