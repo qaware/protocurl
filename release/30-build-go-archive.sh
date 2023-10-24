@@ -14,6 +14,7 @@ if [[ "$SNAPSHOT" == "true" ]]; then
   GORELEASER_ARGS="--skip=announce"
 fi
 
+goreleaser check
 goreleaser release --clean $GORELEASER_ARGS
 
 # Alternate commands when testing release process locally
