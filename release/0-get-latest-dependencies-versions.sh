@@ -23,6 +23,7 @@ retrieveLatestVersion() {
   REPO="$2"
   TAG_FILTER="$3"
 
+  # shellcheck disable=SC2001
   FILE_FRIENDLY_NAME="$(echo "$REPO" | sed 's#/#.#g')"
 
   CACHE_FILE="release/.cache/$FILE_FRIENDLY_NAME.cache.json"
@@ -51,7 +52,7 @@ retrieveLatestVersion() {
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/$REPO/$ENDPOINT")"
 
-  STATUS_CODE_LINE="$(cat "$HEADERS_FILE" | head -n 1)"
+  STATUS_CODE_LINE="$(head -n 1 < "$HEADERS_FILE")"
 
   if [[ "$STATUS_CODE_LINE" == *" 200"* ]]; then
     echo "Populating cache..."
