@@ -68,6 +68,7 @@ jobs:
           export PATH GORELEASER_CURRENT_TAG GORELEASER_PREVIOUS_TAG 
           echo "$GH_TOKEN_QAWARE_TAP_REPO" > /tmp/GH_TOKEN_QAWARE_TAP_REPO
           ./release/30-build-go-archive.sh
+          rm -rf /tmp/GH_TOKEN_QAWARE_TAP_REPO
 
       - name: DockerHub Login
         uses: docker/login-action@v3
