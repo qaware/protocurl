@@ -110,7 +110,7 @@ brews:
       HTTP REST endpoints using human-readable text formats.
     license: MIT
     url_template: "https://github.com/qaware/{{ .ProjectName }}/releases/{{ .Tag }}/{{ .ArtifactName }}"
-    skip_upload: false # TODO: When finished set this to auto. For testing rc's are also deployed
+    skip_upload: auto
     # GitHub/GitLab repository to push the formula to
     repository:
       owner: qaware
