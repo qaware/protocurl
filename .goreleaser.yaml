@@ -113,8 +113,8 @@ brews:
     skip_upload: false # TODO: When finished set this to auto. For testing rc's are also deployed
     # GitHub/GitLab repository to push the formula to
     repository:
-      # To use the owner/name schema a PAT is needed.
-      # This is bad as a user is linked to it => Deploy Key is better
+      owner: qaware
+      name: homebrew-tap
       branch: main
       git:
         url: ssh://git@github.com:qaware/homebrew-tap.git
