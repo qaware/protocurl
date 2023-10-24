@@ -131,6 +131,8 @@ brews:
 #      bash_completion.install "completions/{{ .ProjectName }}.bash" => "{{ .ProjectName }}"
 #      zsh_completion.install "completions/{{ .ProjectName }}.zsh" => "_{{ .ProjectName }}"
 #      fish_completion.install "completions/{{ .ProjectName }}.fish"
+    test: |
+      system "#{bin}/{{ .ProjectName }} --version"
 
 release:
   # If set to auto, will mark the release as not ready for production
