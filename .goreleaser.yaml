@@ -6,7 +6,7 @@ before:
 
 # https://goreleaser.com/customization/build/
 builds:
-  - binary: "bin/{{ .ProjectName }}"
+  - binary: bin/protocurl
     dir: src
     env:
       - CGO_ENABLED=0
@@ -31,10 +31,10 @@ archives:
       # - completions/* ' TODO: Fix completions build
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
-        dst: '{{ .ProjectName }}-internal/bin'
+        dst: 'protocurl-internal/bin'
         strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
-        dst: '{{ .ProjectName }}-internal/include/google/protobuf'
+        dst: 'protocurl-internal/include/google/protobuf'
         strip_parent: true
 
 # Linux packages
@@ -67,25 +67,25 @@ nfpms:
           - gcompat
 
     # adds the ./bin/protocurl
-    bindir: "/opt/{{ .ProjectName }}"
+    bindir: "/opt/protocurl"
 
     # GoReleaser will automatically add the binaries.
     contents:
-      - src: /opt/{{ .ProjectName }}/bin/{{ .ProjectName }}
-        dst: /usr/bin/{{ .ProjectName }}
+      - src: /opt/protocurl/bin/protocurl
+        dst: /usr/bin/protocurl
         type: "symlink"
 
       # NOTE: These files are listed again in the archives above. Keep them synced!
       # binary is added implicitly
       - src: README.md
-        dst: /opt/{{ .ProjectName }}/README.md
+        dst: /opt/protocurl/README.md
       - src: LICENSE.md
-        dst: /opt/{{ .ProjectName }}/LICENSE.md
+        dst: /opt/protocurl/LICENSE.md
       # copy protoc binaries and their .proto files previously downloaded
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
-        dst: '/opt/{{ .ProjectName }}/{{ .ProjectName }}-internal/bin'
+        dst: '/opt/protocurl/protocurl-internal/bin'
       - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
-        dst: '/opt/{{ .ProjectName }}/{{ .ProjectName }}-internal/include/google/protobuf'
+        dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
       # Completions
       # TODO: Fix completions build
 #      - src: ./completions/{{ .ProjectName }}.bash
@@ -106,13 +106,13 @@ brews:
   # https://docs.brew.sh/Versions
   # The qaware/homebrew-tap CI will take care of Alias creation for major and latest
   - name: "{{ .ProjectName }}@{{ .Major }}.{{ .Minor }}"
-    homepage: https://gitlab.com/qaware/{{ .ProjectName }}
+    homepage: https://gitlab.com/qaware/protocurl
     description: >-
       protoCURL is cURL for Protobuf:
       The command-line tool for interacting with Protobuf over
       HTTP REST endpoints using human-readable text formats.
     license: MIT
-    url_template: "https://github.com/qaware/{{ .ProjectName }}/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/qaware/protocurl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     skip_upload: auto
     # GitHub/GitLab repository to push the formula to
     repository:
