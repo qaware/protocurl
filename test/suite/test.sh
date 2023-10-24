@@ -59,7 +59,6 @@ testSingleRequest() {
     echo "######### EXIT $EXIT_CODE #########"
   } >>"$OUT"
 
-
   if ! meaningfulDiff "$EXPECTED" "$OUT" >/dev/null; then
     export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
@@ -99,7 +98,7 @@ runAllTests() {
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
-  jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh < test/suite/testcases.json
+  jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" <test/suite/testcases.json >./test/suite/run-testcases.sh
 
   export -f testSingleSpec
   export -f testSingleRequest
