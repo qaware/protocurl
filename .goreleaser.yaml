@@ -117,7 +117,7 @@ brews:
       name: homebrew-tap
       branch: main
       git:
-        url: ssh://git@github.com:qaware/homebrew-tap.git
+        url: git@github.com:qaware/homebrew-tap.git
         private_key: /tmp/GH_TOKEN_QAWARE_TAP_REPO
     folder: Formula
     dependencies:
