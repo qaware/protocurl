@@ -8,8 +8,7 @@ source test/suite/setup.sh
 FILES="$(ls -a test/results/*-out.txt)"
 
 copyIfDiff() {
-  meaningfulDiff "$1" "${1%"-out.txt"}-expected.txt" >/dev/null
-  if [[ "$?" == "0" ]]; then
+  if meaningfulDiff "$1" "${1%"-out.txt"}-expected.txt" >/dev/null; then
     echo "✅ ${1%"-out.txt"}"
   else
     cp "$1" "${1%"-out.txt"}-expected.txt"

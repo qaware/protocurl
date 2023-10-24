@@ -7,6 +7,7 @@ OS_NAME="$1"
 EXT="$2"
 URL_NO_EXT="$3"
 
+# shellcheck source=test/suite/linux/package-debian.sh
 source "./test/suite/linux/package-${OS_NAME}.sh"
 
 setup
