@@ -102,10 +102,9 @@ nfpms:
 #          mode: 0644
 
 brews:
-  # Due to brew conventions we only use Major and Minor versions:
-  # https://docs.brew.sh/Versions
-  # The qaware/homebrew-tap CI will take care of Alias creation for major and latest
-  - name: "{{ .ProjectName }}@{{ .Major }}.{{ .Minor }}"
+  # We will deploy always the latest
+  - &brew
+    name: "{{ .ProjectName }}"
     homepage: https://gitlab.com/qaware/protocurl
     description: >-
       protoCURL is cURL for Protobuf:
@@ -133,6 +132,9 @@ brews:
 #      fish_completion.install "completions/{{ .ProjectName }}.fish"
     test: |
       system "#{bin}/{{ .ProjectName }} --version"
+  # Additionally Major is deployed to offer older versions
+  - <<: *brew
+    name: "{{ .ProjectName }}@{{ .Major }}"
 
 release:
   # If set to auto, will mark the release as not ready for production
