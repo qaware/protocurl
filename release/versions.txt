@@ -1,3 +1,3 @@
-Protobuf 25.0
-go 1.21.3
-Goreleaser v1.21.2
+Protobuf 25.1
+go 1.21.5
+Goreleaser v1.23.0
