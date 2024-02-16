@@ -168,7 +168,7 @@ jobs:
           Write-Output "After extract"
           ls my-protocurl
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "17.7.2"
 
@@ -191,7 +191,7 @@ jobs:
       - name: Setup
         run: "brew install powershell"
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "17.7.2"
 
@@ -230,7 +230,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "17.7.2"
 
