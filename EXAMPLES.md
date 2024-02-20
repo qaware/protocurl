@@ -199,6 +199,7 @@ Invoked with following default & parsed arguments:
   "AdditionalCurlArgs": "",
   "Verbose": true,
   "ShowOutputOnly": false,
+  "SilentMode": false,
   "ForceNoCurl": false,
   "ForceCurl": false,
   "GlobalProtoc": false,
@@ -435,7 +436,7 @@ Total curl args:
 =========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Thu, 05 Oct 2023 09:21:38 GMT
+Date: Tue, 20 Feb 2024 23:06:35 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 35

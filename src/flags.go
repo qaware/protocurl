@@ -124,6 +124,10 @@ func intialiseFlags() {
 	flags.BoolVarP(&CurrentConfig.ShowOutputOnly, "show-output-only", "q", false,
 		"Suppresses all output except response Protobuf as text. "+
 			"Overrides and deactivates -v and -D. Errors are still printed to stderr.")
+
+	flags.BoolVarP(&CurrentConfig.SilentMode, "silent", "s", false,
+		"Suppresses all output on stdout. Overrides and deactivates -v, -D and -q. "+
+			"Errors are still printed to stderr.")
 }
 
 func propagateFlags() {
@@ -135,6 +139,12 @@ func propagateFlags() {
 	if CurrentConfig.ShowOutputOnly {
 		CurrentConfig.Verbose = false
 		CurrentConfig.DisplayBinaryAndHttp = false
+	}
+
+	if CurrentConfig.SilentMode {
+		CurrentConfig.Verbose = false
+		CurrentConfig.DisplayBinaryAndHttp = false
+		CurrentConfig.ShowOutputOnly = false
 	}
 
 	if CurrentConfig.ResponseType == "" && !CurrentConfig.DecodeRawResponse {

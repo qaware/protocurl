@@ -117,7 +117,7 @@ func invokeCurlRequest(requestBinary []byte, curlPath string) ([]byte, string) {
 
 	err = curlCmd.Run()
 
-	if !CurrentConfig.ShowOutputOnly && curlStdOut.Len() != 0 {
+	if !CurrentConfig.ShowOutputOnly && !CurrentConfig.SilentMode && curlStdOut.Len() != 0 {
 		fmt.Printf("%s CURL Output      %s\n%s\n", VISUAL_SEPARATOR, VISUAL_SEPARATOR, curlStdOut.String())
 	}
 

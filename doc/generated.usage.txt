@@ -40,6 +40,7 @@ Flags:
   -i, --request-type string       Message name or full package path of the Protobuf request type. The path can be shortened to '..', if the name of the request message is unique. Mandatory for POST requests. E.g. mypackage.MyRequest or ..MyRequest
   -o, --response-type string      The Protobuf response type. See -i <request-type>. Overrides --decode-raw. If not set, then --decode-raw is used.
   -q, --show-output-only          Suppresses all output except response Protobuf as text. Overrides and deactivates -v and -D. Errors are still printed to stderr.
+  -s, --silent                    Suppresses all output on stdout. Overrides and deactivates -v, -D and -q. Errors are still printed to stderr.
   -u, --url string                Mandatory: The url to send the request to
   -v, --verbose                   Prints version and enables verbose output. Also activates -D.
       --version                   version for protocurl

@@ -24,6 +24,7 @@ Invoked with following default & parsed arguments:
   "AdditionalCurlArgs": "-v --ipv4 -A my-user-agent",
   "Verbose": true,
   "ShowOutputOnly": false,
+  "SilentMode": false,
   "ForceNoCurl": false,
   "ForceCurl": true,
   "GlobalProtoc": false,
@@ -279,7 +280,7 @@ Total curl args:
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Content-Type: application/x-protobuf
-< Date: Thu, 05 Oct 2023 09:18:01 GMT
+< Date: Tue, 20 Feb 2024 22:11:16 GMT
 < Connection: keep-alive
 < Keep-Alive: timeout=5
 < Content-Length: 65
@@ -290,7 +291,7 @@ Total curl args:
 =========================== POST Response Headers =========================== <<<
 HTTP/1.1 200 OK
 Content-Type: application/x-protobuf
-Date: Thu, 05 Oct 2023 09:18:01 GMT
+Date: Tue, 20 Feb 2024 22:11:16 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Content-Length: 65
