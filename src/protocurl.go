@@ -30,6 +30,7 @@ type Config struct {
 	AdditionalCurlArgs   string
 	Verbose              bool
 	ShowOutputOnly       bool
+	SilentMode           bool
 	ForceNoCurl          bool
 	ForceCurl            bool
 	GlobalProtoc         bool
@@ -112,13 +113,13 @@ func encodeToBinary(requestType string, text string, registry *protoregistry.Fil
 		registry,
 	)
 
-	if !CurrentConfig.ShowOutputOnly {
+	if !CurrentConfig.ShowOutputOnly && !CurrentConfig.SilentMode {
 		fmt.Printf("%s %s Request  %s    %s %s\n%s\n",
 			VISUAL_SEPARATOR, CurrentConfig.Method, displayIn(CurrentConfig.InTextType), VISUAL_SEPARATOR,
 			SEND, reconstructedRequestText)
 	}
 
-	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
+	if CurrentConfig.DisplayBinaryAndHttp && !CurrentConfig.SilentMode {
 		fmt.Printf("%s %s Request Binary %s %s\n%s", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, SEND, hex.Dump(requestBinary))
 	}
 
@@ -150,7 +151,7 @@ func invokeHttpRequestBasedOnConfig(requestBinary []byte) ([]byte, string) {
 }
 
 func decodeResponse(responseBinary []byte, responseHeaders string, registry *protoregistry.Files) {
-	if !CurrentConfig.ShowOutputOnly && CurrentConfig.DisplayBinaryAndHttp {
+	if CurrentConfig.DisplayBinaryAndHttp && !CurrentConfig.SilentMode {
 		fmt.Printf("%s %s Response Headers %s %s\n%s\n", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, RECV, responseHeaders)
 
 		fmt.Printf("%s %s Response Binary  %s %s\n%s", VISUAL_SEPARATOR, CurrentConfig.Method, VISUAL_SEPARATOR, RECV, hex.Dump(responseBinary))
@@ -160,11 +161,13 @@ func decodeResponse(responseBinary []byte, responseHeaders string, registry *pro
 
 	responseText, _ := protoBinaryToMsgAndText(responseMessageType, responseBinary, CurrentConfig.OutTextType, registry)
 
-	if !CurrentConfig.ShowOutputOnly {
+	if !CurrentConfig.ShowOutputOnly && !CurrentConfig.SilentMode {
 		fmt.Printf("%s %s Response %s    %s %s\n",
 			VISUAL_SEPARATOR, CurrentConfig.Method, displayOut(CurrentConfig.OutTextType), VISUAL_SEPARATOR, RECV)
 	}
-	fmt.Printf("%s\n", responseText)
+	if !CurrentConfig.SilentMode {
+		fmt.Printf("%s\n", responseText)
+	}
 }
 
 func properResponseTypeIfProvidedOrEmptyType() string {

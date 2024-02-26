@@ -429,6 +429,17 @@
     ]
   },
   {
+    "filename": "silent-with-content",
+    "args": [
+      "-s -v -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d \"includeReason: true, date: { seconds: 1642044939, nanos: 152000000 }\""
+    ],
+    "rerunwithArgForEachElement": [
+      "--no-curl",
+      "-X GET"
+    ]
+  },
+  {
     "filename": "display-binary-and-headers",
     "args": [
       "-D -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
@@ -689,6 +700,22 @@
       "-d \"\""
     ],
     "rerunwithArgForEachElement": [
+      "-D",
+      "-v",
+      "--no-curl",
+      "-X GET"
+    ]
+  },
+  {
+    "filename": "failure-simple-silent",
+    "args": [
+      "-s -i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/does-not-exist ",
+      "-d \"\""
+    ],
+    "rerunwithArgForEachElement": [
+      "-D",
+      "-v",
+      "-q",
       "--no-curl",
       "-X GET"
     ]
