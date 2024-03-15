@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # PRECONDITION: git fetch origin --tags
@@ -6,7 +6,8 @@ set -euo pipefail
 source ./release/10-ensure-protoc-binaries-exist.sh
 
 # should be one of 386, amd64 and arm64
-export BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"
+BUILD_ARCH="$(uname -m | sed "s/x86_64/amd64/" | sed "s/x86_32/386/" | sed "s/aarch_64/arm64/")"
+export BUILD_ARCH
 
 # ensure, that 1.2.3-rc < 1.2.3, since the opposite is the default
 git config versionsort.suffix -

@@ -60,11 +60,15 @@ jobs:
       - name: Build Archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN_QAWARE_TAP_REPO: ${{ secrets.GH_TOKEN_QAWARE_TAP_REPO }}
         run: |
-          export PATH=$PATH:/usr/local/go/bin
-          export GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
-          export GORELEASER_PREVIOUS_TAG="${{ env.GORELEASER_PREVIOUS_TAG }}"
+          PATH=$PATH:/usr/local/go/bin
+          GORELEASER_CURRENT_TAG="v${{ github.event.inputs.version }}"
+          GORELEASER_PREVIOUS_TAG="${{ env.GORELEASER_PREVIOUS_TAG }}"
+          export PATH GORELEASER_CURRENT_TAG GORELEASER_PREVIOUS_TAG 
+          echo "$GH_TOKEN_QAWARE_TAP_REPO" > /tmp/GH_TOKEN_QAWARE_TAP_REPO
           ./release/30-build-go-archive.sh
+          rm -rf /tmp/GH_TOKEN_QAWARE_TAP_REPO
 
       - name: DockerHub Login
         uses: docker/login-action@v3

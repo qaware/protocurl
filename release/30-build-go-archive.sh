@@ -1,10 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 source release/source.sh
-
-cp template.goreleaser.yaml .goreleaser.yaml
-sed -i "s/__PROTO_VERSION__/$PROTO_VERSION/g" .goreleaser.yaml
 
 set -x
 
@@ -14,9 +11,10 @@ echo "Using GORELEASER_CURRENT_TAG=$GORELEASER_CURRENT_TAG, GORELEASER_PREVIOUS_
 
 GORELEASER_ARGS=""
 if [[ "$SNAPSHOT" == "true" ]]; then
-  GORELEASER_ARGS="--skip-announce"
+  GORELEASER_ARGS="--skip=announce"
 fi
 
+goreleaser check
 goreleaser release --clean $GORELEASER_ARGS
 
 # Alternate commands when testing release process locally

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # Concatenate the dev dockerfile and the final release dockerfile to get the combined one

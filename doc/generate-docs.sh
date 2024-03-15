@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 WORKING_DIR="$1"
@@ -212,8 +212,8 @@ echo "Generating README.md..."
 README_TEMPLATE="$(cat doc/template.README.md)"
 
 # replacements ============================
-echo "$README_TEMPLATE" |
-  sed "s%___EXAMPLE_1_OUT___%$EXAMPLE_1_OUT%" >README.md
+# shellcheck disable=SC2001
+sed "s%___EXAMPLE_1_OUT___%$EXAMPLE_1_OUT%" >README.md <<<"$README_TEMPLATE"
 
 normaliseOutput README.md
 

@@ -3,7 +3,7 @@
 We use [GoReleaser](https://goreleaser.com/) to create static binaries and Docker Buildx to build multi-architecture
 images.
 
-The relevant configuration for the release process is in [template.goreleaser.yml](template.goreleaser.yaml)
+The relevant configuration for the release process is in [.goreleaser.yml](.goreleaser.yaml)
 and [release/source.sh](release/source.sh). It **automatically** fetches the **latest** Go, Goreleaser and Protobuf
 versions via GitHub API.
 
