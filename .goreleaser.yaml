@@ -1,0 +1,155 @@
+# Documentation at https://goreleaser.com
+
+before:
+  hooks: []
+    # - ./release/completions.sh # TODO: Fix completions build
+
+# https://goreleaser.com/customization/build/
+builds:
+  - binary: bin/protocurl
+    dir: src
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    ignore:
+      # This combination is not pre-built by Google Protobuf
+      - goos: windows
+        goarch: arm64
+
+
+# https://goreleaser.com/customization/archive/
+archives:
+  - format: zip
+    files:
+      # NOTE: These files are listed again in the packages below. Keep them synced!
+      # binary is added implicitly
+      - README.md
+      - LICENSE.md
+      # - completions/* ' TODO: Fix completions build
+      # copy protoc binaries and their .proto files previously downloaded
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
+        dst: 'protocurl-internal/bin'
+        strip_parent: true # avoids, that protoc is copied into protocurl-internal/bin/release/tmp/.../bin
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+        dst: 'protocurl-internal/include/google/protobuf'
+        strip_parent: true
+
+# Linux packages
+nfpms:
+  - package_name: "{{ .ProjectName }}"
+    description: |-
+      protoCURL is cURL for Protobuf:
+      The command-line tool for interacting with Protobuf over
+      HTTP REST endpoints using human-readable text formats.
+
+    homepage: https://github.com/qaware/{{ .ProjectName }}
+    license: MIT
+    maintainer: GollyTicker <golly.ticker@gmail.com>
+    priority: extra
+
+    formats:
+      - apk
+      - deb
+    dependencies:
+      - curl
+    suggests:
+      - curl
+
+    overrides:
+      # protoc is compiled against glibc whereas alpine uses musl.
+      # See: https://stackoverflow.com/a/64447927
+      apk:
+        dependencies:
+          - curl
+          - gcompat
+
+    # adds the ./bin/protocurl
+    bindir: "/opt/protocurl"
+
+    # GoReleaser will automatically add the binaries.
+    contents:
+      - src: /opt/protocurl/bin/protocurl
+        dst: /usr/bin/protocurl
+        type: "symlink"
+
+      # NOTE: These files are listed again in the archives above. Keep them synced!
+      # binary is added implicitly
+      - src: README.md
+        dst: /opt/protocurl/README.md
+      - src: LICENSE.md
+        dst: /opt/protocurl/LICENSE.md
+      # copy protoc binaries and their .proto files previously downloaded
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/bin'
+        dst: '/opt/protocurl/protocurl-internal/bin'
+      - src: 'release/tmp/protoc-{{ .Env.PROTO_VERSION }}-{{ .Os }}-{{ .Arch }}/include/google/protobuf'
+        dst: '/opt/protocurl/protocurl-internal/include/google/protobuf'
+      # Completions
+      # TODO: Fix completions build
+#      - src: ./completions/{{ .ProjectName }}.bash
+#        dst: /usr/share/bash-completion/completions/{{ .ProjectName }}
+#        file_info:
+#          mode: 0644
+#      - src: ./completions/{{ .ProjectName }}.fish
+#        dst: /usr/share/fish/vendor_completions.d/{{ .ProjectName }}.fish
+#        file_info:
+#          mode: 0644
+#      - src: ./completions/{{ .ProjectName }}.zsh
+#        dst: /usr/share/zsh/vendor-completions/_{{ .ProjectName }}
+#        file_info:
+#          mode: 0644
+
+brews:
+  # We will deploy always the latest
+  - &brew
+    name: "{{ .ProjectName }}"
+    homepage: https://gitlab.com/qaware/protocurl
+    description: >-
+      protoCURL is cURL for Protobuf:
+      The command-line tool for interacting with Protobuf over
+      HTTP REST endpoints using human-readable text formats.
+    license: MIT
+    url_template: "https://github.com/qaware/protocurl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    skip_upload: auto
+    # GitHub/GitLab repository to push the formula to
+    repository:
+      owner: qaware
+      name: homebrew-tap
+      branch: main
+      git:
+        url: git@github.com:qaware/homebrew-tap.git
+        private_key: /tmp/GH_TOKEN_QAWARE_TAP_REPO
+    folder: Formula
+    dependencies:
+      - name: curl
+    install: |-
+      bin.install "{{ .ProjectName }}"
+#    TODO: Make completion build run
+#      bash_completion.install "completions/{{ .ProjectName }}.bash" => "{{ .ProjectName }}"
+#      zsh_completion.install "completions/{{ .ProjectName }}.zsh" => "_{{ .ProjectName }}"
+#      fish_completion.install "completions/{{ .ProjectName }}.fish"
+    test: |
+      system "#{bin}/{{ .ProjectName }} --version"
+  # Additionally Major is deployed to offer older versions
+  - <<: *brew
+    name: "{{ .ProjectName }}@{{ .Major }}"
+
+release:
+  # If set to auto, will mark the release as not ready for production
+  # in case there is an indicator for this in the tag e.g. v1.0.0-rc1
+  prerelease: auto
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Version }}-dev"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -53,14 +53,13 @@ testSingleRequest() {
     2>"$OUT_ERR" >>"$OUT"
   EXIT_CODE="$?"
 
-  echo "######### STDERR #########" >>"$OUT"
-  cat "$OUT_ERR" >>"$OUT"
+  {
+    echo "######### STDERR #########"
+    cat "$OUT_ERR"
+    echo "######### EXIT $EXIT_CODE #########"
+  } >>"$OUT"
 
-  echo "######### EXIT $EXIT_CODE #########" >>"$OUT"
-
-  meaningfulDiff "$EXPECTED" "$OUT" >/dev/null
-
-  if [[ "$?" != 0 ]]; then
+  if ! meaningfulDiff "$EXPECTED" "$OUT" >/dev/null; then
     export TESTS_SUCCESS="false"
     echo "❌❌❌ FAILURE ❌❌❌ - $FILENAME"
     echo "=== Found difference between expected and actual output (ignoring $NORMALISED_ASPECTS) ==="
@@ -99,11 +98,12 @@ runAllTests() {
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
-  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
+  jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" <test/suite/testcases.json >./test/suite/run-testcases.sh
 
   export -f testSingleSpec
   export -f testSingleRequest
   chmod +x ./test/suite/run-testcases.sh
+  # shellcheck source=/dev/null
   source ./test/suite/run-testcases.sh
 
   echo "=== Finished Running ALL Tests ==="
