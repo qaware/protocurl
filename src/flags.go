@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -87,7 +88,7 @@ func intialiseFlags() {
 
 	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
 		"The payload data in Protobuf text format or JSON. "+
-			"It is inferred from the input as JSON if the first token is a '{'. "+
+			"It is inferred from the input as JSON if the first token is a '{' or a FILE if the first token is a '@'. "+
 			"The format can be set explicitly via --in. Mandatory if request-type is provided."+
 			"See "+GithubRepositoryLink)
 
@@ -172,6 +173,12 @@ func propagateFlags() {
 
 	if CurrentConfig.DataText != "" && CurrentConfig.RequestType == "" {
 		PanicWithMessage("Non-empty data-body was provided, but no request type was given. Hence, encoding of data-body is not possible.")
+	}
+
+	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "@") {
+		file, err := os.ReadFile(CurrentConfig.DataText[1:])
+		PanicOnError(err)
+		CurrentConfig.DataText = string(file)
 	}
 
 	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "{") {
