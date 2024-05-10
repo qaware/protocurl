@@ -86,7 +86,7 @@ func intialiseFlags() {
 		"Mandatory: The url to send the request to")
 	AssertSuccess(rootCmd.MarkFlagRequired("url"))
 
-	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
+	flags.StringVarP(&CurrentConfig.DataText, "data-text-or-file", "d", "",
 		"The payload data in Protobuf text format or JSON. "+
 			"It is inferred from the input as JSON if the first token is a '{' or a FILE if the first token is a '@'. "+
 			"The format can be set explicitly via --in. Mandatory if request-type is provided."+
@@ -175,7 +175,10 @@ func propagateFlags() {
 		PanicWithMessage("Non-empty data-body was provided, but no request type was given. Hence, encoding of data-body is not possible.")
 	}
 
-	if strings.HasPrefix(strings.TrimSpace(CurrentConfig.DataText), "@") {
+	if strings.HasPrefix(CurrentConfig.DataText, "@") {
+		if CurrentConfig.Verbose {
+			fmt.Println(CurrentConfig.DataText[1:] + " file is being read as input.")
+		}
 		file, err := os.ReadFile(CurrentConfig.DataText[1:])
 		PanicOnError(err)
 		CurrentConfig.DataText = string(file)
