@@ -203,6 +203,8 @@ How to make a release: [RELEASE.md](RELEASE.md)
 
 - As for script utilities, one needs `bash`, `jq`, `zip`, `unzip` and `curl`.
 
+Please make sure, that docker including the docker compose plugin is installed. The setup works with docker `v26.1.3` and docker compose `v2.27.0`,
+
 Running the tests will download the protoc binaries on the first invocation automatically.
 
 For development the `generated-local.Dockerfile` (via [generate-local.Dockerfile.sh](dev/generate-local.Dockerfile.sh)) is used.

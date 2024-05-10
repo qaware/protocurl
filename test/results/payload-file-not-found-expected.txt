@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: open /payloads/does-not-exist: no such file or directory
+######### EXIT 1 #########

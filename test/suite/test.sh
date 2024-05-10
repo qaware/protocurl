@@ -11,7 +11,7 @@ fi
 
 WORKING_DIR="$1"
 
-export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto --network host"
+export RUN_CLIENT="docker run --rm -v $WORKING_DIR/test/proto:/proto -v $WORKING_DIR/test/payloads:/payloads --network host"
 
 export SHOW_LOGS="docker logs"
 
@@ -99,7 +99,9 @@ runAllTests() {
   # Convert each element in the JSON to the corresponding call of the testSingleRequest function.
   # Simply look at the produced run-testcases.sh file to see what it looks like.
   CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION=".[] | \"testSingleSpec \(.filename|@sh) \(.args|join(\" \")|@sh) \(.beforeTestBash // \"\"|@sh) \(.afterTestBash // \"\"|@sh) \((.rerunwithArgForEachElement // [])|@sh)\""
-  cat test/suite/testcases.json | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" >./test/suite/run-testcases.sh
+  cat test/suite/testcases.json \
+    | jq -r "$CONVERT_TESTCASE_TO_SINGLE_TEST_INVOCATION" \
+    >./test/suite/run-testcases.sh
 
   export -f testSingleSpec
   export -f testSingleRequest
