@@ -1,0 +1,4 @@
+######### STDOUT #########
+######### STDERR #########
+Error: proto: (line 1:1): unknown field: includeRe
+######### EXIT 1 #########

@@ -59,14 +59,14 @@ export -f buildProtocurl
 
 startServer() {
   echo 'Starting server...' &&
-    docker-compose -f test/servers/compose.yml up --build -d >/dev/null 2>&1 &&
+    docker compose -f test/servers/compose.yml up --build -d >/dev/null 2>&1 &&
     echo 'Done.'
 }
 export -f startServer
 
 stopServer() {
   echo 'Stopping server...' &&
-    docker-compose -f test/servers/compose.yml down >/dev/null 2>&1 &&
+    docker compose -f test/servers/compose.yml down >/dev/null 2>&1 &&
     echo 'Done.'
 }
 export -f stopServer
@@ -74,7 +74,7 @@ export -f stopServer
 isServerReady() {
   rm -rf tmpfile.log || true
 
-  docker-compose -f test/servers/compose.yml logs >tmpfile.log
+  docker compose -f test/servers/compose.yml logs >tmpfile.log
 
   if [[ "$?" == 1 ]]; then
     echo "Aborting as server status could not be fetched"

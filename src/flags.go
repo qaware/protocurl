@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -85,9 +86,9 @@ func intialiseFlags() {
 		"Mandatory: The url to send the request to")
 	AssertSuccess(rootCmd.MarkFlagRequired("url"))
 
-	flags.StringVarP(&CurrentConfig.DataText, "data-text", "d", "",
-		"The payload data in Protobuf text format or JSON. "+
-			"It is inferred from the input as JSON if the first token is a '{'. "+
+	flags.StringVarP(&CurrentConfig.DataText, "data-text-or-file", "d", "",
+		"The payload data in Protobuf text format or JSON supplied as a string or a filepath (if first character is '@'). "+
+			"The string is inferred from the input as JSON if the first token is a '{'."+
 			"The format can be set explicitly via --in. Mandatory if request-type is provided."+
 			"See "+GithubRepositoryLink)
 
@@ -168,6 +169,16 @@ func propagateFlags() {
 		if CurrentConfig.RequestType == "" {
 			PanicWithMessage("With method POST, a request type and the data text is needed. However, request type was not provided. Aborting.")
 		}
+	}
+
+	if strings.HasPrefix(CurrentConfig.DataText, "@") {
+		filepath := CurrentConfig.DataText[1:]
+		if CurrentConfig.Verbose {
+			fmt.Printf("Input text will be read from file %s.\n", filepath)
+		}
+		file, err := os.ReadFile(filepath)
+		PanicOnError(err)
+		CurrentConfig.DataText = string(file) // assumes UTF-8
 	}
 
 	if CurrentConfig.DataText != "" && CurrentConfig.RequestType == "" {

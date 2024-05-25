@@ -113,47 +113,43 @@ Running the tests might look like this:
 ```
 $ ./test/suite/test.sh "$PWD"
 Populating cache...
-Established Protobuf version 24.4
-Using cache...
-Established go version 1.21.1
-Using cache...
-Established Goreleaser version v1.21.2
-Using cache...
-Established Latest released protoCURL version v1.7.0
-Variables: VERSION=1.8.0-rc-dev, VVERSION=v1.8.0-rc-dev, SNAPSHOT=true, BUILD_ARCH=amd64, PROTO_VERSION=24.4
+Established Protobuf version 27.0
+Populating cache...
+Established go version 1.22.3
+Populating cache...
+Established Goreleaser version v1.26.2
+Populating cache...
+Established Latest released protoCURL version v1.8.1
+No protoc binaries for 27.0 found. Downloading...
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-linux-aarch_64.zip ...
+Extracting 27.0-linux-aarch_64 to 27.0-linux-arm64
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-linux-x86_32.zip ...
+Extracting 27.0-linux-x86_32 to 27.0-linux-386
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-linux-x86_64.zip ...
+Extracting 27.0-linux-x86_64 to 27.0-linux-amd64
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-osx-aarch_64.zip ...
+Extracting 27.0-osx-aarch_64 to 27.0-darwin-arm64
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-osx-x86_64.zip ...
+Extracting 27.0-osx-x86_64 to 27.0-darwin-amd64
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-win32.zip ...
+Extracting 27.0-win32 to 27.0-windows-386
+Downloading https://github.com/protocolbuffers/protobuf/releases/download/v27.0/protoc-27.0-win64.zip ...
+Extracting 27.0-win64 to 27.0-windows-amd64
+Done.
+Variables: VERSION=1.9.0-rc-dev, VVERSION=v1.9.0-rc-dev, SNAPSHOT=true, BUILD_ARCH=amd64, PROTO_VERSION=27.0
 Stopping server...
 Done.
 Building protocurl:latest ...
-sha256:cc3be835f4e8a05cc0083bdfccc2c5c09854f4dc585bdedcb780d0bf582c5c9c
+sha256:f4245bec7c1599da2cb44ef212dd066d95257935d58485ebfc1cebb761a4ab52
 Done.
 Building test image variant of protocurl including additonal executables ...
-[+] Building 0.3s (15/15) FINISHED                                                                                                                     docker:default
- => [internal] load build definition from Dockerfile                                                                                                             0.0s
- => => transferring dockerfile: 608B                                                                                                                             0.0s
- => [internal] load .dockerignore                                                                                                                                0.0s
- => => transferring context: 78B                                                                                                                                 0.0s
- => [internal] load metadata for docker.io/library/debian:11-slim                                                                                                0.2s
- => [internal] load metadata for docker.io/library/protocurl:latest                                                                                              0.0s
- => [builder 1/2] FROM docker.io/library/debian:11-slim@sha256:c618be84fc82aa8ba203abbb07218410b0f5b3c7cb6b4e7248fda7785d4f9946                                  0.0s
- => [final 1/8] FROM docker.io/library/protocurl:latest                                                                                                          0.0s
- => CACHED [builder 2/2] RUN apt-get update && apt-get install -y inotify-tools procps                                                                           0.0s
- => CACHED [final 2/8] COPY --from=builder /bin/* /bin/                                                                                                          0.0s
- => CACHED [final 3/8] COPY --from=builder /usr/bin/* /usr/bin/                                                                                                  0.0s
- => CACHED [final 4/8] COPY --from=builder /lib/*-linux-gnu /lib/x86_64-linux-gnu/                                                                               0.0s
- => CACHED [final 5/8] COPY --from=builder /lib/*-linux-gnu /lib/aarch_64-linux-gnu/                                                                             0.0s
- => CACHED [final 6/8] COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/x86_64-linux-gnu/                                                                       0.0s
- => CACHED [final 7/8] COPY --from=builder /usr/lib/*-linux-gnu /usr/lib/aarch_64-linux-gnu/                                                                     0.0s
- => CACHED [final 8/8] COPY --from=builder /lib64*/ld-linux-*.so.2 /lib64/                                                                                       0.0s
- => exporting to image                                                                                                                                           0.0s
- => => exporting layers                                                                                                                                          0.0s
- => => writing image sha256:1c56da99fb8a4e5cc3303bb9b4170254e6e962758c96fcf7718a6dfc08a3c999                                                                     0.0s
- => => naming to docker.io/library/protocurl:latest-test                                                                                                         0.0s
+sha256:d69bfe0bfd502082e3eb249eb1ee26f5ced21b4ec2ad71d74f8b748e5f000b1d
 Done.
 Starting server...
 Done.
 Waiting for server to become ready...
+Waited 1 seconds already...
 Waited 2 seconds already...
-Waited 3 seconds already...
 === Test server is ready ===
 === Running ALL Tests ===
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day
@@ -204,6 +200,12 @@ Waited 3 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day-json
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day-json-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - wednesday-is-not-a-happy-day-json--X_GET
+✨✨✨ SUCCESS ✨✨✨ - payload-json
+✨✨✨ SUCCESS ✨✨✨ - payload-json--v
+✨✨✨ SUCCESS ✨✨✨ - payload-json-relative
+✨✨✨ SUCCESS ✨✨✨ - payload-txt
+✨✨✨ SUCCESS ✨✨✨ - payload-invalid
+✨✨✨ SUCCESS ✨✨✨ - payload-file-not-found
 ✨✨✨ SUCCESS ✨✨✨ - in-wrong
 ✨✨✨ SUCCESS ✨✨✨ - in-wrong--X_GET
 ✨✨✨ SUCCESS ✨✨✨ - out-wrong
@@ -250,6 +252,9 @@ Waited 3 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - quiet-with-content
 ✨✨✨ SUCCESS ✨✨✨ - quiet-with-content-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - quiet-with-content--X_GET
+✨✨✨ SUCCESS ✨✨✨ - silent-with-content
+✨✨✨ SUCCESS ✨✨✨ - silent-with-content-no-curl
+✨✨✨ SUCCESS ✨✨✨ - silent-with-content--X_GET
 ✨✨✨ SUCCESS ✨✨✨ - display-binary-and-headers
 ✨✨✨ SUCCESS ✨✨✨ - display-binary-and-headers-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - display-binary-and-headers--X_GET
@@ -313,8 +318,16 @@ Waited 3 seconds already...
 ✨✨✨ SUCCESS ✨✨✨ - failure-simple-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - failure-simple--X_GET
 ✨✨✨ SUCCESS ✨✨✨ - failure-simple-quiet
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-quiet--D
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-quiet--v
 ✨✨✨ SUCCESS ✨✨✨ - failure-simple-quiet-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - failure-simple-quiet--X_GET
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent--D
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent--v
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent--q
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent-no-curl
+✨✨✨ SUCCESS ✨✨✨ - failure-simple-silent--X_GET
 ✨✨✨ SUCCESS ✨✨✨ - missing-args
 ✨✨✨ SUCCESS ✨✨✨ - missing-args-no-curl
 ✨✨✨ SUCCESS ✨✨✨ - missing-args--X_GET

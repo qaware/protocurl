@@ -213,6 +213,44 @@
     ]
   },
   {
+    "filename": "payload-json",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d @/payloads/payload.json"
+    ],
+    "rerunwithArgForEachElement": [
+      "-v"
+    ]
+  },
+  {
+    "filename": "payload-json-relative",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d @../payloads/payload.json"
+    ]
+  },
+  {
+    "filename": "payload-txt",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d @/payloads/payload.txt"
+    ]
+  },
+  {
+    "filename": "payload-invalid",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d @/payloads/invalid.txt"
+    ]
+  },
+  {
+    "filename": "payload-file-not-found",
+    "args": [
+      "-i ..HappyDayRequest -o ..HappyDayResponse -u http://localhost:8080/happy-day/verify",
+      "-d @/payloads/does-not-exist"
+    ]
+  },
+  {
     "filename": "in-wrong",
     "args": [
       "--in=bad -f f -i i -o o -u u -d \"\""
