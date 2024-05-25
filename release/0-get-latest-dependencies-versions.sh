@@ -44,11 +44,17 @@ retrieveLatestVersion() {
     LATEST_VERSION_EXTRACTOR="tail"
   fi
 
+  AUTH_ARG=""
+  if [[ -v GITHUB_TOKEN ]]; then
+    AUTH_ARG="-H 'Authorization: Bearer $GITHUB_TOKEN'"
+  fi
+
   GITHUB_RESPONSE="$(curl -s \
     -D "$HEADERS_FILE" \
     --etag-save "$ETAG_FILE" \
     -H "If-None-Match: $ETAG" \
     -H "Accept: application/vnd.github.v3+json" \
+    $AUTH_ARG \
     "https://api.github.com/repos/$REPO/$ENDPOINT")"
 
   STATUS_CODE_LINE="$(cat "$HEADERS_FILE" | head -n 1)"
