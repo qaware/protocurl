@@ -1,4 +1,4 @@
-FROM debian:11-slim as builder
+FROM debian:11-slim AS builder
 # A developer variant of protocurl for local development. See DEVELOPER.md
 # This should be kept in sync with release/builder.Dockerfile
 

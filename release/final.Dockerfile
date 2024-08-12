@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/cc:latest as final
+FROM gcr.io/distroless/cc:latest AS final
 
 WORKDIR /protocurl
 
