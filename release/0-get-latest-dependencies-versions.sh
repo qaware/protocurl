@@ -85,7 +85,7 @@ retrieveLatestVersion() {
 }
 
 # retrieve version: Google Protobuf
-retrieveLatestVersion "release" "protocolbuffers/protobuf" "v[0-9]+[.][0-9]+"
+retrieveLatestVersion "tag" "protocolbuffers/protobuf" "v[0-9]+[.][0-9]+"
 export PROTO_VERSION="${LATEST_VERSION#"v"}"
 registerVersion "Protobuf" "PROTO_VERSION"
 
