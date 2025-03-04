@@ -1,6 +1,8 @@
 module github.com/qaware/protocurl/src
 
-go 1.18
+go 1.21
+
+toolchain go1.22.3
 
 require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
