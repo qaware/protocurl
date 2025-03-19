@@ -55,8 +55,6 @@ configurable http requests. Otherwise `protocurl` will use a simple non-configur
 
 **Debian .deb package**
 
-*This hasn't been tested on Debian 12 Bookworm.*
-
 1. Download the latest release `.deb` for your architecture from https://github.com/qaware/protocurl/releases
 2. Install dependency curl: `sudo apt install curl`
 3. Install `sudo dpkg -i <downloaded-release>.deb`
