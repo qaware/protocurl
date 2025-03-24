@@ -1,13 +1,12 @@
 module github.com/qaware/protocurl/src
 
 go 1.21
-
-toolchain go1.22.3
+toolchain go1.24.1
 
 require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/spf13/cobra v1.9.1
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
