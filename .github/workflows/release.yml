@@ -15,7 +15,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Clone all history to ensure goreleaser can create proper changelog.
           fetch-depth: 0
@@ -147,7 +147,7 @@ jobs:
     runs-on: windows-latest
     needs: [ release ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Choco Install curl
         uses: crazy-max/ghaction-chocolatey@v3
@@ -187,7 +187,7 @@ jobs:
     runs-on: macos-latest
     needs: [ release ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup
         run: "brew install powershell"
 
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ release ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
