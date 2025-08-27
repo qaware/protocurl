@@ -19,6 +19,13 @@ jobs:
         # We want to be able to react, if the check fails due to a new version.
         continue-on-error: true
         run: |
+          echo "Updating go dependencies..."
+          cd src
+          go get go@latest
+          go get -u ./...
+          go mod tidy
+          cd ..
+
           ./release/100-check-latest-versions.sh
 
   create-pull-request:
