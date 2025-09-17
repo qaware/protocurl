@@ -76,7 +76,7 @@ server.
 docker run -v "$PWD/test/servers:/servers" -it nodeserver:v1 /bin/bash
 ```
 
-Now it's possible to add new dependencies via `npm install <new-package>`
+Now it's possible to add new dependencies via `npm install --ignore-scripts <new-package>`
 
 ### Adding new tests
 

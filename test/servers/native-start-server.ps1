@@ -2,12 +2,12 @@ $ErrorActionPreference = "Stop"
 
 # Run this script with "test" as the working directory
 
-npm install -g forever
+npm install --ignore-scripts -g forever
 
 Write-Output "Install server..."
 # Replicate steps from Dockerfile
 cd servers
-npm ci
+npm ci --ignore-scripts
 node ./node_modules/typescript/bin/tsc
 
 Write-Output "Before start server:"
