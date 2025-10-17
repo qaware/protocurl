@@ -250,6 +250,6 @@ jobs:
           docker run --network host -v $PWD/test:/home/test alpine:latest sh -c \
             "cd home; apk add --no-cache bash && bash ./test/suite/linux/install-test-remove.sh alpine .apk $URL_NO_EXT"
           
-          docker run --network host -v $PWD/test:/home/test debian:latest bash -c \
+          docker run --network host -v $PWD/test:/home/test debian:12-slim bash -c \
             "cd home; ./test/suite/linux/install-test-remove.sh debian .deb $URL_NO_EXT"
           
