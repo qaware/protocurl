@@ -92,7 +92,7 @@ GO_VERSION="${LATEST_VERSION#"go"}"
 registerVersion "go" "GO_VERSION"
 
 # retrieve version: goreleaser
-retrieveLatestVersion "tag" "goreleaser/goreleaser" "v1[.][0-9]+[.][0-9]+" "v"
+retrieveLatestVersion "tag" "goreleaser/goreleaser" "v2[.][0-9]+[.][0-9]+" "v"
 export GORELEASER_VERSION="$LATEST_VERSION"
 registerVersion "Goreleaser" "GORELEASER_VERSION"
 
