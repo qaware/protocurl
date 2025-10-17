@@ -14,7 +14,7 @@ echo "Using GORELEASER_CURRENT_TAG=$GORELEASER_CURRENT_TAG, GORELEASER_PREVIOUS_
 
 GORELEASER_ARGS=""
 if [[ "$SNAPSHOT" == "true" ]]; then
-  GORELEASER_ARGS="--skip-announce"
+  GORELEASER_ARGS="--skip=announce"
 fi
 
 goreleaser release --clean $GORELEASER_ARGS
