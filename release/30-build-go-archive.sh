@@ -17,10 +17,10 @@ if [[ "$SNAPSHOT" == "true" ]]; then
   GORELEASER_ARGS="--skip=announce"
 fi
 
-goreleaser release --clean $GORELEASER_ARGS
+goreleaser release --rm-dist $GORELEASER_ARGS
 
 # Alternate commands when testing release process locally
-# goreleaser release --snapshot --clean # DEV
+# goreleaser release --snapshot --rm-dist # DEV
 # set -x; for file in dist/*.zip; do mv "$file" "${file/-next/}"; done # DEV
 
 set +x
