@@ -1,4 +1,4 @@
-FROM library/node:17.7.2
+FROM library/node:lts
 # Keep this version in sync with release.yml
 WORKDIR /servers
 COPY test/servers/package*.json ./

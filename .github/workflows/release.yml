@@ -168,9 +168,9 @@ jobs:
           Write-Output "After extract"
           ls my-protocurl
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "17.7.2"
+          node-version: "lts/*"
 
       - name: Start test server
         run: |
@@ -191,9 +191,9 @@ jobs:
       - name: Setup
         run: "brew install powershell"
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "17.7.2"
+          node-version: "lts/*"
 
       - name: Download release
         env:
@@ -230,9 +230,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "17.7.2"
+          node-version: "lts/*"
 
       - name: Start test server
         run: |

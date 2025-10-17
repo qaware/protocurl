@@ -3,6 +3,8 @@
 # This file is a template and expressions such as __PROTOC_VERSION__ are replaced
 # with environment variables such as $PROTOC_VERSION before usage.
 
+version: 2
+
 # https://goreleaser.com/customization/build/
 builds:
   - binary: bin/protocurl
@@ -21,7 +23,8 @@ builds:
 
 # https://goreleaser.com/customization/archive/
 archives:
-  - format: zip
+  - formats:
+      - zip
     files:
       # NOTE: These files are listed again in the packages below. Keep them synced!
       # binary is added implicitly
@@ -95,7 +98,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "{{ .Version }}-dev"
+  version_template: "{{ .Version }}-dev"
 
 changelog:
   sort: asc
