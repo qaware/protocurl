@@ -4,7 +4,7 @@ go 1.25.3
 
 require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	google.golang.org/protobuf v1.36.11
 )
 
