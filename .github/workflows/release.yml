@@ -136,7 +136,7 @@ jobs:
           ./test/suite/test.sh "$PWD"
 
       - name: Security Scan
-        uses: crazy-max/ghaction-container-scan@v3
+        uses: crazy-max/ghaction-container-scan@v4
         continue-on-error: true
         with:
           image: qaware/protocurl:${{ github.event.inputs.version }}
