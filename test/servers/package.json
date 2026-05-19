@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "long": "^5.3.2",
-    "protobufjs": "~8.0.1"
+    "protobufjs": "~8.2.0"
   }
 }
