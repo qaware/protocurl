@@ -10,11 +10,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^25.5.2",
-    "typescript": "^6.0.2"
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "long": "^5.3.2",
-    "protobufjs": "~8.0.1"
+    "protobufjs": "~8.4.2"
   }
 }
