@@ -168,7 +168,7 @@ jobs:
           Write-Output "After extract"
           ls my-protocurl
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
 
@@ -193,7 +193,7 @@ jobs:
           brew update
           brew install powershell
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
 
@@ -232,7 +232,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
 
